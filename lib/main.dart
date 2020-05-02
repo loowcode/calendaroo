@@ -1,5 +1,5 @@
 import 'package:calendaroo/pages/month.page.dart';
-import 'package:calendaroo/redux/state.dart';
+import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
