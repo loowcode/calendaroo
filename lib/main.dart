@@ -1,21 +1,25 @@
 import 'package:calendaroo/pages/month.page.dart';
-import 'package:calendaroo/routes.dart';
+import 'package:calendaroo/redux/state.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
+  final Store<AppState> store;
 
-  @override
-  _MyAppState createState() => _MyAppState();
-}
+  MyApp({Key key, this.store}) : super(key: key);
 
-class _MyAppState extends State<MyApp> {
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Calendaroo',
-      theme: AppTheme.primaryTheme,
-      home: MonthPage(),
+    return StoreProvider<AppState>(
+      store: store,
+      child: MaterialApp(
+        title: 'Calendaroo',
+        theme: AppTheme.primaryTheme,
+        home: MonthPage(),
+      ),
     );
   }
 }

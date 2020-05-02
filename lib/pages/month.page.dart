@@ -1,5 +1,7 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/theme.dart';
+import 'package:calendaroo/widgets/events.widget.dart';
+import 'package:calendaroo/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -121,18 +123,13 @@ class _MonthPageState extends State<MonthPage> with TickerProviderStateMixin {
       child: Scaffold(
         body: SlidingUpPanel(
           borderRadius: radius,
-          panel: Container(
-              child: Text("ciao")),
+          panel: EventsWidget(),
           body: Container(
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                // Switch out 2 lines below to play with TableCalendar's settings
-                //-----------------------
-//                _buildTableCalendar(),
+                const SizedBox(height: 32.0),
                 _buildTableCalendarWithBuilders(),
-                const SizedBox(height: 8.0),
-                _buildButtons(),
                 const SizedBox(height: 8.0),
                 Expanded(child: _buildEventList()),
               ],
@@ -140,6 +137,7 @@ class _MonthPageState extends State<MonthPage> with TickerProviderStateMixin {
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: primaryWhite,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -155,7 +153,8 @@ class _MonthPageState extends State<MonthPage> with TickerProviderStateMixin {
             ),
           ],
           currentIndex: 0,
-          selectedItemColor: Colors.amber[800],
+          unselectedItemColor: secondaryWhite,
+          selectedItemColor: secondaryDarkBlue,
         ),
       ),
     );
@@ -166,7 +165,7 @@ class _MonthPageState extends State<MonthPage> with TickerProviderStateMixin {
     return TableCalendar(
       calendarController: _calendarController,
       events: _events,
-      holidays: _holidays,
+      holidays: holidays,
       initialCalendarFormat: CalendarFormat.month,
       formatAnimation: FormatAnimation.slide,
       startingDayOfWeek: StartingDayOfWeek.monday,
@@ -219,7 +218,7 @@ class _MonthPageState extends State<MonthPage> with TickerProviderStateMixin {
               child: Text(
                 '${date.day}',
                 style:
-                    TextStyle().copyWith(fontSize: 16.0, color: secondaryBlue),
+                    TextStyle().copyWith(fontSize: 16.0, color: secondaryDarkBlue),
               ),
             ),
           );
@@ -362,11 +361,3 @@ class _MonthPageState extends State<MonthPage> with TickerProviderStateMixin {
   }
 }
 
-// Example holidays
-final Map<DateTime, List> _holidays = {
-  DateTime(2019, 1, 1): ['New Year\'s Day'],
-  DateTime(2019, 1, 6): ['Epiphany'],
-  DateTime(2019, 2, 14): ['Valentine\'s Day'],
-  DateTime(2019, 4, 21): ['Easter Sunday'],
-  DateTime(2019, 4, 22): ['Easter Monday'],
-};
