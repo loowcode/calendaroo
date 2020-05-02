@@ -91,30 +91,30 @@ class AppTheme {
         .copyWith(
           headline: base.headline.copyWith(
             fontWeight: FontWeight.w500,
-            color: secondaryText,
+            color: secondaryLightBlue,
           ),
           title: base.title.copyWith(
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
-            color: secondaryText,
+            color: secondaryLightBlue,
           ),
           body1: base.body1.copyWith(
             fontSize: 20.0,
-            color: secondaryText,
+            color: secondaryLightBlue,
           ),
           body2: base.body2.copyWith(
             fontSize: 20.0,
-            color: secondaryText,
+            color: secondaryLightBlue,
           ),
           caption: base.caption.copyWith(
             fontWeight: FontWeight.w300,
             fontSize: 14.0,
-            color: secondaryText,
+            color: secondaryLightBlue,
           ),
         )
         .apply(
           fontFamily: 'SourceSansPro',
-          bodyColor: secondaryText,
+          bodyColor: secondaryLightBlue,
         );
   }
 }

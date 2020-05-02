@@ -1,4 +1,5 @@
 import 'package:calendaroo/main.dart';
+import 'package:calendaroo/pages/splashscreen.page.dart';
 import 'package:calendaroo/redux/reducers.dart';
 import 'package:calendaroo/redux/state.dart';
 import 'package:flutter/cupertino.dart';

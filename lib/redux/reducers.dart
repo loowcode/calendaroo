@@ -6,9 +6,15 @@ class CalendarReducer {
 
   static AppState addEvent(AppState state, dynamic action) {
     if (action is AddEvent) {
-      return CalendarState(List());
+      state.calendarState.events.add(action.event);
+    }
+    if (action is LoadedEventsList) {
+      state.calendarState.events = action.events;
+    }
+    if (action is RemoveEvent) {
+      state.calendarState.events.removeAt(action.id);
     }
 
-    return null;
+    return state;
   }
 }
