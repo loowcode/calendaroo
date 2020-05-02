@@ -1,5 +1,10 @@
 import 'package:calendaroo/pages/month.page.dart';
 
-final appRoutes =  {
-'/': (context) => MonthPage(),
-};
+
+class AppRoutes {
+  static const MONTH = '/monthpage';
+
+  static final routes = {
+    MONTH: (context) => MonthPage(),
+  };
+}
