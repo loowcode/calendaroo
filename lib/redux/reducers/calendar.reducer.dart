@@ -1,3 +1,4 @@
+import 'package:calendaroo/model/event.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/calendar.state.dart';
 import 'package:redux/redux.dart';
@@ -16,7 +17,7 @@ CalendarState _addEvent(CalendarState state, AddEvent action) {
 
 CalendarState _removeEvent(CalendarState state, RemoveEvent action) {
   final newEvents = List.from(state.events)
-    ..removeWhere((el) => action.id == el);
+    ..removeWhere((el) => action.event.id == el.id);
   return state.copyWith(events: newEvents);
 }
 

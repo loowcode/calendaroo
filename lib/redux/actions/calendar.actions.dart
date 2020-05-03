@@ -1,19 +1,20 @@
+
+import 'package:calendaroo/model/event.dart';
+
 class LoadedEventsList {
-  // TODO: an object for the event
-  List<String> events;
+  List<Event> events;
 
   LoadedEventsList(this.events);
 }
 
 class AddEvent {
-  // TODO: an object for the event
-  final String event;
+  final Event event;
 
   AddEvent(this.event);
 }
 
 class RemoveEvent {
-  final int id;
+  final Event event;
 
-  RemoveEvent(this.id);
+  RemoveEvent(this.event);
 }
