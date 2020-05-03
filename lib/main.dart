@@ -1,6 +1,6 @@
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
-import 'package:calendaroo/services/AppLocalizations.dart';
+import 'package:calendaroo/services/appLocalizations.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -36,8 +36,9 @@ class MyApp extends StatelessWidget {
           }
           return supportedLocales.first;
         },
+        debugShowCheckedModeBanner: false,
         theme: AppTheme.primaryTheme,
-        initialRoute: HOMEPAGE,
+        initialRoute: SPLASHSCREEN,
         routes: routes,
       ),
     );

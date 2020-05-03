@@ -1,24 +1,43 @@
-//import 'package:calendaroo/redux/actions/actions.dart';
-//import 'package:calendaroo/redux/states/app.state.dart';
-//import 'package:flutter/cupertino.dart';
-//import 'package:flutter/material.dart';
-//import 'package:flutter_redux/flutter_redux.dart';
-//import 'package:redux/redux.dart';
-//
-//class SplashscreenPage extends StatelessWidget {
-//  final Store<AppState> store;
-//
-//  SplashscreenPage({Key key, this.store}) : super(key: key);
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    var events = List<String>();
-//    events.add('event');
-//    return StoreConnector<AppState, VoidCallback>(converter: (store) {
-//      return () => store.dispatch(LoadedEventsList(events));
-//    }, builder: (context, callback) {
-//      callback();
-//      return MaterialApp(home: Container(child: Icon(Icons.home)));
-//    });
-//  }
-//}
+import 'package:calendaroo/redux/actions/calendar.actions.dart';
+import 'package:calendaroo/redux/selectors/app.selectors.dart';
+import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/redux/states/app-status.state.dart';
+import 'package:calendaroo/routes.dart';
+import 'package:calendaroo/services/calendar.service.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
+
+class SplashscreenPage extends StatefulWidget {
+  final Store<AppState> store;
+
+  SplashscreenPage({Key key, this.store}) : super(key: key);
+
+  @override
+  _SplashscreenPageState createState() => _SplashscreenPageState();
+}
+
+class _SplashscreenPageState extends State<SplashscreenPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var eventsList = await calendarService.eventsList();
+      var store = StoreProvider.of<AppState>(context);
+      store.dispatch(LoadedEventsList(eventsList));
+      store.dispatch(StartApplication());
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, AppState>(
+        converter: (store) => store.state,
+        builder: (context, _) {
+          return Scaffold(
+            body: Text('splashscreen'),
+          );
+        });
+  }
+}

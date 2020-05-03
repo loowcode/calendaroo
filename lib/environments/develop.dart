@@ -1,27 +1,27 @@
 import 'package:calendaroo/main.dart';
+import 'package:calendaroo/redux/middlewares/app.middlewares.dart';
+import 'package:calendaroo/redux/middlewares/calendar.middlewares.dart';
 import 'package:calendaroo/redux/reducers/app.reducer.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 
-
-void main() {
-  var store =  createStore();
+void main() async {
+  await setUp();
+  var store = createStore();
   runApp(MyApp(store: store));
 }
 
-Store<AppState> createStore()  {
-//  var prefs = await SharedPreferences.getInstance();
-  return Store(
-    appReducer,
-    initialState: AppState.initial(),
-  );
+Future<void> setUp() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await sharedPreferenceService.getSharedPreferencesInstance();
+  await sharedPreferenceService.setString('environment', 'develop');
 }
 
-
-//class SetUp extends Environment {
-//  final String env = 'dev';
-//  final String baseUrl = 'https://example.com';
-//  final String firstPage = AppRoutes.MONTH;
-//}
+Store<AppState> createStore() {
+  return Store(appReducer,
+      initialState: AppState.initial(),
+      middleware: [AppMiddleware(), CalendarMiddleware()]);
+}

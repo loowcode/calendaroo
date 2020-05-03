@@ -1,4 +1,3 @@
-
 import 'package:calendaroo/model/event.dart';
 
 class LoadedEventsList {
@@ -18,3 +17,5 @@ class RemoveEvent {
 
   RemoveEvent(this.event);
 }
+
+class FetchEventsList {}

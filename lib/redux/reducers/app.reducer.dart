@@ -1,6 +1,9 @@
+import 'package:calendaroo/redux/reducers/calendar.reducer.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
-import 'package:redux/redux.dart';
 
 
-final appReducer = combineReducers<AppState>([
-]);
+AppState appReducer(AppState state, action) {
+  return AppState(
+    calendarState: calendarReducer(state.calendarState, action),
+  );
+}

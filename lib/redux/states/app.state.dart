@@ -1,27 +1,25 @@
 import 'package:flutter/cupertino.dart';
 
 import 'calendar.state.dart';
-import 'lifecycle.state.dart';
+import 'app-status.state.dart';
 
 @immutable
-abstract class State {}
-
-class AppState extends State {
-  final LifecycleState lifecycleState;
+class AppState {
+  final AppStatusState appStatusState;
   final CalendarState calendarState;
 
-  AppState({@required this.lifecycleState, @required this.calendarState});
+  AppState({@required this.appStatusState, @required this.calendarState});
 
   factory AppState.initial() {
     return AppState(
-        lifecycleState: LifecycleState.initial(),
+        appStatusState: AppStatusState.initial(),
         calendarState: CalendarState.initial());
   }
 
   AppState copyWith(
-      {LifecycleState lifecycleState, CalendarState calendarState}) {
+      {AppStatusState lifecycleState, CalendarState calendarState}) {
     return AppState(
-        lifecycleState: lifecycleState ?? this.lifecycleState,
+        appStatusState: lifecycleState ?? this.appStatusState,
         calendarState: calendarState ?? this.calendarState);
   }
 }

@@ -27,15 +27,7 @@ class SharedPreferenceService {
     await _prefs.clear();
   }
 
-  Future<String> get token async => _prefs.getString('accessToken');
-  Future<String> get tmpPhoneNumber async => _prefs.getString('tmpPhoneNumber');
-  Future<bool> get hundredKm async => _prefs.getBool('hundredKm');
-  Future<String> get subscribedContactList async => _prefs.getString('subscribedContactList');
-  Future<String> get localStorageFriends async => _prefs.getString('localStorageFriends');
-  Future<String> get listeners async => _prefs.getString('listeners');
-  Future<String> get listening async => _prefs.getString('listening');
-  Future<bool> get hasSeenIntroduction async => _prefs.getBool('hasSeenIntroduction');
-  Future<String> get userCountryPhoneCode async => _prefs.getString('userCountryPhoneCode');
+  Future<String> get environment async => _prefs.getString('environment');
 }
 
 SharedPreferenceService sharedPreferenceService = SharedPreferenceService();

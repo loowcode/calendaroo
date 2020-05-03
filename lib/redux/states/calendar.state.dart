@@ -1,8 +1,10 @@
 import 'package:calendaroo/model/event.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'app.state.dart';
 
-class CalendarState extends State {
+@immutable
+class CalendarState {
   final List<Event> events;
 
   CalendarState({this.events});
