@@ -1,18 +1,19 @@
 import 'package:calendaroo/colors.dart';
-import 'package:calendaroo/theme.dart';
-import 'package:calendaroo/widgets/events.widget.dart';
-import 'package:calendaroo/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class MonthPage extends StatefulWidget {
+import '../constants.dart';
+import 'events.widget.dart';
+
+class CalendarWidget extends StatefulWidget {
   @override
-  _MonthPageState createState() => _MonthPageState();
+  _CalendarWidgetState createState() => _CalendarWidgetState();
 }
 
-class _MonthPageState extends State<MonthPage> with TickerProviderStateMixin {
+
+class _CalendarWidgetState extends State<CalendarWidget> with TickerProviderStateMixin {
   Map<DateTime, List> _events;
   List _selectedEvents;
   AnimationController _animationController;
@@ -56,7 +57,7 @@ class _MonthPageState extends State<MonthPage> with TickerProviderStateMixin {
         'Event D8'
       ],
       _selectedDay.add(Duration(days: 3)):
-          Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
+      Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
       _selectedDay.add(Duration(days: 7)): [
         'Event A10',
         'Event B10',
@@ -118,43 +119,18 @@ class _MonthPageState extends State<MonthPage> with TickerProviderStateMixin {
       topLeft: Radius.circular(24.0),
       topRight: Radius.circular(24.0),
     );
-    return Theme(
-      data: AppTheme.secondaryTheme,
-      child: Scaffold(
-        body: SlidingUpPanel(
-          borderRadius: radius,
-          panel: EventsWidget(),
-          body: Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                const SizedBox(height: 32.0),
-                _buildTableCalendarWithBuilders(),
-                const SizedBox(height: 8.0),
-                Expanded(child: _buildEventList()),
-              ],
-            ),
-          ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: primaryWhite,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Home'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.business),
-              title: Text('Business'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              title: Text('School'),
-            ),
+    return SlidingUpPanel(
+      borderRadius: radius,
+      panel: EventsWidget(),
+      body: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            const SizedBox(height: 32.0),
+            _buildTableCalendarWithBuilders(),
+            const SizedBox(height: 8.0),
+            Expanded(child: _buildEventList()),
           ],
-          currentIndex: 0,
-          unselectedItemColor: secondaryWhite,
-          selectedItemColor: secondaryDarkBlue,
         ),
       ),
     );
@@ -188,7 +164,7 @@ class _MonthPageState extends State<MonthPage> with TickerProviderStateMixin {
           centerHeaderTitle: true,
           formatButtonVisible: false,
           titleTextStyle:
-              TextStyle().copyWith(fontSize: 28, fontWeight: FontWeight.bold)),
+          TextStyle().copyWith(fontSize: 28, fontWeight: FontWeight.bold)),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {
           return FadeTransition(
@@ -218,7 +194,7 @@ class _MonthPageState extends State<MonthPage> with TickerProviderStateMixin {
               child: Text(
                 '${date.day}',
                 style:
-                    TextStyle().copyWith(fontSize: 16.0, color: secondaryDarkBlue),
+                TextStyle().copyWith(fontSize: 16.0, color: secondaryDarkBlue),
               ),
             ),
           );
@@ -294,17 +270,17 @@ class _MonthPageState extends State<MonthPage> with TickerProviderStateMixin {
     return ListView(
       children: _selectedEvents
           .map((event) => Container(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 0.8),
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                child: ListTile(
-                  title: Text(event.toString()),
-                  onTap: () => print('$event tapped!'),
-                ),
-              ))
+        decoration: BoxDecoration(
+          border: Border.all(width: 0.8),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        margin:
+        const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        child: ListTile(
+          title: Text(event.toString()),
+          onTap: () => print('$event tapped!'),
+        ),
+      ))
           .toList(),
     );
   }

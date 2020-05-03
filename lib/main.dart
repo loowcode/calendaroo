@@ -1,5 +1,5 @@
-import 'package:calendaroo/pages/month.page.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Calendaroo',
         theme: AppTheme.primaryTheme,
-        home: MonthPage(),
+        initialRoute: HOMEPAGE,
+        routes: routes,
       ),
     );
   }

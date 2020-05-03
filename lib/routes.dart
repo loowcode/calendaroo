@@ -1,10 +1,7 @@
-import 'package:calendaroo/pages/month.page.dart';
+import 'package:calendaroo/pages/home.page.dart';
 
+const HOMEPAGE = '/';
 
-class AppRoutes {
-  static const MONTH = '/monthpage';
-
-  static final routes = {
-    MONTH: (context) => MonthPage(),
-  };
-}
+final routes = {
+  HOMEPAGE: (context) => HomePage(),
+};
