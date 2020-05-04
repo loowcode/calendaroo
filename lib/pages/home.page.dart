@@ -48,8 +48,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _changeFragment(int index){
-    switch(index){
+  Widget _changeFragment(int index) {
+    switch (index) {
       case 0:
         return CalendarWidget();
       case 1:

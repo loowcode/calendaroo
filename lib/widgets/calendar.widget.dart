@@ -13,8 +13,8 @@ class CalendarWidget extends StatefulWidget {
   _CalendarWidgetState createState() => _CalendarWidgetState();
 }
 
-
-class _CalendarWidgetState extends State<CalendarWidget> with TickerProviderStateMixin {
+class _CalendarWidgetState extends State<CalendarWidget>
+    with TickerProviderStateMixin {
   Map<DateTime, List> _events;
   List _selectedEvents;
   AnimationController _animationController;
@@ -58,7 +58,7 @@ class _CalendarWidgetState extends State<CalendarWidget> with TickerProviderStat
         'Event D8'
       ],
       _selectedDay.add(Duration(days: 3)):
-      Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
+          Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
       _selectedDay.add(Duration(days: 7)): [
         'Event A10',
         'Event B10',
@@ -142,20 +142,25 @@ class _CalendarWidgetState extends State<CalendarWidget> with TickerProviderStat
 
   // More advanced TableCalendar configuration (using Builders & Styles)
   Widget _buildTableCalendarWithBuilders() {
+    var locale = Localizations.localeOf(context);
     return TableCalendar(
       calendarController: _calendarController,
       events: _events,
       holidays: holidays,
       initialCalendarFormat: CalendarFormat.month,
-      formatAnimation: FormatAnimation.slide,
-      startingDayOfWeek: StartingDayOfWeek.monday,
+      formatAnimation: FormatAnimation.scale,
+//      startingDayOfWeek: StartingDayOfWeek.monday,
       availableGestures: AvailableGestures.all,
       availableCalendarFormats: const {
-        CalendarFormat.month: '',
-        CalendarFormat.week: '',
+        CalendarFormat.month: 'Month',
+        CalendarFormat.week: 'Week',
       },
+      locale: locale.toString(),
       calendarStyle: CalendarStyle(
         outsideDaysVisible: true,
+        outsideHolidayStyle: TextStyle().copyWith(color: secondaryGrey),
+        outsideWeekendStyle: TextStyle().copyWith(color: secondaryGrey),
+        outsideStyle: TextStyle().copyWith(color: secondaryGrey),
         weekendStyle: TextStyle().copyWith(color: accentYellow),
         holidayStyle: TextStyle().copyWith(color: accentYellow),
       ),
@@ -166,9 +171,11 @@ class _CalendarWidgetState extends State<CalendarWidget> with TickerProviderStat
           leftChevronIcon: Icon(Icons.chevron_left, color: primaryWhite),
           rightChevronIcon: Icon(Icons.chevron_right, color: primaryWhite),
           centerHeaderTitle: true,
-          formatButtonVisible: false,
+          formatButtonVisible: true,
+          formatButtonShowsNext: true,
+          formatButtonTextStyle: TextStyle().copyWith(color: secondaryDarkGrey),
           titleTextStyle:
-          TextStyle().copyWith(fontSize: 28, fontWeight: FontWeight.bold)),
+              TextStyle().copyWith(fontSize: 28, fontWeight: FontWeight.bold)),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {
           return FadeTransition(
@@ -197,8 +204,8 @@ class _CalendarWidgetState extends State<CalendarWidget> with TickerProviderStat
             child: Center(
               child: Text(
                 '${date.day}',
-                style:
-                TextStyle().copyWith(fontSize: 16.0, color: secondaryDarkBlue),
+                style: TextStyle()
+                    .copyWith(fontSize: 16.0, color: secondaryDarkBlue),
               ),
             ),
           );
@@ -274,19 +281,18 @@ class _CalendarWidgetState extends State<CalendarWidget> with TickerProviderStat
     return ListView(
       children: _selectedEvents
           .map((event) => Container(
-        decoration: BoxDecoration(
-          border: Border.all(width: 0.8),
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        margin:
-        const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-        child: ListTile(
-          title: Text(event.toString()),
-          onTap: () => print('$event tapped!'),
-        ),
-      ))
+                decoration: BoxDecoration(
+                  border: Border.all(width: 0.8),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                child: ListTile(
+                  title: Text(event.toString()),
+                  onTap: () => print('$event tapped!'),
+                ),
+              ))
           .toList(),
     );
   }
 }
-

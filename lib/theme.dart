@@ -47,12 +47,11 @@ class AppTheme {
           caption: base.caption.copyWith(
             fontWeight: FontWeight.w300,
             fontSize: 14.0,
-//        color: Colors.,
           ),
         )
         .apply(
           fontFamily: 'SourceSansPro',
-//      bodyColor: textVeryDarkBlue,
+          bodyColor: primaryBlack,
         );
   }
 
@@ -65,7 +64,7 @@ class AppTheme {
       buttonColor: secondaryBlue,
       appBarTheme: AppBarTheme(color: secondaryBlue, elevation: 0.0),
       // hintColor: accentYellow,
-       canvasColor: secondaryBlue,
+      canvasColor: secondaryBlue,
       scaffoldBackgroundColor: secondaryBlue,
       cardColor: secondaryBlue,
       textSelectionColor: accentYellow,

@@ -1,6 +1,6 @@
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
-import 'package:calendaroo/services/appLocalizations.dart';
+import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

@@ -1,9 +1,6 @@
 import 'package:calendaroo/redux/actions/app-status.actions.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
-import 'package:calendaroo/redux/selectors/app.selectors.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
-import 'package:calendaroo/redux/states/app-status.state.dart';
-import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/calendar.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

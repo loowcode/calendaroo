@@ -1,6 +1,9 @@
 import 'package:calendaroo/colors.dart';
-import 'package:calendaroo/services/appLocalizations.dart';
+import 'package:calendaroo/services/app-localizations.service.dart';
+import 'package:calendaroo/theme.dart';
 import 'package:flutter/material.dart';
+
+import '../constants.dart';
 
 class UpcomingEventsWidget extends StatefulWidget {
   @override
@@ -11,21 +14,22 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
   @override
   Widget build(BuildContext context) {
     BorderRadiusGeometry radius = BorderRadius.only(
-      topRight: Radius.circular(128.0),
+      topLeft: Radius.circular(32.0),
+      topRight: Radius.circular(32.0),
     );
     return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [secondaryBlue, accentYellow],
-              stops: [0.0, 2.0],
-            ),
-            borderRadius: radius),
-        child: ListView(
-          children: <Widget>[
-            Text(AppLocalizations.of(context).translate('upcoming-events')),
-            Container(child: Text('evento'))
-          ],
+      child: Theme(
+        data: AppTheme.primaryTheme,
+        child: Container(
+          decoration: BoxDecoration(
+              color: primaryWhite,
+              borderRadius: radius),
+          child: ListView(
+            children: <Widget>[
+              Text(AppLocalizations.of(context).translate(Texts.UPCOMING_EVENTS)),
+              Container(child: Text('evento'))
+            ],
+          ),
         ),
       ),
     );
