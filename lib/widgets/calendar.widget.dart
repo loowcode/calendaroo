@@ -163,6 +163,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
         outsideStyle: TextStyle().copyWith(color: secondaryGrey),
         weekendStyle: TextStyle().copyWith(color: accentYellow),
         holidayStyle: TextStyle().copyWith(color: accentYellow),
+        weekdayStyle: TextStyle().copyWith(color: primaryWhite)
       ),
       daysOfWeekStyle: DaysOfWeekStyle(
           weekendStyle: TextStyle().copyWith(color: accentYellow),
@@ -172,44 +173,46 @@ class _CalendarWidgetState extends State<CalendarWidget>
           rightChevronIcon: Icon(Icons.chevron_right, color: primaryWhite),
           centerHeaderTitle: true,
           formatButtonVisible: true,
-          formatButtonShowsNext: true,
           formatButtonTextStyle: TextStyle().copyWith(color: secondaryDarkGrey),
           titleTextStyle:
-              TextStyle().copyWith(fontSize: 28, fontWeight: FontWeight.bold)),
+              TextStyle().copyWith(color: primaryWhite, fontSize: 28, fontWeight: FontWeight.bold)),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {
           return FadeTransition(
             opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8), color: primaryWhite),
-              width: 50,
-              height: 50,
-              child: Center(
-                child: Text(
-                  '${date.day}',
-                  style: TextStyle()
-                      .copyWith(fontSize: 16.0, color: secondaryBlue),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8), color: primaryWhite),
+                child: Center(
+                  child: Text(
+                    '${date.day}',
+                    style: TextStyle()
+                        .copyWith(fontSize: 16.0, color: secondaryBlue),
+                  ),
                 ),
               ),
             ),
           );
         },
         todayDayBuilder: (context, date, _) {
-          return Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8), color: secondaryGrey),
-            width: 50,
-            height: 50,
-            child: Center(
-              child: Text(
-                '${date.day}',
-                style: TextStyle()
-                    .copyWith(fontSize: 16.0, color: secondaryDarkBlue),
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8), color: secondaryGrey),
+              child: Center(
+                child: Text(
+                  '${date.day}',
+                  style: TextStyle()
+                      .copyWith(fontSize: 16.0, color: secondaryDarkBlue),
+                ),
               ),
             ),
           );
         },
+
         markersBuilder: (context, date, events, holidays) {
           final children = <Widget>[];
 

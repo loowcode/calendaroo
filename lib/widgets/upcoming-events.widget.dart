@@ -18,18 +18,24 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
       topRight: Radius.circular(32.0),
     );
     return Expanded(
-      child: Theme(
-        data: AppTheme.primaryTheme,
-        child: Container(
-          decoration: BoxDecoration(
-              color: primaryWhite,
-              borderRadius: radius),
-          child: ListView(
-            children: <Widget>[
-              Text(AppLocalizations.of(context).translate(Texts.UPCOMING_EVENTS)),
-              Container(child: Text('evento'))
-            ],
-          ),
+      child: Container(
+        decoration: BoxDecoration(color: primaryWhite, borderRadius: radius),
+        child: Stack(
+          children: <Widget>[
+            ListView(
+              children: <Widget>[
+                Text(AppLocalizations.of(context)
+                    .translate(Texts.UPCOMING_EVENTS)),
+                Container(
+                    child: Theme(
+                  data: AppTheme.primaryTheme,
+                  child: Text(
+                    'evento',
+                  ),
+                ))
+              ],
+            ),
+          ],
         ),
       ),
     );

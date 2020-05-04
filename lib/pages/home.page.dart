@@ -28,8 +28,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           backgroundColor: backgroundWhite,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Home'),
+              icon: Icon(Icons.calendar_today),
+              title: Text('Calendar'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.list),

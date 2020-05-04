@@ -43,6 +43,8 @@ class AppTheme {
           ),
           body1: base.body1.copyWith(
             fontSize: 18.0,
+            fontWeight: FontWeight.w700,
+            color: primaryBlack,
           ),
           caption: base.caption.copyWith(
             fontWeight: FontWeight.w300,
@@ -69,9 +71,9 @@ class AppTheme {
       cardColor: secondaryBlue,
       textSelectionColor: accentYellow,
 //      errorColor: errorStrongRed,
-      textTheme: _buildSecondaryTextTheme(base.textTheme),
-      primaryTextTheme: _buildSecondaryTextTheme(base.primaryTextTheme),
-      accentTextTheme: _buildSecondaryTextTheme(base.accentTextTheme),
+      textTheme: _buildPrimaryTextTheme(base.textTheme),
+      primaryTextTheme: _buildPrimaryTextTheme(base.primaryTextTheme),
+      accentTextTheme: _buildPrimaryTextTheme(base.accentTextTheme),
       primaryIconTheme: base.iconTheme.copyWith(color: secondaryDarkBlue),
       // buttonTheme: ButtonThemeData(),
       inputDecorationTheme: InputDecorationTheme(
