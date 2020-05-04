@@ -1,3 +1,4 @@
+import 'package:calendaroo/redux/actions/app-status.actions.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/selectors/app.selectors.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
@@ -26,7 +27,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
       var eventsList = await calendarService.eventsList();
       var store = StoreProvider.of<AppState>(context);
       store.dispatch(LoadedEventsList(eventsList));
-      store.dispatch(StartApplication());
+      store.dispatch(StartApplication(context));
     });
   }
 

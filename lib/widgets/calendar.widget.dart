@@ -1,4 +1,5 @@
 import 'package:calendaroo/colors.dart';
+import 'package:calendaroo/widgets/upcoming-events.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -121,6 +122,8 @@ class _CalendarWidgetState extends State<CalendarWidget> with TickerProviderStat
     );
     return SlidingUpPanel(
       borderRadius: radius,
+      minHeight: 50,
+      color: backgroundWhite,
       panel: EventsWidget(),
       body: Container(
         child: Column(
@@ -129,7 +132,8 @@ class _CalendarWidgetState extends State<CalendarWidget> with TickerProviderStat
             const SizedBox(height: 32.0),
             _buildTableCalendarWithBuilders(),
             const SizedBox(height: 8.0),
-            Expanded(child: _buildEventList()),
+            UpcomingEventsWidget()
+//            Expanded(child: _buildEventList()),
           ],
         ),
       ),
@@ -145,7 +149,7 @@ class _CalendarWidgetState extends State<CalendarWidget> with TickerProviderStat
       initialCalendarFormat: CalendarFormat.month,
       formatAnimation: FormatAnimation.slide,
       startingDayOfWeek: StartingDayOfWeek.monday,
-      availableGestures: AvailableGestures.horizontalSwipe,
+      availableGestures: AvailableGestures.all,
       availableCalendarFormats: const {
         CalendarFormat.month: '',
         CalendarFormat.week: '',
@@ -187,7 +191,7 @@ class _CalendarWidgetState extends State<CalendarWidget> with TickerProviderStat
         todayDayBuilder: (context, date, _) {
           return Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8), color: secondaryWhite),
+                borderRadius: BorderRadius.circular(8), color: secondaryGrey),
             width: 50,
             height: 50,
             child: Center(

@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       child: Scaffold(
         body: _changeFragment(_indexFragmentSelected),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: primaryWhite,
+          backgroundColor: backgroundWhite,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
           ],
           currentIndex: _indexFragmentSelected,
-          unselectedItemColor: secondaryWhite,
+          unselectedItemColor: secondaryGrey,
           selectedItemColor: secondaryDarkBlue,
         ),
       ),
