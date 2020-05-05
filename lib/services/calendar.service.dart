@@ -10,6 +10,17 @@ class CalendarService {
       return List<Event>();
     }
   }
+
+  Map<DateTime, List<Event>> toMap(List<Event> events) {
+    Map<DateTime, List<Event>> result = new Map();
+    events.forEach((Event elem) {
+      List<Event> list = result.putIfAbsent(elem.start, () => [elem]);
+      if (list.length > 1) {
+        list.add(elem);
+      }
+    });
+    return result;
+  }
 }
 
 CalendarService calendarService = CalendarService();

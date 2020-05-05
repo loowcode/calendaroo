@@ -60,13 +60,13 @@ class AppTheme {
   static get secondaryTheme {
     final ThemeData base = ThemeData.light();
     return base.copyWith(
-      backgroundColor: secondaryBlue,
+//      backgroundColor: secondaryBlue,
       accentColor: accentYellow,
       primaryColor: primaryWhite,
       buttonColor: secondaryBlue,
-      appBarTheme: AppBarTheme(color: secondaryBlue, elevation: 0.0),
+//      appBarTheme: AppBarTheme(color: secondaryBlue, elevation: 0.0),
       // hintColor: accentYellow,
-      canvasColor: secondaryBlue,
+//      canvasColor: secondaryBlue,
       scaffoldBackgroundColor: secondaryBlue,
       cardColor: secondaryBlue,
       textSelectionColor: accentYellow,
@@ -84,6 +84,15 @@ class AppTheme {
         focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: secondaryBlue, width: 2.0)),
       ),
+    );
+  }
+
+  static get datePicker {
+    final ThemeData base = ThemeData.light();
+    return base.copyWith(
+        primaryColor: secondaryBlue,
+        accentColor: secondaryBlue,
+      dialogBackgroundColor: primaryWhite,
     );
   }
 
@@ -120,3 +129,19 @@ class AppTheme {
         );
   }
 }
+
+const MaterialColor buttonTextColor = const MaterialColor(
+  0xFF4A5BF6,
+  const <int, Color>{
+    50: const Color(0xFF4A5BF6),
+    100: const Color(0xFF4A5BF6),
+    200: const Color(0xFF4A5BF6),
+    300: const Color(0xFF4A5BF6),
+    400: const Color(0xFF4A5BF6),
+    500: const Color(0xFF4A5BF6),
+    600: const Color(0xFF4A5BF6),
+    700: const Color(0xFF4A5BF6),
+    800: const Color(0xFF4A5BF6),
+    900: const Color(0xFF4A5BF6),
+  },
+);

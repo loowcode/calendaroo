@@ -35,7 +35,7 @@ class LocalStorageService {
 
   void _onCreate(Database db, int version) {
     db.execute('''
-    CREATE TABLE event(
+    CREATE TABLE events(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT,
       description TEXT,
@@ -44,7 +44,7 @@ class LocalStorageService {
     print("Database was created!");
   }
 
-  void _onUpgrade(Database db, int oldVersion, int newVersion) async{
+  void _onUpgrade(Database db, int oldVersion, int newVersion) async {
     // Run migration according database versions
     for (var i = oldVersion - 1; i <= newVersion - 1; i++) {
 //      await db.execute(migrationScripts[i]);
@@ -64,7 +64,7 @@ class LocalStorageService {
 
   Future<int> updateEvent(Event newEvent) async {
     var client = await db;
-    return client.update('event', newEvent.toMap(),
+    return client.update('events', newEvent.toMap(),
         where: 'id = ?',
         whereArgs: [newEvent.id],
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -72,6 +72,22 @@ class LocalStorageService {
 
   Future<void> deleteEvent(int id) async {
     var client = await db;
-    return client.delete('event', where: 'id = ?', whereArgs: [id]);
+    return client.delete('events', where: 'id = ?', whereArgs: [id]);
   }
+
+  Future<List<Event>> events() async {
+    final Database client = await db;
+
+    final List<Map<String, dynamic>> maps = await client.query('events');
+    return List.generate(maps.length, (i) {
+      return Event(
+        id: maps[i]['id'],
+        title: maps[i]['title'],
+        description: maps[i]['description'],
+        start: maps[i]['start'],
+        finish: maps[i]['finish'],
+      );
+    });
+  }
+
 }

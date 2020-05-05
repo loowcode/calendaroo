@@ -120,22 +120,16 @@ class _CalendarWidgetState extends State<CalendarWidget>
       topLeft: Radius.circular(24.0),
       topRight: Radius.circular(24.0),
     );
-    return SlidingUpPanel(
-      borderRadius: radius,
-      minHeight: 50,
-      color: backgroundWhite,
-      panel: EventsWidget(),
-      body: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            const SizedBox(height: 32.0),
-            _buildTableCalendarWithBuilders(),
-            const SizedBox(height: 8.0),
-            UpcomingEventsWidget()
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          const SizedBox(height: 32.0),
+          _buildTableCalendarWithBuilders(),
+          const SizedBox(height: 8.0),
+          UpcomingEventsWidget()
 //            Expanded(child: _buildEventList()),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -157,14 +151,13 @@ class _CalendarWidgetState extends State<CalendarWidget>
       },
       locale: locale.toString(),
       calendarStyle: CalendarStyle(
-        outsideDaysVisible: true,
-        outsideHolidayStyle: TextStyle().copyWith(color: secondaryGrey),
-        outsideWeekendStyle: TextStyle().copyWith(color: secondaryGrey),
-        outsideStyle: TextStyle().copyWith(color: secondaryGrey),
-        weekendStyle: TextStyle().copyWith(color: accentYellow),
-        holidayStyle: TextStyle().copyWith(color: accentYellow),
-        weekdayStyle: TextStyle().copyWith(color: primaryWhite)
-      ),
+          outsideDaysVisible: true,
+          outsideHolidayStyle: TextStyle().copyWith(color: secondaryGrey),
+          outsideWeekendStyle: TextStyle().copyWith(color: secondaryGrey),
+          outsideStyle: TextStyle().copyWith(color: secondaryGrey),
+          weekendStyle: TextStyle().copyWith(color: accentYellow),
+          holidayStyle: TextStyle().copyWith(color: accentYellow),
+          weekdayStyle: TextStyle().copyWith(color: primaryWhite)),
       daysOfWeekStyle: DaysOfWeekStyle(
           weekendStyle: TextStyle().copyWith(color: accentYellow),
           weekdayStyle: TextStyle().copyWith(color: primaryWhite)),
@@ -174,8 +167,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
           centerHeaderTitle: true,
           formatButtonVisible: true,
           formatButtonTextStyle: TextStyle().copyWith(color: secondaryDarkGrey),
-          titleTextStyle:
-              TextStyle().copyWith(color: primaryWhite, fontSize: 28, fontWeight: FontWeight.bold)),
+          titleTextStyle: TextStyle().copyWith(
+              color: primaryWhite, fontSize: 28, fontWeight: FontWeight.bold)),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {
           return FadeTransition(
@@ -184,7 +177,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8), color: primaryWhite),
+                    borderRadius: BorderRadius.circular(8),
+                    color: primaryWhite),
                 child: Center(
                   child: Text(
                     '${date.day}',
@@ -212,7 +206,6 @@ class _CalendarWidgetState extends State<CalendarWidget>
             ),
           );
         },
-
         markersBuilder: (context, date, events, holidays) {
           final children = <Widget>[];
 
