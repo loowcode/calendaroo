@@ -36,29 +36,39 @@ class AppTheme {
         .copyWith(
           headline: base.headline.copyWith(
             fontSize: 32,
-            fontWeight: FontWeight.w500,
-          ),
-          title: base.title.copyWith(
-            fontSize: 32.0,
             fontWeight: FontWeight.bold,
           ),
+          title: base.title.copyWith(
+            fontSize: 24.0,
+            fontWeight: FontWeight.normal,
+          ),
+          subtitle: base.subtitle.copyWith(
+            fontSize: 20.0,
+            fontWeight: FontWeight.w600,
+            color: secondaryGrey
+          ),
           body1: base.body1.copyWith(
-            fontSize: 18.0,
+            fontSize: 20.0,
             fontWeight: FontWeight.w700,
             color: primaryBlack,
           ),
           body2: base.body2.copyWith(
             fontSize: 20.0,
+            fontWeight: FontWeight.normal,
             color: primaryWhite,
           ),
           caption: base.caption.copyWith(
             fontWeight: FontWeight.w300,
             fontSize: 24.0,
           ),
+          button: base.button.copyWith(
+            fontWeight: FontWeight.w300,
+            fontSize: 24.0,
+            color: primaryWhite
+          ),
         )
         .apply(
           fontFamily: 'SourceSansPro',
-          bodyColor: primaryBlack,
         );
   }
 

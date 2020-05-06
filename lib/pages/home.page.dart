@@ -1,6 +1,6 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/theme.dart';
-import 'package:calendaroo/widgets/calendar.widget.dart';
+import 'package:calendaroo/widgets/calendar/calendar.widget.dart';
 import 'package:calendaroo/widgets/new-event/new-event.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
           ],
           currentIndex: _indexFragmentSelected,
-          unselectedItemColor: secondaryGrey,
+          unselectedItemColor: secondaryLightGrey,
           selectedItemColor: secondaryDarkBlue,
           showSelectedLabels: false,
           showUnselectedLabels: false,

@@ -15,7 +15,7 @@ class CalendarService {
     Map<DateTime, List<Event>> result = new Map();
     events.forEach((Event elem) {
       List<Event> list = result.putIfAbsent(elem.start, () => [elem]);
-      if (list.length > 1) {
+      if (list.length != 1) {
         list.add(elem);
       }
     });

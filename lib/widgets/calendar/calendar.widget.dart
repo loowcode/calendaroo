@@ -1,10 +1,14 @@
 import 'package:calendaroo/colors.dart';
+import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/services/calendar.service.dart';
+import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
 import 'package:calendaroo/widgets/upcoming-events.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../constants.dart';
+import '../../constants.dart';
 
 class CalendarWidget extends StatefulWidget {
   @override
@@ -13,7 +17,7 @@ class CalendarWidget extends StatefulWidget {
 
 class _CalendarWidgetState extends State<CalendarWidget>
     with TickerProviderStateMixin {
-  Map<DateTime, List> _events;
+//  Map<DateTime, List> _events;
   List _selectedEvents;
   AnimationController _animationController;
   CalendarController _calendarController;
@@ -22,62 +26,62 @@ class _CalendarWidgetState extends State<CalendarWidget>
   void initState() {
     super.initState();
     final _selectedDay = DateTime.now();
-
-    _events = {
-      _selectedDay.subtract(Duration(days: 30)): [
-        'Event A0',
-        'Event B0',
-        'Event C0'
-      ],
-      _selectedDay.subtract(Duration(days: 27)): ['Event A1'],
-      _selectedDay.subtract(Duration(days: 20)): [
-        'Event A2',
-        'Event B2',
-        'Event C2',
-        'Event D2'
-      ],
-      _selectedDay.subtract(Duration(days: 16)): ['Event A3', 'Event B3'],
-      _selectedDay.subtract(Duration(days: 10)): [
-        'Event A4',
-        'Event B4',
-        'Event C4'
-      ],
-      _selectedDay.subtract(Duration(days: 4)): [
-        'Event A5',
-        'Event B5',
-        'Event C5'
-      ],
-      _selectedDay.subtract(Duration(days: 2)): ['Event A6', 'Event B6'],
-      _selectedDay: ['Event A7', 'Event B7', 'Event C7', 'Event D7'],
-      _selectedDay.add(Duration(days: 1)): [
-        'Event A8',
-        'Event B8',
-        'Event C8',
-        'Event D8'
-      ],
-      _selectedDay.add(Duration(days: 3)):
-          Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
-      _selectedDay.add(Duration(days: 7)): [
-        'Event A10',
-        'Event B10',
-        'Event C10'
-      ],
-      _selectedDay.add(Duration(days: 11)): ['Event A11', 'Event B11'],
-      _selectedDay.add(Duration(days: 17)): [
-        'Event A12',
-        'Event B12',
-        'Event C12',
-        'Event D12'
-      ],
-      _selectedDay.add(Duration(days: 22)): ['Event A13', 'Event B13'],
-      _selectedDay.add(Duration(days: 26)): [
-        'Event A14',
-        'Event B14',
-        'Event C14'
-      ],
-    };
-
-    _selectedEvents = _events[_selectedDay] ?? [];
+//
+//    _events = {
+//      _selectedDay.subtract(Duration(days: 30)): [
+//        'Event A0',
+//        'Event B0',
+//        'Event C0'
+//      ],
+//      _selectedDay.subtract(Duration(days: 27)): ['Event A1'],
+//      _selectedDay.subtract(Duration(days: 20)): [
+//        'Event A2',
+//        'Event B2',
+//        'Event C2',
+//        'Event D2'
+//      ],
+//      _selectedDay.subtract(Duration(days: 16)): ['Event A3', 'Event B3'],
+//      _selectedDay.subtract(Duration(days: 10)): [
+//        'Event A4',
+//        'Event B4',
+//        'Event C4'
+//      ],
+//      _selectedDay.subtract(Duration(days: 4)): [
+//        'Event A5',
+//        'Event B5',
+//        'Event C5'
+//      ],
+//      _selectedDay.subtract(Duration(days: 2)): ['Event A6', 'Event B6'],
+//      _selectedDay: ['Event A7', 'Event B7', 'Event C7', 'Event D7'],
+//      _selectedDay.add(Duration(days: 1)): [
+//        'Event A8',
+//        'Event B8',
+//        'Event C8',
+//        'Event D8'
+//      ],
+//      _selectedDay.add(Duration(days: 3)):
+//          Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
+//      _selectedDay.add(Duration(days: 7)): [
+//        'Event A10',
+//        'Event B10',
+//        'Event C10'
+//      ],
+//      _selectedDay.add(Duration(days: 11)): ['Event A11', 'Event B11'],
+//      _selectedDay.add(Duration(days: 17)): [
+//        'Event A12',
+//        'Event B12',
+//        'Event C12',
+//        'Event D12'
+//      ],
+//      _selectedDay.add(Duration(days: 22)): ['Event A13', 'Event B13'],
+//      _selectedDay.add(Duration(days: 26)): [
+//        'Event A14',
+//        'Event B14',
+//        'Event C14'
+//      ],
+//    };
+//
+//    _selectedEvents = _events[_selectedDay] ?? [];
     _calendarController = CalendarController();
 
     _animationController = AnimationController(
@@ -114,30 +118,30 @@ class _CalendarWidgetState extends State<CalendarWidget>
 
   @override
   Widget build(BuildContext context) {
-    BorderRadiusGeometry radius = BorderRadius.only(
-      topLeft: Radius.circular(24.0),
-      topRight: Radius.circular(24.0),
-    );
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          const SizedBox(height: 32.0),
-          _buildTableCalendarWithBuilders(),
-          const SizedBox(height: 8.0),
-          UpcomingEventsWidget()
+    return StoreConnector<AppState, CalendarViewModel>(
+        converter: (store) => CalendarViewModel.fromStore(store),
+        builder: (context, store) {
+          return Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                const SizedBox(height: 32.0),
+                _buildTableCalendarWithBuilders(store),
+                const SizedBox(height: 8.0),
+                UpcomingEventsWidget()
 //            Expanded(child: _buildEventList()),
-        ],
-      ),
-    );
+              ],
+            ),
+          );
+        });
   }
 
   // More advanced TableCalendar configuration (using Builders & Styles)
-  Widget _buildTableCalendarWithBuilders() {
+  Widget _buildTableCalendarWithBuilders(CalendarViewModel store) {
     var locale = Localizations.localeOf(context);
     return TableCalendar(
       calendarController: _calendarController,
-      events: _events,
+      events: CalendarService().toMap(store.events),
       holidays: holidays,
       initialCalendarFormat: CalendarFormat.month,
       formatAnimation: FormatAnimation.scale,
@@ -150,9 +154,9 @@ class _CalendarWidgetState extends State<CalendarWidget>
       locale: locale.toString(),
       calendarStyle: CalendarStyle(
           outsideDaysVisible: true,
-          outsideHolidayStyle: TextStyle().copyWith(color: secondaryGrey),
-          outsideWeekendStyle: TextStyle().copyWith(color: secondaryGrey),
-          outsideStyle: TextStyle().copyWith(color: secondaryGrey),
+          outsideHolidayStyle: TextStyle().copyWith(color: secondaryLightGrey),
+          outsideWeekendStyle: TextStyle().copyWith(color: secondaryLightGrey),
+          outsideStyle: TextStyle().copyWith(color: secondaryLightGrey),
           weekendStyle: TextStyle().copyWith(color: accentYellow),
           holidayStyle: TextStyle().copyWith(color: accentYellow),
           weekdayStyle: TextStyle().copyWith(color: primaryWhite)),
@@ -193,7 +197,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
             padding: const EdgeInsets.all(8.0),
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8), color: secondaryGrey),
+                  borderRadius: BorderRadius.circular(8), color: secondaryLightGrey),
               child: Center(
                 child: Text(
                   '${date.day}',
@@ -270,5 +274,4 @@ class _CalendarWidgetState extends State<CalendarWidget>
       color: Colors.blueGrey[800],
     );
   }
-
 }

@@ -21,9 +21,8 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var eventsList = await calendarService.eventsList();
       var store = StoreProvider.of<AppState>(context);
-      store.dispatch(LoadedEventsList(eventsList));
+//      store.dispatch(LoadedEventsList(eventsList));
       store.dispatch(StartApplication(context));
     });
   }
