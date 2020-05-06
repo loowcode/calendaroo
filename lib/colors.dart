@@ -9,6 +9,7 @@ const secondaryGrey = const Color(0xFFbfbfbf);
 const secondaryDarkGrey = const Color(0xFF303436);
 const primaryBlack = const Color(0xFF0e0e0f);
 
+const backgroundForm =  const Color(0xFFeef7f3);
 const secondaryLightBlue =  const Color(0xFF28b6f6);
 const secondaryBlue = const Color(0xFF0084ff);
 const secondaryDarkBlue = const Color(0xFF00579c);

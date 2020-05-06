@@ -1,3 +1,4 @@
+import 'package:calendaroo/model/event.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/calendar.state.dart';
 import 'package:redux/redux.dart';
@@ -10,7 +11,7 @@ final calendarReducer = combineReducers<CalendarState>([
 ]);
 
 CalendarState _addEvent(CalendarState state, AddEvent action) {
-  final newEvents = List.from(state.events)..add(action.event);
+  final newEvents = List<Event>.from(state.events)..add(action.event);
   return state.copyWith(events: newEvents);
 }
 

@@ -21,8 +21,8 @@ class Event {
     map['id'] = id;
     map['title'] = title;
     map['description'] = description;
-    map['start'] = start;
-    map['finish'] = finish;
+    map['start'] = start.toIso8601String();
+    map['finish'] = finish.toIso8601String();
     return map;
   }
 

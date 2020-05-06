@@ -2,11 +2,9 @@ import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/widgets/upcoming-events.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../constants.dart';
-import 'events.widget.dart';
 
 class CalendarWidget extends StatefulWidget {
   @override
@@ -273,22 +271,4 @@ class _CalendarWidgetState extends State<CalendarWidget>
     );
   }
 
-  Widget _buildEventList() {
-    return ListView(
-      children: _selectedEvents
-          .map((event) => Container(
-                decoration: BoxDecoration(
-                  border: Border.all(width: 0.8),
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                child: ListTile(
-                  title: Text(event.toString()),
-                  onTap: () => print('$event tapped!'),
-                ),
-              ))
-          .toList(),
-    );
-  }
 }

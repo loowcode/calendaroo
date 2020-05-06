@@ -39,6 +39,8 @@ class LocalStorageService {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT,
       description TEXT,
+      start TEXT,
+      finish TEXT
       )
   ''');
     print("Database was created!");
@@ -84,8 +86,8 @@ class LocalStorageService {
         id: maps[i]['id'],
         title: maps[i]['title'],
         description: maps[i]['description'],
-        start: maps[i]['start'],
-        finish: maps[i]['finish'],
+        start: DateTime.parse(maps[i]['start']),
+        finish: DateTime.parse(maps[i]['finish']),
       );
     });
   }

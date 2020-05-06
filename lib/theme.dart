@@ -35,10 +35,11 @@ class AppTheme {
     return base
         .copyWith(
           headline: base.headline.copyWith(
+            fontSize: 32,
             fontWeight: FontWeight.w500,
           ),
           title: base.title.copyWith(
-            fontSize: 18.0,
+            fontSize: 32.0,
             fontWeight: FontWeight.bold,
           ),
           body1: base.body1.copyWith(
@@ -46,9 +47,13 @@ class AppTheme {
             fontWeight: FontWeight.w700,
             color: primaryBlack,
           ),
+          body2: base.body2.copyWith(
+            fontSize: 20.0,
+            color: primaryWhite,
+          ),
           caption: base.caption.copyWith(
             fontWeight: FontWeight.w300,
-            fontSize: 14.0,
+            fontSize: 24.0,
           ),
         )
         .apply(
@@ -90,8 +95,8 @@ class AppTheme {
   static get datePicker {
     final ThemeData base = ThemeData.light();
     return base.copyWith(
-        primaryColor: secondaryBlue,
-        accentColor: secondaryBlue,
+      primaryColor: secondaryBlue,
+      accentColor: secondaryBlue,
       dialogBackgroundColor: primaryWhite,
     );
   }
@@ -119,7 +124,7 @@ class AppTheme {
           ),
           caption: base.caption.copyWith(
             fontWeight: FontWeight.w300,
-            fontSize: 14.0,
+            fontSize: 32.0,
             color: primaryWhite,
           ),
         )

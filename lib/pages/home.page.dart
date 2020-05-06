@@ -13,6 +13,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   var _indexFragmentSelected;
 
+  var _fragmentList = [NewEventWidget(), CalendarWidget(), Container(), Container()];
+
   @override
   void initState() {
     super.initState();
@@ -24,7 +26,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return Theme(
       data: _changeTheme(_indexFragmentSelected),
       child: Scaffold(
-        body: _changeFragment(_indexFragmentSelected),
+        body: IndexedStack(
+          index: _indexFragmentSelected,
+          children: _fragmentList,
+        ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: backgroundWhite,
           onTap: _onFragmentSelected,
@@ -49,6 +54,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           currentIndex: _indexFragmentSelected,
           unselectedItemColor: secondaryGrey,
           selectedItemColor: secondaryDarkBlue,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
         ),
       ),
     );
