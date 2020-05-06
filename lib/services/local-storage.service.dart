@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:calendaroo/model/event.dart';
+import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:path/path.dart';
 
 import 'package:path_provider/path_provider.dart';
@@ -20,16 +21,19 @@ class LocalStorageService {
     if (_database != null) {
       return _database;
     }
-    _database = await init();
+    _database = await _init();
 
     return _database;
   }
 
-  Future<Database> init() async {
+  Future<Database> _init() async {
     Directory directory = await getApplicationDocumentsDirectory();
     String dbPath = join(directory.path, 'database.db');
     var database = openDatabase(dbPath,
-        version: 1, onCreate: _onCreate, onUpgrade: _onUpgrade);
+        version: 1,
+        onConfigure: _onConfigure,
+        onCreate: _onCreate,
+        onUpgrade: _onUpgrade);
     return database;
   }
 
@@ -53,6 +57,7 @@ class LocalStorageService {
     }
   }
 
+  // TODO creare repository Event
   Future<int> insertEvent(Event event) async {
     // Get a reference to the database.
     var client = await db;
@@ -92,4 +97,10 @@ class LocalStorageService {
     });
   }
 
+  FutureOr<void> _onConfigure(Database db) async {
+    var env = await sharedPreferenceService.environment;
+    if (env == 'develop') {
+      db.delete('events');
+    }
+  }
 }
