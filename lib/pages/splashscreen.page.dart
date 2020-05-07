@@ -1,8 +1,5 @@
 import 'package:calendaroo/colors.dart';
-import 'package:calendaroo/redux/actions/app-status.actions.dart';
-import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
-import 'package:calendaroo/services/calendar.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -25,7 +22,7 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var store = StoreProvider.of<AppState>(context);
 //      store.dispatch(LoadedEventsList(eventsList));
-      store.dispatch(StartApplication(context));
+//      store.dispatch(StartApplication(context));
     });
   }
 

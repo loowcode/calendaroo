@@ -61,20 +61,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _changeFragment(int index) {
-    switch (index) {
-      case 0:
-        return NewEventWidget();
-      case 1:
-        return CalendarWidget();
-      case 2:
-        return Text('ciao');
-      case 3:
-        return Text('ciao');
-    }
-    return Text('ciao');
-  }
-
   ThemeData _changeTheme(index) {
     if (index==1){
       return AppTheme.secondaryTheme;

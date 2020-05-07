@@ -1,7 +1,6 @@
 import 'package:calendaroo/model/event.dart';
 import 'package:calendaroo/model/mocks/eventsList.mock.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
-import 'package:intl/intl.dart';
 
 class CalendarService {
   Future<List<Event>> eventsList() async {
