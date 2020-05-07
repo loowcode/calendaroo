@@ -22,25 +22,29 @@ class _NewEventWidgetState extends State<NewEventWidget> {
   String _title;
   String _description;
   DateTime _startDate;
-  DateTime _finishDate;
+  DateTime _endDate;
   DateTime _startTime;
-  DateTime _finishTime;
-
+  DateTime _endTime;
 
   @override
   void initState() {
     super.initState();
-    _startDate = DateTime.now();
-    _startTime = DateTime.now();
-    _finishDate = DateTime.now().add(Duration(days: 1));
-    _finishTime = DateTime.now().add(Duration(hours: 1));
+    _title = "";
+    _description = "";
+    final now = DateTime.now();
+    _startDate = now;
+    _startTime = now;
+    _endDate = now.add(Duration(days: 1));
+    _endTime = now.add(Duration(hours: 1));
   }
 
   // TODO grafica e translate
   @override
   Widget build(BuildContext context) {
-    var _formatterDate = new DateFormat.yMMMMd(AppLocalizations.of(context).locale.toString()); // TODO locale
-    var _formatterTime = new DateFormat.Hm(AppLocalizations.of(context).locale.toString()); // TODO locale
+    var _formatterDate = new DateFormat.yMMMMd(
+        AppLocalizations.of(context).locale.toString()); // TODO locale
+    var _formatterTime = new DateFormat.Hm(
+        AppLocalizations.of(context).locale.toString()); // TODO locale
     return StoreConnector<AppState, NewEventViewModel>(
         converter: (store) => NewEventViewModel.fromStore(store),
         builder: (context, store) {
@@ -50,7 +54,9 @@ class _NewEventWidgetState extends State<NewEventWidget> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 8,),
+                  SizedBox(
+                    height: 8,
+                  ),
                   Expanded(
                     child: ListView(
                       children: <Widget>[
@@ -59,15 +65,27 @@ class _NewEventWidgetState extends State<NewEventWidget> {
                             style: Theme.of(context).textTheme.headline),
                         buildTitle(),
                         Padding(
-                          padding: const EdgeInsets.only(top:8.0, ),
-                          child: Text('Inizio Evento', style: Theme.of(context).textTheme.subtitle,),
+                          padding: const EdgeInsets.only(
+                            top: 8.0,
+                          ),
+                          child: Text(
+                            'Inizio Evento',
+                            style: Theme.of(context).textTheme.subtitle,
+                          ),
                         ),
-                        buildTime(context, _formatterDate, _formatterTime),        Padding(
-                          padding: const EdgeInsets.only(top:8.0,),
-                          child: Text('Fine Evento', style: Theme.of(context).textTheme.subtitle,),
+                        buildTime(
+                            true, context, _formatterDate, _formatterTime),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 8.0,
+                          ),
+                          child: Text(
+                            'Fine Evento',
+                            style: Theme.of(context).textTheme.subtitle,
+                          ),
                         ),
-                        buildTime(context, _formatterDate, _formatterTime),
-
+                        buildTime(
+                            false, context, _formatterDate, _formatterTime),
                       ],
                     ),
                   ),
@@ -76,11 +94,19 @@ class _NewEventWidgetState extends State<NewEventWidget> {
                         top: 8, bottom: 8, left: 32, right: 32),
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                       color: secondaryBlue,
                       onPressed: () {
-                        store.createEvent(_buildEvent());
+                        // Validate returns true if the form is valid, otherwise false.
+                        if (_formKey.currentState.validate()) {
+                          // If the form is valid, display a snackbar. In the real world,
+                          // you'd often call a server or save the information in a database.
+                          print('valido');
+                          store.createEvent(_buildEvent());
+                          Scaffold.of(context).showSnackBar(
+                              SnackBar(content: Text('Processing Data')));
+                        }
                       },
                       child: SizedBox(
                         height: 50,
@@ -101,7 +127,8 @@ class _NewEventWidgetState extends State<NewEventWidget> {
         });
   }
 
-  Row buildTime(BuildContext context, DateFormat _formatterDate, DateFormat _formatterTime) {
+  Row buildTime(bool start, BuildContext context, DateFormat _formatterDate,
+      DateFormat _formatterTime) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
@@ -115,15 +142,24 @@ class _NewEventWidgetState extends State<NewEventWidget> {
               label: InkWell(
                   onTap: () => CupertinoRoundedDatePicker.show(
                         context,
-                        minimumYear: 1700,
+//                        minimumYear: 1700,
+                        initialDate: start ? _startDate : _endDate,
+                        minimumYear: start ? 1700 : _startDate.year,
                         maximumYear: 3000,
+                        minimumDate: start
+                            ? DateTime.now().subtract(Duration(days: 7))
+                            : _startDate,
                         textColor: primaryWhite,
                         background: secondaryBlue,
                         borderRadius: 16,
                         initialDatePickerMode: CupertinoDatePickerMode.date,
                         onDateTimeChanged: (newDate) {
                           setState(() {
-                            _startDate = newDate;
+                            if (start) {
+                              _startDate = newDate;
+                            } else {
+                              _endDate = newDate;
+                            }
                           });
                         },
                       ),
@@ -135,7 +171,9 @@ class _NewEventWidgetState extends State<NewEventWidget> {
             ),
           ],
         ),
-        SizedBox(width: 8,),
+        SizedBox(
+          width: 8,
+        ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -145,15 +183,23 @@ class _NewEventWidgetState extends State<NewEventWidget> {
               label: InkWell(
                   onTap: () => CupertinoRoundedDatePicker.show(
                         context,
+                        initialDate: start ? _startTime : _endTime,
                         minimumYear: 1700,
                         maximumYear: 3000,
+                        minimumDate: start
+                            ? DateTime.now().subtract(Duration(days: 7))
+                            : DateTime.now().subtract(Duration(days: 7)),
                         textColor: primaryWhite,
                         background: secondaryBlue,
                         borderRadius: 16,
                         initialDatePickerMode: CupertinoDatePickerMode.time,
                         onDateTimeChanged: (newDate) {
                           setState(() {
-                            _startTime = newDate;
+                            if (start) {
+                              _startTime = newDate;
+                            } else {
+                              _endTime = newDate;
+                            }
                           });
                         },
                       ),
@@ -173,15 +219,18 @@ class _NewEventWidgetState extends State<NewEventWidget> {
     return Column(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(top:16, bottom: 16),
+          padding: EdgeInsets.only(top: 16, bottom: 16),
           margin: EdgeInsets.only(top: 16),
           decoration: BoxDecoration(
               color: backgroundForm,
               borderRadius: BorderRadius.only(topRight: Radius.circular(16))),
           child: ListTile(
-            leading: Icon(Icons.title, color: secondaryDarkBlue,),
+            leading: Icon(
+              Icons.title,
+              color: secondaryDarkBlue,
+            ),
             title: TextFormField(
-              style: TextStyle(fontSize: 24),
+              style: TextStyle(fontSize: 20),
               decoration: new InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: secondaryDarkBlue),
@@ -198,12 +247,23 @@ class _NewEventWidgetState extends State<NewEventWidget> {
                   contentPadding:
                       EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
                   hintText: 'Titolo'),
+              validator: (value) {
+                if (value != null && value.length > 0) {
+                  return null;
+                }
+                return 'Inserisci un titolo';
+              },
+              onSaved: (value) {
+                setState(() {
+                  _title = value;
+                });
+              },
             ),
           ),
         ),
         Container(
-          padding: EdgeInsets.only(top:16, bottom: 16),
-          margin: EdgeInsets.only(top:8, bottom: 16),
+          padding: EdgeInsets.only(top: 16, bottom: 16),
+          margin: EdgeInsets.only(top: 8, bottom: 16),
           decoration: BoxDecoration(
               color: backgroundForm,
               borderRadius: BorderRadius.only(
@@ -211,7 +271,10 @@ class _NewEventWidgetState extends State<NewEventWidget> {
                   bottomRight: Radius.circular(16))),
           child: Container(
             child: ListTile(
-              leading: Icon(Icons.subject, color: accentYellowText,),
+              leading: Icon(
+                Icons.subject,
+                color: accentYellowText,
+              ),
               title: TextFormField(
                 decoration: new InputDecoration(
                     focusedBorder: UnderlineInputBorder(
@@ -229,6 +292,11 @@ class _NewEventWidgetState extends State<NewEventWidget> {
                     contentPadding: EdgeInsets.only(
                         left: 15, bottom: 11, top: 11, right: 15),
                     hintText: 'Descrizione'),
+                onSaved: (value) {
+                  setState(() {
+                    _description = value;
+                  });
+                },
               ),
             ),
           ),
@@ -239,11 +307,14 @@ class _NewEventWidgetState extends State<NewEventWidget> {
 
   Event _buildEvent() {
     var uuid = Uuid();
+    print(_startTime);
     return Event(
         id: null,
         title: _title,
         description: _description,
-        start: _startDate, // TODO aggiungere orario
-        finish: _finishDate);
+        start: DateTime(_startDate.year, _startDate.month, _startDate.day,
+            _startTime.hour, _startTime.minute),
+        end: DateTime(_endDate.year, _endDate.month, _endDate.day,
+            _endTime.hour, _endTime.minute));
   }
 }

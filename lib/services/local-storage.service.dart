@@ -44,7 +44,7 @@ class LocalStorageService {
       title TEXT,
       description TEXT,
       start TEXT,
-      finish TEXT
+      end TEXT
       )
   ''');
     print("Database was created!");
@@ -92,7 +92,7 @@ class LocalStorageService {
         title: maps[i]['title'],
         description: maps[i]['description'],
         start: DateTime.parse(maps[i]['start']),
-        finish: DateTime.parse(maps[i]['finish']),
+        end: DateTime.parse(maps[i]['end']),
       );
     });
   }
@@ -101,6 +101,7 @@ class LocalStorageService {
     var env = await sharedPreferenceService.environment;
     if (env == 'develop') {
       db.delete('events');
+      print('DB deleted');
     }
   }
 }

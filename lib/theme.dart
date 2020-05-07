@@ -36,7 +36,7 @@ class AppTheme {
         .copyWith(
           headline: base.headline.copyWith(
             fontSize: 32,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
           ),
           title: base.title.copyWith(
             fontSize: 24.0,
@@ -45,7 +45,7 @@ class AppTheme {
           subtitle: base.subtitle.copyWith(
             fontSize: 20.0,
             fontWeight: FontWeight.w600,
-            color: secondaryGrey
+            color: secondaryDarkGrey
           ),
           body1: base.body1.copyWith(
             fontSize: 20.0,
@@ -58,11 +58,11 @@ class AppTheme {
             color: primaryWhite,
           ),
           caption: base.caption.copyWith(
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.normal,
             fontSize: 24.0,
           ),
           button: base.button.copyWith(
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.bold,
             fontSize: 24.0,
             color: primaryWhite
           ),

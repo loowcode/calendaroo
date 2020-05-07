@@ -52,10 +52,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
           ],
           currentIndex: _indexFragmentSelected,
-          unselectedItemColor: secondaryLightGrey,
+          unselectedItemColor: secondaryGrey,
           selectedItemColor: secondaryDarkBlue,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
         ),
       ),
     );

@@ -28,9 +28,7 @@ dependencies:
   flutter_rounded_date_picker: ^1.0.4
   uuid: 2.0.4
   intl: ^0.16.0
-
-
-
+  flutter_launcher_icons: ^0.7.5
   sqflite: ^1.3.0
   path_provider: ^0.5.0+1
 
@@ -59,8 +57,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - lang/en.json
-    - lang/it.json
+    - assets/langs/
+    - assets/images/
+    - assets/fonts/
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
@@ -78,11 +77,19 @@ flutter:
   fonts:
     - family: SourceSansPro
       fonts:
-        - asset: fonts/SourceSansPro-Regular.ttf
-        - asset: fonts/SourceSansPro-Italic.ttf
+        - asset: assets/fonts/SourceSansPro-Light.ttf
+          weight: 300
+        - asset: assets/fonts/SourceSansPro-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/SourceSansPro-Italic.ttf
           style: italic
-        - asset: fonts/SourceSansPro-Bold.ttf
+          weight: 400
+        - asset: assets/fonts/SourceSansPro-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/SourceSansPro-Bold.ttf
           weight: 700
+        - asset: assets/fonts/SourceSansPro-Black.ttf
+          weight: 900
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

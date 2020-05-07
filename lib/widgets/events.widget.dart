@@ -21,7 +21,7 @@ class _EventsWidgetState extends State<EventsWidget> {
             child: Container(
               alignment: Alignment.topCenter,
               decoration: BoxDecoration(
-                  color: secondaryLightGrey, borderRadius: BorderRadius.circular(8)),
+                  color: primaryTransparentWhite, borderRadius: BorderRadius.circular(8)),
             ),
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/redux/actions/app-status.actions.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
@@ -16,6 +17,7 @@ class SplashscreenPage extends StatefulWidget {
   _SplashscreenPageState createState() => _SplashscreenPageState();
 }
 
+//TODO fare una vera splashscreen 
 class _SplashscreenPageState extends State<SplashscreenPage> {
   @override
   void initState() {
@@ -33,7 +35,8 @@ class _SplashscreenPageState extends State<SplashscreenPage> {
         converter: (store) => store.state,
         builder: (context, _) {
           return Scaffold(
-            body: Text('splashscreen'),
+            backgroundColor: secondaryDarkGrey,
+            body: Center(child: Image(image: AssetImage('assets/images/calendaroo_icon.png')))
           );
         });
   }

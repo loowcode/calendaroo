@@ -5,7 +5,7 @@ class Event {
   String title;
   String description;
   DateTime start;
-  DateTime finish;
+  DateTime end;
 // TODO ...
 
   Event(
@@ -13,7 +13,7 @@ class Event {
       @required this.title,
       this.description,
       this.start,
-      this.finish});
+      this.end});
 
 
   Map<String, dynamic> toMap() {
@@ -22,7 +22,7 @@ class Event {
     map['title'] = title;
     map['description'] = description;
     map['start'] = start.toIso8601String();
-    map['finish'] = finish.toIso8601String();
+    map['end'] = end.toIso8601String();
     return map;
   }
 

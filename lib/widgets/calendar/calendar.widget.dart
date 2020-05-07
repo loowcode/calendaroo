@@ -2,7 +2,7 @@ import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/calendar.service.dart';
 import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
-import 'package:calendaroo/widgets/upcoming-events.widget.dart';
+import 'package:calendaroo/widgets/upcoming-events/upcoming-events.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -145,7 +145,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
       holidays: holidays,
       initialCalendarFormat: CalendarFormat.month,
       formatAnimation: FormatAnimation.scale,
-//      startingDayOfWeek: StartingDayOfWeek.monday,
+      startingDayOfWeek: StartingDayOfWeek.monday,
       availableGestures: AvailableGestures.all,
       availableCalendarFormats: const {
         CalendarFormat.month: 'Month',
@@ -154,20 +154,20 @@ class _CalendarWidgetState extends State<CalendarWidget>
       locale: locale.toString(),
       calendarStyle: CalendarStyle(
           outsideDaysVisible: true,
-          outsideHolidayStyle: TextStyle().copyWith(color: secondaryLightGrey),
-          outsideWeekendStyle: TextStyle().copyWith(color: secondaryLightGrey),
-          outsideStyle: TextStyle().copyWith(color: secondaryLightGrey),
-          weekendStyle: TextStyle().copyWith(color: accentYellow),
-          holidayStyle: TextStyle().copyWith(color: accentYellow),
+          outsideHolidayStyle: TextStyle().copyWith(color: primaryTransparentWhite),
+          outsideWeekendStyle: TextStyle().copyWith(color: primaryTransparentWhite),
+          outsideStyle: TextStyle().copyWith(color: primaryTransparentWhite),
+          weekendStyle: TextStyle().copyWith(color: primaryWhite),
+          holidayStyle: TextStyle().copyWith(color: primaryWhite),
           weekdayStyle: TextStyle().copyWith(color: primaryWhite)),
       daysOfWeekStyle: DaysOfWeekStyle(
-          weekendStyle: TextStyle().copyWith(color: accentYellow),
+          weekendStyle: TextStyle().copyWith(color: primaryWhite),
           weekdayStyle: TextStyle().copyWith(color: primaryWhite)),
       headerStyle: HeaderStyle(
           leftChevronIcon: Icon(Icons.chevron_left, color: primaryWhite),
           rightChevronIcon: Icon(Icons.chevron_right, color: primaryWhite),
           centerHeaderTitle: true,
-          formatButtonVisible: true,
+          formatButtonVisible: false,
           formatButtonTextStyle: TextStyle().copyWith(color: secondaryDarkGrey),
           titleTextStyle: TextStyle().copyWith(
               color: primaryWhite, fontSize: 28, fontWeight: FontWeight.bold)),
@@ -197,7 +197,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
             padding: const EdgeInsets.all(8.0),
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8), color: secondaryLightGrey),
+                  borderRadius: BorderRadius.circular(8), color: primaryTransparentWhite),
               child: Center(
                 child: Text(
                   '${date.day}',

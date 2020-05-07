@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 const primaryWhite = Colors.white;
 const backgroundWhite = const Color(0xFFf0f2f3);
+const primaryTransparentWhite = const Color(0xaaFFFFFF);
 const secondaryLightGrey = const Color(0xFFbfbfbf);
 const secondaryGrey = const Color(0xFF808080);
 const secondaryDarkGrey = const Color(0xFF303436);
