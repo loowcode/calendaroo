@@ -25,3 +25,9 @@ class OpenEvent {
 
   OpenEvent(this.event);
 }
+
+class EditEvent {
+  final Event event;
+
+  EditEvent(this.event);
+}

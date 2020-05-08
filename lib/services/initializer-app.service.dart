@@ -5,10 +5,15 @@ import 'package:redux/redux.dart';
 import 'local-storage.service.dart';
 
 class InitializerAppService {
-  preLoadingData(Store<AppState> store) async {
+  static final InitializerAppService _instance = InitializerAppService._();
+  InitializerAppService._();
+
+  factory InitializerAppService() {
+    return _instance;
+  }
+
+  preLoadingData() async {
     var eventsList = await LocalStorageService().events();
-    store.dispatch(LoadedEventsList(eventsList));
+    calendarooState.dispatch(LoadedEventsList(eventsList));
   }
 }
-
-InitializerAppService initializerAppService = InitializerAppService();

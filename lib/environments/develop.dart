@@ -7,23 +7,18 @@ import 'package:calendaroo/services/initializer-app.service.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
+
+import 'environment.dart';
 
 void main() async {
   await setUp();
-  var store = createStore();
-  initializerAppService.preLoadingData(store);
-  runApp(MyApp(store: store));
+  runApp(MyApp());
 }
 
 Future<void> setUp() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await sharedPreferenceService.getSharedPreferencesInstance();
-  await sharedPreferenceService.setString('environment', 'develop');
+  await SharedPreferenceService().getSharedPreferencesInstance();
+  Environment().environment = 'develop';
+  InitializerAppService().preLoadingData();
 }
 
-Store<AppState> createStore() {
-  return Store(appReducer,
-      initialState: AppState.initial(),
-      middleware: [AppMiddleware(), CalendarMiddleware()]);
-}

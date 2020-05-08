@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:calendaroo/environments/environment.dart';
 import 'package:calendaroo/model/event.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:path/path.dart';
@@ -98,7 +99,7 @@ class LocalStorageService {
   }
 
   FutureOr<void> _onConfigure(Database db) async {
-    var env = await sharedPreferenceService.environment;
+    var env = Environment().environment;
     if (env == 'develop') {
       db.delete('events');
       print('DB deleted');

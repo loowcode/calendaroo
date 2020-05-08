@@ -9,9 +9,6 @@ import 'package:calendaroo/redux/middlewares/app.middlewares.dart';
 import 'package:calendaroo/redux/middlewares/calendar.middlewares.dart';
 import 'package:calendaroo/redux/reducers/app.reducer.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
-import 'package:calendaroo/services/initializer-app.service.dart';
-import 'package:calendaroo/services/shared-preferences.service.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:redux/redux.dart';
 
@@ -24,9 +21,7 @@ void main() {
 //    initializerAppService.preLoadingData(store);
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp(
-      store: store,
-    ));
+    await tester.pumpWidget(MyApp());
 
     expect(find.text('April 2020'), findsNothing);
 
@@ -42,11 +37,6 @@ void main() {
 //    expect(find.text('0'), findsNothing);
 //    expect(find.text('1'), findsOneWidget);
   });
-}
-
-Future<void> setUpEnv() async {
-  await sharedPreferenceService.getSharedPreferencesInstance();
-  await sharedPreferenceService.setString('environment', 'develop');
 }
 
 Store<AppState> createStore() {

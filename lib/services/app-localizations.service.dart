@@ -20,7 +20,7 @@ class AppLocalizations {
   Future<bool> load() async {
     // Load the language JSON file from the "lang" folder
     String jsonString =
-    await rootBundle.loadString('assets/langs/${locale.languageCode}.json');
+        await rootBundle.loadString('assets/langs/${locale.languageCode}.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
 
     _localizedStrings = jsonMap.map((key, value) {
@@ -30,13 +30,18 @@ class AppLocalizations {
     return true;
   }
 
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
+
   // This method will be called from every widget which needs a localized text
   String translate(String key) {
     return _localizedStrings[key];
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-  _AppLocalizationsDelegate();
+  String get newEventTitle => _localizedStrings['new-event-title'];
+
+  String get newEvent => _localizedStrings['new-event'];
+
 }
 
 class _AppLocalizationsDelegate

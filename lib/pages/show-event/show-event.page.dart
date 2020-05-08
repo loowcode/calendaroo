@@ -1,5 +1,6 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/event.dart';
+import 'package:calendaroo/pages/show-event/show-event.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/widgets/new-event/new-event.viewmodel.dart';
@@ -11,12 +12,12 @@ import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 
-class NewEventWidget extends StatefulWidget {
+class ShowEventPage extends StatefulWidget {
   @override
-  _NewEventWidgetState createState() => _NewEventWidgetState();
+  _ShowEventPageState createState() => _ShowEventPageState();
 }
 
-class _NewEventWidgetState extends State<NewEventWidget> {
+class _ShowEventPageState extends State<ShowEventPage> {
   final _formKey = GlobalKey<FormState>();
 
   String _title;
@@ -26,106 +27,81 @@ class _NewEventWidgetState extends State<NewEventWidget> {
   DateTime _startTime;
   DateTime _endTime;
 
+  var _titleController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
-    _title = "";
-    _description = "";
+    _title = calendarooState.state.calendarState.showEvent.title;
+    _titleController.text = _title;
+    _description = calendarooState.state.calendarState.showEvent.description;
     final now = DateTime.now();
     _startDate = now;
     _startTime = now;
     _endDate = now.add(Duration(days: 1));
     _endTime = now.add(Duration(hours: 1));
+
   }
 
   // TODO grafica e translate
   @override
   Widget build(BuildContext context) {
+    Event event = ModalRoute.of(context).settings.arguments;
     var _formatterDate = new DateFormat.yMMMMd(
         AppLocalizations.of(context).locale.toString()); // TODO locale
     var _formatterTime = new DateFormat.Hm(
         AppLocalizations.of(context).locale.toString()); // TODO locale
-    return StoreConnector<AppState, NewEventViewModel>(
-        converter: (store) => NewEventViewModel.fromStore(store),
-        builder: (context, store) {
-          return Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Expanded(
-                    child: ListView(
-                      children: <Widget>[
-                        Text(AppLocalizations.of(context).newEventTitle,
-                            textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.display1),
-                        buildTitle(),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8.0,
-                          ),
-                          child: Text(
-                            'Inizio Evento',
-                            style: Theme.of(context).textTheme.subtitle,
-                          ),
-                        ),
-                        buildTime(
-                            true, context, _formatterDate, _formatterTime),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8.0,
-                          ),
-                          child: Text(
-                            'Fine Evento',
-                            style: Theme.of(context).textTheme.subtitle,
-                          ),
-                        ),
-                        buildTime(
-                            false, context, _formatterDate, _formatterTime),
-                      ],
+    return Scaffold(
+      body: StoreConnector<AppState, ShowEventViewModel>(
+          converter: (store) => ShowEventViewModel.fromStore(store),
+          builder: (context, store) {
+            return Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 8,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8, bottom: 8, left: 32, right: 32),
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      color: secondaryBlue,
-                      onPressed: () {
-                        // Validate returns true if the form is valid, otherwise false.
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
-                          // If the form is valid, display a snackbar. In the real world,
-                          // you'd often call a server or save the information in a database.
-                          print('valido');
-                          store.createEvent(_buildEvent());
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text('Processing Data')));
-                        }
-                      },
-                      child: SizedBox(
-                        height: 50,
-                        width: 300,
-                        child: Center(
-                          child: Text(
-                            'Crea Evento',
-                            style: Theme.of(context).textTheme.button,
+                    Expanded(
+                      child: ListView(
+                        children: <Widget>[
+                          Text('Evento',
+                              textAlign: TextAlign.left,
+                              style: Theme.of(context).textTheme.display1),
+                          buildTitle(event),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 8.0,
+                            ),
+                            child: Text(
+                              'Inizio Evento',
+                              style: Theme.of(context).textTheme.subtitle,
+                            ),
                           ),
-                        ),
+                          buildTime(
+                              true, context, _formatterDate, _formatterTime),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 8.0,
+                            ),
+                            child: Text(
+                              'Fine Evento',
+                              style: Theme.of(context).textTheme.subtitle,
+                            ),
+                          ),
+                          buildTime(
+                              false, context, _formatterDate, _formatterTime),
+                        ],
                       ),
                     ),
-                  )
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 
   Row buildTime(bool start, BuildContext context, DateFormat _formatterDate,
@@ -141,9 +117,8 @@ class _NewEventWidgetState extends State<NewEventWidget> {
             initialDate: start ? _startDate : _endDate,
             minimumYear: start ? 1700 : _startDate.year,
             maximumYear: 3000,
-            minimumDate: start
-                ? DateTime.now().subtract(Duration(days: 7))
-                : _startDate,
+            minimumDate:
+                start ? DateTime.now().subtract(Duration(days: 7)) : _startDate,
             textColor: primaryWhite,
             background: secondaryBlue,
             borderRadius: 16,
@@ -206,7 +181,7 @@ class _NewEventWidgetState extends State<NewEventWidget> {
     );
   }
 
-  Column buildTitle() {
+  Column buildTitle(Event event) {
     return Column(
       children: <Widget>[
         Container(
@@ -221,6 +196,8 @@ class _NewEventWidgetState extends State<NewEventWidget> {
               color: secondaryDarkBlue,
             ),
             title: TextFormField(
+              enabled: false,
+              initialValue: event.title,
               decoration: new InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: secondaryDarkBlue),
@@ -266,6 +243,7 @@ class _NewEventWidgetState extends State<NewEventWidget> {
                 color: accentYellowText,
               ),
               title: TextFormField(
+                enabled: false,
                 decoration: new InputDecoration(
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: secondaryDarkBlue),

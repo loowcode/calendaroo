@@ -1,6 +1,9 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService {
+  SharedPreferenceService._();
+  static final SharedPreferenceService _instance = SharedPreferenceService._();
+
   SharedPreferences _prefs;
 
   Future<bool> getSharedPreferencesInstance() async {
@@ -28,6 +31,9 @@ class SharedPreferenceService {
   }
 
   Future<String> get environment async => _prefs.getString('environment');
+
+  factory SharedPreferenceService() {
+    return _instance;
+  }
 }
 
-SharedPreferenceService sharedPreferenceService = SharedPreferenceService();

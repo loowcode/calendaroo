@@ -1,4 +1,5 @@
 import 'package:calendaroo/colors.dart';
+import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:calendaroo/widgets/calendar/calendar.widget.dart';
 import 'package:calendaroo/widgets/new-event/new-event.widget.dart';

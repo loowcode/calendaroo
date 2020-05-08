@@ -4,5 +4,7 @@
   "todo": "Todo",
   "profile": "Profile",
   "upcoming-events": "Upcoming",
+  "new-event": "New Event",
+  "new-event-title": "Create New Event",
   "start": "start"
 }

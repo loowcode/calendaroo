@@ -39,7 +39,8 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
         });
   }
 
-  List<Container> _buildAgenda(UpcomingEventsViewModel store, List<Event> events) {
+  List<Container> _buildAgenda(
+      UpcomingEventsViewModel store, List<Event> events) {
     Map<DateTime, List<Event>> mapEvent = calendarService.toMap(events);
     List<Container> widgets = [];
     if (events == null || events.isEmpty) {
@@ -75,10 +76,12 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
           formatter.format(date),
           style: Theme.of(context).textTheme.headline,
         )))
-        ..addAll(events
+        ..addAll(list
             .map((elem) => Container(
                   child: GestureDetector(
-                    onTap: (){store.openEvent(elem);},
+                    onTap: () {
+                      store.openEvent(elem);
+                    },
                     child: Card(
                       child: Row(
                         children: <Widget>[
@@ -97,7 +100,14 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
                                 elem.title,
                                 style: Theme.of(context).textTheme.body1,
                               ),
-                              trailing: Icon(Icons.more_vert, color: primaryWhite,),
+                              trailing: GestureDetector(
+                                  onTap: () {
+                                    print("more");
+                                  },
+                                  child: Icon(
+                                    Icons.more_vert,
+                                    color: primaryWhite,
+                                  )),
                             ),
                           ),
                         ],
