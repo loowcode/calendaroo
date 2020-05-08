@@ -62,7 +62,7 @@ class _NewEventWidgetState extends State<NewEventWidget> {
                       children: <Widget>[
                         Text('Crea Nuovo Evento',
                             textAlign: TextAlign.left,
-                            style: Theme.of(context).textTheme.headline),
+                            style: Theme.of(context).textTheme.display1),
                         buildTitle(),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -100,6 +100,7 @@ class _NewEventWidgetState extends State<NewEventWidget> {
                       onPressed: () {
                         // Validate returns true if the form is valid, otherwise false.
                         if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
                           // If the form is valid, display a snackbar. In the real world,
                           // you'd often call a server or save the information in a database.
                           print('valido');
@@ -133,83 +134,73 @@ class _NewEventWidgetState extends State<NewEventWidget> {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-//            Text('Data', textAlign: TextAlign.left, style: Theme.of(context).textTheme.subtitle),
-            Chip(
-              backgroundColor: backgroundForm,
-              label: InkWell(
-                  onTap: () => CupertinoRoundedDatePicker.show(
-                        context,
+        GestureDetector(
+          onTap: () => CupertinoRoundedDatePicker.show(
+            context,
 //                        minimumYear: 1700,
-                        initialDate: start ? _startDate : _endDate,
-                        minimumYear: start ? 1700 : _startDate.year,
-                        maximumYear: 3000,
-                        minimumDate: start
-                            ? DateTime.now().subtract(Duration(days: 7))
-                            : _startDate,
-                        textColor: primaryWhite,
-                        background: secondaryBlue,
-                        borderRadius: 16,
-                        initialDatePickerMode: CupertinoDatePickerMode.date,
-                        onDateTimeChanged: (newDate) {
-                          setState(() {
-                            if (start) {
-                              _startDate = newDate;
-                            } else {
-                              _endDate = newDate;
-                            }
-                          });
-                        },
-                      ),
-                  child: Text(_formatterDate.format(_startDate))),
-              avatar: Icon(
-                Icons.date_range,
-                color: secondaryBlue,
-              ),
+            initialDate: start ? _startDate : _endDate,
+            minimumYear: start ? 1700 : _startDate.year,
+            maximumYear: 3000,
+            minimumDate: start
+                ? DateTime.now().subtract(Duration(days: 7))
+                : _startDate,
+            textColor: primaryWhite,
+            background: secondaryBlue,
+            borderRadius: 16,
+            initialDatePickerMode: CupertinoDatePickerMode.date,
+            onDateTimeChanged: (newDate) {
+              setState(() {
+                if (start) {
+                  _startDate = newDate;
+                } else {
+                  _endDate = newDate;
+                }
+              });
+            },
+          ),
+          child: Chip(
+            backgroundColor: backgroundForm,
+            label: Text(_formatterDate.format(_startDate)),
+            avatar: Icon(
+              Icons.date_range,
+              color: secondaryBlue,
             ),
-          ],
+          ),
         ),
         SizedBox(
           width: 8,
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-//            Text('Time', textAlign: TextAlign.left, style: Theme.of(context).textTheme.subtitle),
-            Chip(
-              backgroundColor: backgroundForm,
-              label: InkWell(
-                  onTap: () => CupertinoRoundedDatePicker.show(
-                        context,
-                        initialDate: start ? _startTime : _endTime,
-                        minimumYear: 1700,
-                        maximumYear: 3000,
-                        minimumDate: start
-                            ? DateTime.now().subtract(Duration(days: 7))
-                            : DateTime.now().subtract(Duration(days: 7)),
-                        textColor: primaryWhite,
-                        background: secondaryBlue,
-                        borderRadius: 16,
-                        initialDatePickerMode: CupertinoDatePickerMode.time,
-                        onDateTimeChanged: (newDate) {
-                          setState(() {
-                            if (start) {
-                              _startTime = newDate;
-                            } else {
-                              _endTime = newDate;
-                            }
-                          });
-                        },
-                      ),
-                  child: Text(_formatterTime.format(_startTime))),
-              avatar: Icon(
-                Icons.access_time,
-                color: accentPink,
-              ),
+        GestureDetector(
+          onTap: () => CupertinoRoundedDatePicker.show(
+            context,
+            initialDate: start ? _startTime : _endTime,
+            minimumYear: 1700,
+            maximumYear: 3000,
+            minimumDate: start
+                ? DateTime.now().subtract(Duration(days: 7))
+                : DateTime.now().subtract(Duration(days: 7)),
+            textColor: primaryWhite,
+            background: secondaryBlue,
+            borderRadius: 16,
+            initialDatePickerMode: CupertinoDatePickerMode.time,
+            onDateTimeChanged: (newDate) {
+              setState(() {
+                if (start) {
+                  _startTime = newDate;
+                } else {
+                  _endTime = newDate;
+                }
+              });
+            },
+          ),
+          child: Chip(
+            backgroundColor: backgroundForm,
+            label: Text(_formatterTime.format(_startTime)),
+            avatar: Icon(
+              Icons.access_time,
+              color: accentPink,
             ),
-          ],
+          ),
         ),
       ],
     );
@@ -230,7 +221,6 @@ class _NewEventWidgetState extends State<NewEventWidget> {
               color: secondaryDarkBlue,
             ),
             title: TextFormField(
-              style: TextStyle(fontSize: 20),
               decoration: new InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: secondaryDarkBlue),

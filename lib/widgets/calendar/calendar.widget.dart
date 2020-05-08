@@ -127,7 +127,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
               children: <Widget>[
                 const SizedBox(height: 32.0),
                 _buildTableCalendarWithBuilders(store),
-                const SizedBox(height: 8.0),
+                Icon(Icons.arrow_drop_up, color: backgroundWhite,), // TODO
+                const SizedBox(height: 2.0),
                 UpcomingEventsWidget()
 //            Expanded(child: _buildEventList()),
               ],
@@ -154,8 +155,10 @@ class _CalendarWidgetState extends State<CalendarWidget>
       locale: locale.toString(),
       calendarStyle: CalendarStyle(
           outsideDaysVisible: true,
-          outsideHolidayStyle: TextStyle().copyWith(color: primaryTransparentWhite),
-          outsideWeekendStyle: TextStyle().copyWith(color: primaryTransparentWhite),
+          outsideHolidayStyle:
+              TextStyle().copyWith(color: primaryTransparentWhite),
+          outsideWeekendStyle:
+              TextStyle().copyWith(color: primaryTransparentWhite),
           outsideStyle: TextStyle().copyWith(color: primaryTransparentWhite),
           weekendStyle: TextStyle().copyWith(color: primaryWhite),
           holidayStyle: TextStyle().copyWith(color: primaryWhite),
@@ -164,13 +167,14 @@ class _CalendarWidgetState extends State<CalendarWidget>
           weekendStyle: TextStyle().copyWith(color: primaryWhite),
           weekdayStyle: TextStyle().copyWith(color: primaryWhite)),
       headerStyle: HeaderStyle(
-          leftChevronIcon: Icon(Icons.chevron_left, color: primaryWhite),
-          rightChevronIcon: Icon(Icons.chevron_right, color: primaryWhite),
-          centerHeaderTitle: true,
-          formatButtonVisible: false,
-          formatButtonTextStyle: TextStyle().copyWith(color: secondaryDarkGrey),
-          titleTextStyle: TextStyle().copyWith(
-              color: primaryWhite, fontSize: 28, fontWeight: FontWeight.bold)),
+        leftChevronIcon: Icon(Icons.chevron_left, color: primaryWhite),
+        rightChevronIcon: Icon(Icons.chevron_right, color: primaryWhite),
+        centerHeaderTitle: true,
+        formatButtonVisible: false,
+        formatButtonTextStyle: TextStyle().copyWith(color: secondaryDarkGrey),
+        titleTextStyle:
+            Theme.of(context).textTheme.headline.copyWith(color: primaryWhite),
+      ),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {
           return FadeTransition(
@@ -197,7 +201,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
             padding: const EdgeInsets.all(8.0),
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8), color: primaryTransparentWhite),
+                  borderRadius: BorderRadius.circular(8),
+                  color: primaryTransparentWhite),
               child: Center(
                 child: Text(
                   '${date.day}',
