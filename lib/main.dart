@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
         title: 'Calendaroo',
         supportedLocales: [
           Locale('en', 'EN'),
+          Locale('it', 'IT'),
         ],
         localizationsDelegates: [
           AppLocalizations.delegate,

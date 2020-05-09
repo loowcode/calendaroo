@@ -40,6 +40,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 title: Text('New Event')
             ),
             BottomNavigationBarItem(
+                icon: Icon(Icons.today),
+                title: Text('New Event')
+            ),
+            BottomNavigationBarItem(
                 icon: Icon(Icons.calendar_today),
                 title: Text('Calendar')
             ),

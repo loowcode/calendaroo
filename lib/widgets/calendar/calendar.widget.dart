@@ -127,7 +127,6 @@ class _CalendarWidgetState extends State<CalendarWidget>
               children: <Widget>[
                 const SizedBox(height: 32.0),
                 _buildTableCalendarWithBuilders(store),
-                Icon(Icons.arrow_drop_up, color: backgroundWhite,), // TODO
                 const SizedBox(height: 2.0),
                 UpcomingEventsWidget()
 //            Expanded(child: _buildEventList()),
@@ -146,11 +145,11 @@ class _CalendarWidgetState extends State<CalendarWidget>
       holidays: holidays,
       initialCalendarFormat: CalendarFormat.month,
       formatAnimation: FormatAnimation.scale,
-      startingDayOfWeek: StartingDayOfWeek.monday,
+//      startingDayOfWeek: StartingDayOfWeek.monday,
       availableGestures: AvailableGestures.all,
       availableCalendarFormats: const {
-        CalendarFormat.month: 'Month',
-        CalendarFormat.week: 'Week',
+        CalendarFormat.month: 'Espanso',
+        CalendarFormat.week: 'Compatto',
       },
       locale: locale.toString(),
       calendarStyle: CalendarStyle(
@@ -170,8 +169,9 @@ class _CalendarWidgetState extends State<CalendarWidget>
         leftChevronIcon: Icon(Icons.chevron_left, color: primaryWhite),
         rightChevronIcon: Icon(Icons.chevron_right, color: primaryWhite),
         centerHeaderTitle: true,
-        formatButtonVisible: false,
-        formatButtonTextStyle: TextStyle().copyWith(color: secondaryDarkGrey),
+        formatButtonVisible: true,
+        formatButtonDecoration: BoxDecoration(border: Border.all(color: transparent)),
+        formatButtonTextStyle: TextStyle().copyWith(color: primaryTransparentWhite),
         titleTextStyle:
             Theme.of(context).textTheme.headline.copyWith(color: primaryWhite),
       ),

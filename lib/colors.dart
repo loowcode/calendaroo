@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 
+const transparent = const Color(0x00FFFFFF);
 const primaryWhite = Colors.white;
 const backgroundWhite = const Color(0xFFf0f2f3);
 const primaryTransparentWhite = const Color(0xaaFFFFFF);

@@ -40,7 +40,6 @@ class _ShowEventPageState extends State<ShowEventPage> {
     _startTime = now;
     _endDate = now.add(Duration(days: 1));
     _endTime = now.add(Duration(hours: 1));
-
   }
 
   // TODO grafica e translate
@@ -80,8 +79,8 @@ class _ShowEventPageState extends State<ShowEventPage> {
                               style: Theme.of(context).textTheme.subtitle,
                             ),
                           ),
-                          buildTime(
-                              true, context, _formatterDate, _formatterTime),
+                          buildTime(true, context, _formatterDate,
+                              _formatterTime, event),
                           Padding(
                             padding: const EdgeInsets.only(
                               top: 8.0,
@@ -91,8 +90,8 @@ class _ShowEventPageState extends State<ShowEventPage> {
                               style: Theme.of(context).textTheme.subtitle,
                             ),
                           ),
-                          buildTime(
-                              false, context, _formatterDate, _formatterTime),
+                          buildTime(false, context, _formatterDate,
+                              _formatterTime, event),
                         ],
                       ),
                     ),
@@ -105,7 +104,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
   }
 
   Row buildTime(bool start, BuildContext context, DateFormat _formatterDate,
-      DateFormat _formatterTime) {
+      DateFormat _formatterTime, Event event) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
@@ -135,7 +134,9 @@ class _ShowEventPageState extends State<ShowEventPage> {
           ),
           child: Chip(
             backgroundColor: backgroundForm,
-            label: Text(_formatterDate.format(_startDate)),
+            label: Text(start
+                ? _formatterDate.format(event.start)
+                : _formatterDate.format(event.end)),
             avatar: Icon(
               Icons.date_range,
               color: secondaryBlue,
@@ -170,7 +171,9 @@ class _ShowEventPageState extends State<ShowEventPage> {
           ),
           child: Chip(
             backgroundColor: backgroundForm,
-            label: Text(_formatterTime.format(_startTime)),
+            label: Text(start
+                ? _formatterDate.format(event.start)
+                : _formatterDate.format(event.end)),
             avatar: Icon(
               Icons.access_time,
               color: accentPink,
@@ -243,6 +246,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
                 color: accentYellowText,
               ),
               title: TextFormField(
+                initialValue: event.description,
                 enabled: false,
                 decoration: new InputDecoration(
                     focusedBorder: UnderlineInputBorder(

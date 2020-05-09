@@ -141,9 +141,8 @@ class _NewEventWidgetState extends State<NewEventWidget> {
             initialDate: start ? _startDate : _endDate,
             minimumYear: start ? 1700 : _startDate.year,
             maximumYear: 3000,
-            minimumDate: start
-                ? DateTime.now().subtract(Duration(days: 7))
-                : _startDate,
+            minimumDate:
+                start ? DateTime.now().subtract(Duration(days: 7)) : _startDate,
             textColor: primaryWhite,
             background: secondaryBlue,
             borderRadius: 16,
@@ -222,21 +221,26 @@ class _NewEventWidgetState extends State<NewEventWidget> {
             ),
             title: TextFormField(
               decoration: new InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: secondaryDarkBlue),
-                  ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: secondaryDarkBlue),
-                  ),
-                  errorBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: secondaryDarkBlue),
-                  ),
-                  disabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: secondaryDarkBlue),
-                  ),
-                  contentPadding:
-                      EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                  hintText: 'Titolo'),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: secondaryDarkBlue),
+                ),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: secondaryDarkBlue),
+                ),
+                errorBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: secondaryDarkBlue),
+                ),
+                disabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: secondaryDarkBlue),
+                ),
+                contentPadding:
+                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                labelText: 'Titolo',
+                labelStyle: Theme.of(context)
+                    .textTheme
+                    .body1
+                    .copyWith(color: primaryBlack),
+              ),
               validator: (value) {
                 if (value != null && value.length > 0) {
                   return null;
@@ -267,21 +271,26 @@ class _NewEventWidgetState extends State<NewEventWidget> {
               ),
               title: TextFormField(
                 decoration: new InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: secondaryDarkBlue),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: secondaryDarkBlue),
-                    ),
-                    errorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: secondaryDarkBlue),
-                    ),
-                    disabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: secondaryDarkBlue),
-                    ),
-                    contentPadding: EdgeInsets.only(
-                        left: 15, bottom: 11, top: 11, right: 15),
-                    hintText: 'Descrizione'),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: secondaryDarkBlue),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: secondaryDarkBlue),
+                  ),
+                  errorBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: secondaryDarkBlue),
+                  ),
+                  disabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: secondaryDarkBlue),
+                  ),
+                  contentPadding:
+                      EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+                  labelText: 'Descrizione',
+                  labelStyle: Theme.of(context)
+                      .textTheme
+                      .body1
+                      .copyWith(color: primaryBlack),
+                ),
                 onSaved: (value) {
                   setState(() {
                     _description = value;
