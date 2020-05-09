@@ -3,6 +3,7 @@ import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/local-storage.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
+import 'package:calendaroo/widgets/calendar/calendar.widget.dart';
 import 'package:redux/redux.dart';
 
 class CalendarMiddleware extends MiddlewareClass<AppState> {
@@ -15,6 +16,10 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
 
     if (action is OpenEvent) {
       NavigationService().navigateTo(SHOW_EVENT, arguments: action.event);
+    }
+
+    if (action is SelectDay) {
+      calendarController.setSelectedDay(action.day);
     }
 
     next(action);

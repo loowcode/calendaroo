@@ -3,13 +3,16 @@ import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:redux/redux.dart';
 
-class NewEventViewModel {
+class AddEventViewModel {
+  final DateTime selectedDay;
+
   final Function(Event) createEvent;
 
-  NewEventViewModel({this.createEvent});
+  AddEventViewModel({this.selectedDay, this.createEvent});
 
-  static NewEventViewModel fromStore(Store<AppState> store) {
-    return NewEventViewModel(
+  static AddEventViewModel fromStore(Store<AppState> store) {
+    return AddEventViewModel(
+      selectedDay: store.state.calendarState.selectedDay,
       createEvent: (newEvent) => store.dispatch(new AddEvent(newEvent)),
     );
   }

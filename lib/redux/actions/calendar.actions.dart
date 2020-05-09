@@ -31,3 +31,9 @@ class EditEvent {
 
   EditEvent(this.event);
 }
+
+class SelectDay {
+  final DateTime day;
+
+  SelectDay(this.day);
+}

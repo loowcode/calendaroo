@@ -66,9 +66,9 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
     }
 
     var formatterTime =
-        DateFormat.Hm(AppLocalizations.of(context).locale.toString());
+        DateFormat.Hm(Localizations.localeOf(context).toString());
     var formatter =
-        DateFormat.MMMMEEEEd(AppLocalizations.of(context).locale.toString());
+        DateFormat.MMMMEEEEd(Localizations.localeOf(context).toString());
     mapEvent.forEach((date, list) {
       widgets
         ..add(Container(

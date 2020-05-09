@@ -3,7 +3,6 @@ import 'package:calendaroo/model/event.dart';
 import 'package:calendaroo/pages/show-event/show-event.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
-import 'package:calendaroo/widgets/new-event/new-event.viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -47,9 +46,9 @@ class _ShowEventPageState extends State<ShowEventPage> {
   Widget build(BuildContext context) {
     Event event = ModalRoute.of(context).settings.arguments;
     var _formatterDate = new DateFormat.yMMMMd(
-        AppLocalizations.of(context).locale.toString()); // TODO locale
+       Localizations.localeOf(context).toString()); // TODO locale
     var _formatterTime = new DateFormat.Hm(
-        AppLocalizations.of(context).locale.toString()); // TODO locale
+       Localizations.localeOf(context).toString()); // TODO locale
     return Scaffold(
       body: StoreConnector<AppState, ShowEventViewModel>(
           converter: (store) => ShowEventViewModel.fromStore(store),
