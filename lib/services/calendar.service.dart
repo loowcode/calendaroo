@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:calendaroo/environments/environment.dart';
 import 'package:calendaroo/model/event.dart';
 import 'package:calendaroo/model/mocks/eventsList.mock.dart';
@@ -13,7 +15,7 @@ class CalendarService {
   }
 
   Map<DateTime, List<Event>> toMap(List<Event> events) {
-    Map<DateTime, List<Event>> result = new Map();
+    SplayTreeMap<DateTime, List<Event>> result = new SplayTreeMap();
     events.forEach((Event elem) {
       var date = elem.start;
 //      var date = DateTime(elem.start.year, elem.start.month, elem.start.day);

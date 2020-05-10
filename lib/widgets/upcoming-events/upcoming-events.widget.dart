@@ -69,7 +69,8 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
         DateFormat.Hm(Localizations.localeOf(context).toString());
     var formatter =
         DateFormat.MMMMEEEEd(Localizations.localeOf(context).toString());
-    mapEvent.forEach((date, list) {
+    for(var date in mapEvent.keys) {
+      var list = mapEvent[date];
       widgets
         ..add(Container(
             child: Text(
@@ -116,7 +117,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
                   ),
                 ))
             .toList());
-    });
+    }
     return widgets;
   }
 }

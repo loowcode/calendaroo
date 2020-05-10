@@ -1,6 +1,7 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/calendar.service.dart';
+import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -49,6 +50,14 @@ class _CalendarWidgetState extends State<CalendarWidget>
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
     print('CALLBACK: _onVisibleDaysChanged');
+    if (last.difference(first) == Duration(days: 6)) {
+      SharedPreferenceService().setString(
+          'calendarFormat', 'week');
+    }
+    else{
+      SharedPreferenceService().setString(
+          'calendarFormat', 'month');
+    }
   }
 
   void _onCalendarCreated(CalendarViewModel store, DateTime first,
@@ -84,7 +93,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
       calendarController: calendarController,
       events: CalendarService().toMap(store.events),
       holidays: holidays,
-      initialCalendarFormat: CalendarFormat.month,
+      onHeaderTapped: _onHeaderTapped,
+      initialCalendarFormat: SharedPreferenceService().calendarFormat,
       formatAnimation: FormatAnimation.scale,
 //      startingDayOfWeek: StartingDayOfWeek.monday,
       availableGestures: AvailableGestures.all,
@@ -224,4 +234,6 @@ class _CalendarWidgetState extends State<CalendarWidget>
       color: Colors.blueGrey[800],
     );
   }
+
+  void _onHeaderTapped(DateTime focusedDay) {}
 }

@@ -1,7 +1,9 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class SharedPreferenceService {
   SharedPreferenceService._();
+
   static final SharedPreferenceService _instance = SharedPreferenceService._();
 
   SharedPreferences _prefs;
@@ -32,8 +34,16 @@ class SharedPreferenceService {
 
   Future<String> get environment async => _prefs.getString('environment');
 
+  CalendarFormat get calendarFormat {
+    var format = _prefs.getString('calendarFormat');
+    if (format == null || format == 'month') {
+      return CalendarFormat.month;
+    } else {
+      return CalendarFormat.week;
+    }
+  }
+
   factory SharedPreferenceService() {
     return _instance;
   }
 }
-
