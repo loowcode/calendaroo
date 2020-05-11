@@ -1,19 +1,47 @@
 import 'package:calendaroo/colors.dart';
-import 'package:calendaroo/model/event.dart';
+import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
-import 'package:calendaroo/services/app-localizations.service.dart';
-import 'package:calendaroo/services/calendar.service.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
+
+import '../options.widget.dart';
 
 class UpcomingEventsWidget extends StatefulWidget {
   @override
   _UpcomingEventsWidgetState createState() => _UpcomingEventsWidgetState();
 }
 
-class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
+AutoScrollController listController;
+AnimationController animationController;
+
+class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
+    with TickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+    listController = AutoScrollController(
+        viewportBoundaryGetter: () =>
+            Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+        axis: Axis.vertical);
+
+    animationController = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..forward();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      calendarooState.dispatch(SelectDay(DateTime.now()));
+    });
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     BorderRadiusGeometry radius = BorderRadius.only(
@@ -30,8 +58,9 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
               child: Stack(
                 children: <Widget>[
                   ListView(
+                      controller: listController,
                       padding: EdgeInsets.all(16),
-                      children: _buildAgenda(store, store.events)),
+                      children: _buildAgenda(store)),
                 ],
               ),
             ),
@@ -39,43 +68,25 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
         });
   }
 
-  List<Container> _buildAgenda(
-      UpcomingEventsViewModel store, List<Event> events) {
-    Map<DateTime, List<Event>> mapEvent = calendarService.toMap(events);
-    List<Container> widgets = [];
-    if (events == null || events.isEmpty) {
-      return [
-        Container(
-          padding: EdgeInsets.all(16),
-          child: Center(
-              child: Column(
-            children: <Widget>[
-              Text('Non ci sono eventi in programma',
-                  style: Theme.of(context).textTheme.subtitle),
-              Container(
-                  margin: EdgeInsets.only(top: 32),
-                  child: Icon(
-                    Icons.event_available,
-                    size: 64,
-                    color: secondaryLightGrey,
-                  ))
-            ],
-          )),
-        )
-      ];
+  List<Widget> _buildAgenda(UpcomingEventsViewModel store) {
+    var mapEvent = store.eventMapped;
+    List<Widget> widgets = [];
+    if (mapEvent == null || mapEvent.isEmpty) {
+      return [_buildEmptyAgenda()];
     }
 
     var formatterTime =
         DateFormat.Hm(Localizations.localeOf(context).toString());
     var formatter =
         DateFormat.MMMMEEEEd(Localizations.localeOf(context).toString());
-    for(var date in mapEvent.keys) {
+    for (var date in mapEvent.keys) {
+      List<Widget> row = [];
       var list = mapEvent[date];
-      widgets
+      row
         ..add(Container(
             child: Text(
-          formatter.format(date),
-          style: Theme.of(context).textTheme.headline,
+          formatter.format(date.dateTime),
+          style: Theme.of(context).textTheme.headline5,
         )))
         ..addAll(list
             .map((elem) => Container(
@@ -92,23 +103,32 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(formatterTime.format(elem.start),
-                                      style: Theme.of(context).textTheme.body1),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2),
                                   Text(formatterTime.format(elem.end),
-                                      style: Theme.of(context).textTheme.body1),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2),
                                 ],
                               ),
                               title: Text(
                                 elem.title,
-                                style: Theme.of(context).textTheme.body1,
+                                style: Theme.of(context).textTheme.bodyText2,
                               ),
-                              trailing: GestureDetector(
-                                  onTap: () {
-                                    print("more");
-                                  },
-                                  child: Icon(
-                                    Icons.more_vert,
-                                    color: primaryWhite,
-                                  )),
+                              trailing: PopupMenuButton<Option>(
+                                onSelected: selectOption,
+                                color: primaryWhite,
+                                icon: Icon(Icons.more_vert, color: primaryWhite,),
+                                itemBuilder: (BuildContext context) {
+                                  return options.map((Option option) {
+                                    return PopupMenuItem<Option>(
+                                      value: option.setEvent(elem),
+                                      child: Theme(data:Theme.of(context).copyWith(cardColor: primaryWhite),child: Text(option.title, style: Theme.of(context).textTheme.bodyText1.copyWith(color: primaryBlack),)),
+                                    );
+                                  }).toList();
+                                },
+                              ),
                             ),
                           ),
                         ],
@@ -116,8 +136,65 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget> {
                     ),
                   ),
                 ))
-            .toList());
+            .toList())
+        ..add(SizedBox(
+          height: 16,
+        ));
+      AutoScrollTag dayGroup = AutoScrollTag(
+        key: ValueKey(date.index),
+        index: date.index,
+        controller: listController,
+        child: AnimatedBuilder(
+          animation: animationController,
+          builder: (context, child) => Container(
+            color: background
+                .evaluate(AlwaysStoppedAnimation(animationController.value)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: row,
+            ),
+          ),
+        ),
+      );
+      widgets.add(dayGroup);
     }
     return widgets;
   }
+
+  Container _buildEmptyAgenda() {
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Center(
+          child: Column(
+        children: <Widget>[
+          Text('Non ci sono eventi in programma',
+              style: Theme.of(context).textTheme.subtitle2),
+          Container(
+              margin: EdgeInsets.only(top: 32),
+              child: Icon(
+                Icons.event_available,
+                size: 64,
+                color: secondaryLightGrey,
+              ))
+        ],
+      )),
+    );
+  }
+
+  Animatable<Color> background = TweenSequence<Color>([
+    TweenSequenceItem(
+      weight: 1.0,
+      tween: ColorTween(
+        begin: primaryWhite,
+        end: accentYellow,
+      ),
+    ),
+    TweenSequenceItem(
+      weight: 1.0,
+      tween: ColorTween(
+        begin: accentYellow,
+        end: primaryWhite,
+      ),
+    ),
+  ]);
 }

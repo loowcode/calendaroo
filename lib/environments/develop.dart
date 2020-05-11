@@ -1,12 +1,9 @@
 import 'package:calendaroo/main.dart';
-import 'package:calendaroo/redux/middlewares/app.middlewares.dart';
-import 'package:calendaroo/redux/middlewares/calendar.middlewares.dart';
-import 'package:calendaroo/redux/reducers/app.reducer.dart';
-import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/initializer-app.service.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'environment.dart';
 
@@ -20,5 +17,6 @@ Future<void> setUp() async {
   await SharedPreferenceService().getSharedPreferencesInstance();
   Environment().environment = 'develop';
   InitializerAppService().preLoadingData();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
 

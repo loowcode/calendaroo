@@ -126,7 +126,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
         formatButtonTextStyle:
             TextStyle().copyWith(color: primaryTransparentWhite),
         titleTextStyle:
-            Theme.of(context).textTheme.headline.copyWith(color: primaryWhite),
+            Theme.of(context).textTheme.headline5.copyWith(color: primaryWhite),
       ),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {

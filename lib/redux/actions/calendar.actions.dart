@@ -1,4 +1,4 @@
-import 'package:calendaroo/model/event.dart';
+import 'package:calendaroo/model/event.model.dart';
 
 class LoadedEventsList {
   List<Event> events;

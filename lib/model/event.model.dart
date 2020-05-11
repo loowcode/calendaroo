@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
 class Event {
-  String id;
+  int id;
   String title;
   String description;
   DateTime start;
   DateTime end;
+
 // TODO ...
 
   Event(
@@ -14,7 +15,6 @@ class Event {
       this.description,
       this.start,
       this.end});
-
 
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
@@ -26,4 +26,7 @@ class Event {
     return map;
   }
 
+  Event setId(int id) {
+    this.id = id;
+  }
 }

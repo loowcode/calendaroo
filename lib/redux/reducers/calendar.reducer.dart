@@ -1,8 +1,8 @@
-import 'package:calendaroo/model/event.dart';
+import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/calendar.state.dart';
+import 'package:calendaroo/services/calendar.service.dart';
 import 'package:redux/redux.dart';
-
 
 final calendarReducer = combineReducers<CalendarState>([
   TypedReducer<CalendarState, AddEvent>(_addEvent),
@@ -13,7 +13,8 @@ final calendarReducer = combineReducers<CalendarState>([
 ]);
 
 CalendarState _addEvent(CalendarState state, AddEvent action) {
-  final newEvents = List<Event>.from(state.events)..add(action.event);
+  var id = state.events.last.id + 1;
+  final newEvents = state.events..add(action.event.setId(id));
   return state.copyWith(events: newEvents);
 }
 
@@ -26,11 +27,18 @@ CalendarState _selectDay(CalendarState state, SelectDay action) {
 }
 
 CalendarState _removeEvent(CalendarState state, RemoveEvent action) {
-  final newEvents = List.from(state.events)
-    ..removeWhere((el) => action.event.id == el.id);
+  final newEvents = state.events..removeWhere((el) => action.event.id == el.id);
+  var date =
+      state.eventMapped[CalendarService().removeTime(action.event.start)];
+  state.eventMapped.forEach((key, value) {
+    value.removeWhere((element) => action.event.id == element.id);
+  });
+
   return state.copyWith(events: newEvents);
 }
 
 CalendarState _loadedEventsList(CalendarState state, LoadedEventsList action) {
-  return state.copyWith(events: action.events);
+  return state.copyWith(
+      events: action.events,
+      eventMapped: CalendarService().toMapIndexed(action.events));
 }

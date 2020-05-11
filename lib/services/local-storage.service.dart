@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:calendaroo/environments/environment.dart';
-import 'package:calendaroo/model/event.dart';
-import 'package:calendaroo/services/shared-preferences.service.dart';
+import 'package:calendaroo/model/event.model.dart';
 import 'package:path/path.dart';
 
 import 'package:path_provider/path_provider.dart';

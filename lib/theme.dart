@@ -34,33 +34,33 @@ class AppTheme {
   static TextTheme _buildPrimaryTextTheme(TextTheme base) {
     return base
         .copyWith(
-          display1: base.display1.copyWith(
+          headline4: base.headline4.copyWith(
 //            fontSize: 32,
             color: primaryBlack,
             fontWeight: FontWeight.w700,
           ),
-          headline: base.headline.copyWith(
+          headline5: base.headline5.copyWith(
 //            fontSize: 32,
             fontWeight: FontWeight.w700,
           ),
-          subhead: base.subhead.copyWith(
+          subtitle1: base.subtitle1.copyWith(
 //            fontSize: 28,
             fontWeight: FontWeight.w700,
           ),
-          title: base.title.copyWith(
+          headline6: base.headline6.copyWith(
 //            fontSize: 24.0,
             fontWeight: FontWeight.normal,
           ),
-          subtitle: base.subtitle.copyWith(
+          subtitle2: base.subtitle2.copyWith(
 //              fontSize: 20.0,
               fontWeight: FontWeight.w600,
               color: secondaryDarkGrey),
-          body1: base.body1.copyWith(
+          bodyText2: base.bodyText2.copyWith(
 //            fontSize: 20.0,
             fontWeight: FontWeight.w700,
             color: primaryBlack,
           ),
-          body2: base.body2.copyWith(
+          bodyText1: base.bodyText1.copyWith(
 //            fontSize: 20.0,
             fontWeight: FontWeight.normal,
             color: primaryWhite,
@@ -121,33 +121,33 @@ class AppTheme {
   static TextTheme _buildSecondaryTextTheme(TextTheme base) {
     return base
         .copyWith(
-      display1: base.display1.copyWith(
+      headline4: base.headline4.copyWith(
 //            fontSize: 32,
         fontWeight: FontWeight.w700,
       ),
-      headline: base.headline.copyWith(
+      headline5: base.headline5.copyWith(
 //            fontSize: 32,
         fontWeight: FontWeight.w700,
       ),
-      subhead: base.subhead.copyWith(
+      subtitle1: base.subtitle1.copyWith(
 //            fontSize: 28,
         fontWeight: FontWeight.w700,
       ),
-      title: base.title.copyWith(
+      headline6: base.headline6.copyWith(
 
 //            fontSize: 24.0,
         fontWeight: FontWeight.normal,
       ),
-      subtitle: base.subtitle.copyWith(
+      subtitle2: base.subtitle2.copyWith(
 //              fontSize: 20.0,
           fontWeight: FontWeight.w600,
           color: secondaryDarkGrey),
-      body1: base.body1.copyWith(
+      bodyText2: base.bodyText2.copyWith(
 //            fontSize: 20.0,
         fontWeight: FontWeight.w700,
         color: primaryWhite,
       ),
-      body2: base.body2.copyWith(
+      bodyText1: base.bodyText1.copyWith(
 //            fontSize: 20.0,
         fontWeight: FontWeight.normal,
         color: primaryWhite,

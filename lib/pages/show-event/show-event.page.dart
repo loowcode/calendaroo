@@ -1,14 +1,12 @@
 import 'package:calendaroo/colors.dart';
-import 'package:calendaroo/model/event.dart';
+import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/pages/show-event/show-event.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
-import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
-import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 
 class ShowEventPage extends StatefulWidget {
@@ -46,9 +44,9 @@ class _ShowEventPageState extends State<ShowEventPage> {
   Widget build(BuildContext context) {
     Event event = ModalRoute.of(context).settings.arguments;
     var _formatterDate = new DateFormat.yMMMMd(
-       Localizations.localeOf(context).toString()); // TODO locale
+        Localizations.localeOf(context).toString()); // TODO locale
     var _formatterTime = new DateFormat.Hm(
-       Localizations.localeOf(context).toString()); // TODO locale
+        Localizations.localeOf(context).toString()); // TODO locale
     return Scaffold(
       body: StoreConnector<AppState, ShowEventViewModel>(
           converter: (store) => ShowEventViewModel.fromStore(store),
@@ -67,7 +65,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
                         children: <Widget>[
                           Text('Evento',
                               textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.display1),
+                              style: Theme.of(context).textTheme.headline4),
                           buildTitle(event),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -75,7 +73,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
                             ),
                             child: Text(
                               'Inizio Evento',
-                              style: Theme.of(context).textTheme.subtitle,
+                              style: Theme.of(context).textTheme.subtitle2,
                             ),
                           ),
                           buildTime(true, context, _formatterDate,
@@ -86,7 +84,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
                             ),
                             child: Text(
                               'Fine Evento',
-                              style: Theme.of(context).textTheme.subtitle,
+                              style: Theme.of(context).textTheme.subtitle2,
                             ),
                           ),
                           buildTime(false, context, _formatterDate,
@@ -274,18 +272,5 @@ class _ShowEventPageState extends State<ShowEventPage> {
         ),
       ],
     );
-  }
-
-  Event _buildEvent() {
-    var uuid = Uuid();
-    print(_startTime);
-    return Event(
-        id: null,
-        title: _title,
-        description: _description,
-        start: DateTime(_startDate.year, _startDate.month, _startDate.day,
-            _startTime.hour, _startTime.minute),
-        end: DateTime(_endDate.year, _endDate.month, _endDate.day,
-            _endTime.hour, _endTime.minute));
   }
 }

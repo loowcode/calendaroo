@@ -1,15 +1,12 @@
 import 'package:calendaroo/colors.dart';
-import 'package:calendaroo/model/event.dart';
+import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
-import 'package:calendaroo/redux/states/calendar.state.dart';
-import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
-import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 
 import 'add-event.viewmodel.dart';
@@ -68,7 +65,7 @@ class _AddEventPageState extends State<AddEventPage> {
                             children: <Widget>[
                               Text('Nuovo Evento',
                                   textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.display1),
+                                  style: Theme.of(context).textTheme.headline4),
                               IconButton(
                                   onPressed: () {
                                     NavigationService().pop();
@@ -130,7 +127,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 labelText: 'Titolo',
                 labelStyle: Theme.of(context)
                     .textTheme
-                    .body1
+                    .bodyText2
                     .copyWith(color: primaryBlack),
               ),
               validator: (value) {
@@ -180,7 +177,7 @@ class _AddEventPageState extends State<AddEventPage> {
                   labelText: 'Descrizione',
                   labelStyle: Theme.of(context)
                       .textTheme
-                      .body1
+                      .bodyText2
                       .copyWith(color: primaryBlack),
                 ),
                 onSaved: (value) {
@@ -205,7 +202,7 @@ class _AddEventPageState extends State<AddEventPage> {
         ),
         child: Text(
           start ? 'Inizio Evento' : 'Fine Evento',
-          style: Theme.of(context).textTheme.subtitle,
+          style: Theme.of(context).textTheme.subtitle2,
         ),
       ),
       Row(
@@ -321,7 +318,6 @@ class _AddEventPageState extends State<AddEventPage> {
   }
 
   Event _createNewEvent() {
-    var uuid = Uuid();
     print(_startTime);
     return Event(
         id: null,

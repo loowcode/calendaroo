@@ -17,7 +17,7 @@ import 'package:calendaroo/main.dart';
 void main() {
   testWidgets('Navigate NewEvent test', (WidgetTester tester) async {
 //    await setUpEnv();
-    var store = createStore();
+//    var store = createStore();
 //    initializerAppService.preLoadingData(store);
 
     // Build our app and trigger a frame.

@@ -1,6 +1,5 @@
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
-import 'package:redux/redux.dart';
 
 import 'local-storage.service.dart';
 

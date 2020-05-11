@@ -7,7 +7,7 @@ class NavigationService {
     return navigatorKey.currentState.pushNamed(routeName, arguments: arguments);
   }
 
-  bool pop() {
+  void pop() {
     return navigatorKey.currentState.pop();
   }
 }
