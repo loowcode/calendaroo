@@ -14,6 +14,9 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
     if (action is AddEvent) {
       LocalStorageService().insertEvent(action.event);
     }
+    if (action is RemoveEvent) {
+      LocalStorageService().deleteEvent(action.event.id);
+    }
 
     if (action is OpenEvent) {
       NavigationService().navigateTo(SHOW_EVENT, arguments: action.event);

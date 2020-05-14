@@ -57,10 +57,13 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                   BoxDecoration(color: primaryWhite, borderRadius: radius),
               child: Stack(
                 children: <Widget>[
-                  ListView(
-                      controller: listController,
-                      padding: EdgeInsets.all(16),
-                      children: _buildAgenda(store)),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: ListView(
+                        controller: listController,
+                        padding: EdgeInsets.all(16),
+                        children: _buildAgenda(store)),
+                  ),
                 ],
               ),
             ),
@@ -119,12 +122,24 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                               trailing: PopupMenuButton<Option>(
                                 onSelected: selectOption,
                                 color: primaryWhite,
-                                icon: Icon(Icons.more_vert, color: primaryWhite,),
+                                icon: Icon(
+                                  Icons.more_vert,
+                                  color: primaryWhite,
+                                ),
                                 itemBuilder: (BuildContext context) {
                                   return options.map((Option option) {
                                     return PopupMenuItem<Option>(
                                       value: option.setEvent(elem),
-                                      child: Theme(data:Theme.of(context).copyWith(cardColor: primaryWhite),child: Text(option.title, style: Theme.of(context).textTheme.bodyText1.copyWith(color: primaryBlack),)),
+                                      child: Theme(
+                                          data: Theme.of(context).copyWith(
+                                              cardColor: primaryWhite),
+                                          child: Text(
+                                            option.title,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1
+                                                .copyWith(color: primaryBlack),
+                                          )),
                                     );
                                   }).toList();
                                 },
