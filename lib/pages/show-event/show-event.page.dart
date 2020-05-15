@@ -23,6 +23,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
   DateTime _endDate;
   DateTime _startTime;
   DateTime _endTime;
+  var _canModify = false;
 
   var _titleController = TextEditingController();
 
@@ -107,28 +108,32 @@ class _ShowEventPageState extends State<ShowEventPage> {
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         GestureDetector(
-          onTap: () => CupertinoRoundedDatePicker.show(
-            context,
+          onTap: () {
+            if (_canModify) {
+              return CupertinoRoundedDatePicker.show(
+                context,
 //                        minimumYear: 1700,
-            initialDate: start ? _startDate : _endDate,
-            minimumYear: start ? 1700 : _startDate.year,
-            maximumYear: 3000,
-            minimumDate:
+                initialDate: start ? _startDate : _endDate,
+                minimumYear: start ? 1700 : _startDate.year,
+                maximumYear: 3000,
+                minimumDate:
                 start ? DateTime.now().subtract(Duration(days: 7)) : _startDate,
-            textColor: primaryWhite,
-            background: secondaryBlue,
-            borderRadius: 16,
-            initialDatePickerMode: CupertinoDatePickerMode.date,
-            onDateTimeChanged: (newDate) {
-              setState(() {
-                if (start) {
-                  _startDate = newDate;
-                } else {
-                  _endDate = newDate;
-                }
-              });
-            },
-          ),
+                textColor: primaryWhite,
+                background: secondaryBlue,
+                borderRadius: 16,
+                initialDatePickerMode: CupertinoDatePickerMode.date,
+                onDateTimeChanged: (newDate) {
+                  setState(() {
+                    if (start) {
+                      _startDate = newDate;
+                    } else {
+                      _endDate = newDate;
+                    }
+                  });
+                },
+              );
+            }
+          },
           child: Chip(
             backgroundColor: backgroundForm,
             label: Text(start
@@ -144,33 +149,37 @@ class _ShowEventPageState extends State<ShowEventPage> {
           width: 8,
         ),
         GestureDetector(
-          onTap: () => CupertinoRoundedDatePicker.show(
-            context,
-            initialDate: start ? _startTime : _endTime,
-            minimumYear: 1700,
-            maximumYear: 3000,
-            minimumDate: start
-                ? DateTime.now().subtract(Duration(days: 7))
-                : DateTime.now().subtract(Duration(days: 7)),
-            textColor: primaryWhite,
-            background: secondaryBlue,
-            borderRadius: 16,
-            initialDatePickerMode: CupertinoDatePickerMode.time,
-            onDateTimeChanged: (newDate) {
-              setState(() {
-                if (start) {
-                  _startTime = newDate;
-                } else {
-                  _endTime = newDate;
-                }
-              });
-            },
-          ),
+          onTap: () {
+            if (_canModify) {
+              return CupertinoRoundedDatePicker.show(
+                context,
+                initialDate: start ? _startTime : _endTime,
+                minimumYear: 1700,
+                maximumYear: 3000,
+                minimumDate: start
+                    ? DateTime.now().subtract(Duration(days: 7))
+                    : DateTime.now().subtract(Duration(days: 7)),
+                textColor: primaryWhite,
+                background: secondaryBlue,
+                borderRadius: 16,
+                initialDatePickerMode: CupertinoDatePickerMode.time,
+                onDateTimeChanged: (newDate) {
+                  setState(() {
+                    if (start) {
+                      _startTime = newDate;
+                    } else {
+                      _endTime = newDate;
+                    }
+                  });
+                },
+              );
+            }
+          },
           child: Chip(
             backgroundColor: backgroundForm,
             label: Text(start
-                ? _formatterDate.format(event.start)
-                : _formatterDate.format(event.end)),
+                ? _formatterTime.format(event.start)
+                : _formatterTime.format(event.end)),
             avatar: Icon(
               Icons.access_time,
               color: accentPink,
@@ -196,7 +205,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
               color: secondaryDarkBlue,
             ),
             title: TextFormField(
-              enabled: false,
+              enabled: _canModify,
               initialValue: event.title,
               decoration: new InputDecoration(
                   focusedBorder: UnderlineInputBorder(
@@ -244,7 +253,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
               ),
               title: TextFormField(
                 initialValue: event.description,
-                enabled: false,
+                enabled: _canModify,
                 decoration: new InputDecoration(
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: secondaryDarkBlue),

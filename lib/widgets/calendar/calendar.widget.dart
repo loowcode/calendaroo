@@ -79,7 +79,6 @@ class _CalendarWidgetState extends State<CalendarWidget>
                 _buildTableCalendarWithBuilders(store),
                 const SizedBox(height: 2.0),
                 UpcomingEventsWidget()
-//            Expanded(child: _buildEventList()),
               ],
             ),
           );
@@ -91,7 +90,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
     var locale = Localizations.localeOf(context);
     return TableCalendar(
       calendarController: calendarController,
-      events: CalendarService().toMap(store.events),
+      events: store.eventMapped,
       holidays: holidays,
       onHeaderTapped: _onHeaderTapped,
       initialCalendarFormat: SharedPreferenceService().calendarFormat,
@@ -100,7 +99,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
       availableGestures: AvailableGestures.all,
       availableCalendarFormats: const {
         CalendarFormat.month: 'Compatto',
-        CalendarFormat.week: 'Espanso',
+        CalendarFormat.twoWeeks: 'Espanso',
       },
       locale: locale.toString(),
       calendarStyle: CalendarStyle(

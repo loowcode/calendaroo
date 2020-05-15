@@ -1,4 +1,3 @@
-import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/calendar.state.dart';
 import 'package:calendaroo/services/calendar.service.dart';
@@ -34,6 +33,9 @@ CalendarState _removeEvent(CalendarState state, RemoveEvent action) {
   if (state.eventMapped.containsKey(date)) {
     state.eventMapped[date]
         .removeWhere((element) => action.event.id == element.id);
+    if (state.eventMapped[date].length == 0) {
+      state.eventMapped.remove(date);
+    }
   }
   return state.copyWith(events: newEvents);
 }
