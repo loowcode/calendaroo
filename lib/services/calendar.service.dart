@@ -6,6 +6,13 @@ import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/model/mocks/eventsList.mock.dart';
 
 class CalendarService {
+  static final CalendarService _instance = CalendarService._();
+  CalendarService._();
+
+  factory CalendarService() {
+    return _instance;
+  }
+
   List<Event> eventsList() {
     if (Environment().environment == DEVELOP) {
       return eventsListMock;
@@ -61,5 +68,3 @@ class CalendarService {
     return DateTime(input.hour, input.minute, input.second);
   }
 }
-
-CalendarService calendarService = CalendarService();

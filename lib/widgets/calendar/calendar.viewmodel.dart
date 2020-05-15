@@ -6,15 +6,17 @@ import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:redux/redux.dart';
 
 class CalendarViewModel {
+  final DateTime selectedDay;
   final List<Event> events;
   final SplayTreeMap<DateTime, List<Event>> eventMapped;
 
   final Function(DateTime) selectDay;
 
-  CalendarViewModel({this.events, this.eventMapped, this.selectDay});
+  CalendarViewModel({this.selectedDay, this.events, this.eventMapped, this.selectDay});
 
   static CalendarViewModel fromStore(Store<AppState> store) {
     return CalendarViewModel(
+      selectedDay: store.state.calendarState.selectedDay,
       events: store.state.calendarState.events,
       eventMapped: store.state.calendarState.eventMapped,
       selectDay: (day) => store.dispatch(SelectDay(day)),

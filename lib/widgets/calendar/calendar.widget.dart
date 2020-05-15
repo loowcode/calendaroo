@@ -1,6 +1,5 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
-import 'package:calendaroo/services/calendar.service.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.widget.dart';
@@ -16,16 +15,17 @@ class CalendarWidget extends StatefulWidget {
   _CalendarWidgetState createState() => _CalendarWidgetState();
 }
 
-CalendarController calendarController;
 
 class _CalendarWidgetState extends State<CalendarWidget>
     with TickerProviderStateMixin {
   AnimationController _animationController;
+  CalendarController _calendarController;
+
 
   @override
   void initState() {
     super.initState();
-    calendarController = CalendarController();
+    _calendarController = CalendarController();
 
     _animationController = AnimationController(
       vsync: this,
@@ -38,8 +38,17 @@ class _CalendarWidgetState extends State<CalendarWidget>
   @override
   void dispose() {
     _animationController.dispose();
-    calendarController.dispose();
+    _calendarController.dispose();
     super.dispose();
+  }
+
+  void updateController(DateTime newSelectedDay) {
+    if (_calendarController != null) {
+      if (newSelectedDay != null &&
+          _calendarController.selectedDay != newSelectedDay) {
+        _calendarController.setSelectedDay(newSelectedDay);
+      }
+    }
   }
 
   void _onDaySelected(CalendarViewModel store, DateTime day, List events) {
@@ -70,6 +79,9 @@ class _CalendarWidgetState extends State<CalendarWidget>
   Widget build(BuildContext context) {
     return StoreConnector<AppState, CalendarViewModel>(
         converter: (store) => CalendarViewModel.fromStore(store),
+        onWillChange: (oldViewModel, newViewModel) {
+          updateController(newViewModel.selectedDay);
+        },
         builder: (context, store) {
           return Container(
             child: Column(
@@ -89,7 +101,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
   Widget _buildTableCalendarWithBuilders(CalendarViewModel store) {
     var locale = Localizations.localeOf(context);
     return TableCalendar(
-      calendarController: calendarController,
+      calendarController: _calendarController,
       events: store.eventMapped,
       holidays: holidays,
       onHeaderTapped: _onHeaderTapped,
@@ -208,9 +220,9 @@ class _CalendarWidgetState extends State<CalendarWidget>
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(3),
-        color: calendarController.isSelected(date)
+        color: _calendarController.isSelected(date)
             ? accentPink
-            : calendarController.isToday(date) ? accentPink : accentPink,
+            : _calendarController.isToday(date) ? accentPink : accentPink,
       ),
       width: 16.0,
       height: 16.0,

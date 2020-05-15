@@ -15,20 +15,22 @@ class UpcomingEventsWidget extends StatefulWidget {
   _UpcomingEventsWidgetState createState() => _UpcomingEventsWidgetState();
 }
 
-AutoScrollController listController;
-AnimationController animationController;
 
 class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     with TickerProviderStateMixin {
+
+  AutoScrollController _listController;
+  AnimationController _animationController;
+
   @override
   void initState() {
     super.initState();
-    listController = AutoScrollController(
+    _listController = AutoScrollController(
         viewportBoundaryGetter: () =>
             Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
         axis: Axis.vertical);
 
-    animationController = AnimationController(
+    _animationController = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
     )..forward();
@@ -39,7 +41,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
 
   @override
   void dispose() {
-    animationController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -51,17 +53,26 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     );
     return StoreConnector<AppState, UpcomingEventsViewModel>(
         converter: (store) => UpcomingEventsViewModel.fromStore(store),
+        onDidChange: (viewModel) {
+          try {
+            _listController.scrollToIndex(CalendarService().getIndex(
+                viewModel.eventMapped, viewModel.selectedDay));
+            _animationController.forward(from: 0);
+          } catch (e) {
+            print('no events for selected day');
+          }
+        },
         builder: (context, store) {
           return Expanded(
             child: Container(
               decoration:
-                  BoxDecoration(color: primaryWhite, borderRadius: radius),
+              BoxDecoration(color: primaryWhite, borderRadius: radius),
               child: Stack(
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: ListView(
-                        controller: listController,
+                        controller: _listController,
                         padding: EdgeInsets.all(16),
                         children: _buildAgenda(store)),
                   ),
@@ -80,78 +91,87 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     }
 
     var formatterTime =
-        DateFormat.Hm(Localizations.localeOf(context).toString());
+    DateFormat.Hm(Localizations.localeOf(context).toString());
     var formatter =
-        DateFormat.MMMMEEEEd(Localizations.localeOf(context).toString());
+    DateFormat.MMMMEEEEd(Localizations.localeOf(context).toString());
     for (var date in mapEvent.keys) {
       List<Widget> row = [];
       var list = mapEvent[date];
       row
         ..add(Container(
             child: Text(
-          formatter.format(date),
-          style: Theme.of(context).textTheme.headline5,
-        )))
+              formatter.format(date),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline5,
+            )))
         ..addAll(list
             .map((elem) => Container(
-                  child: GestureDetector(
-                    onTap: () {
-                      store.openEvent(elem);
-                    },
-                    child: Card(
-                      child: Row(
+          child: GestureDetector(
+            onTap: () {
+              store.openEvent(elem);
+            },
+            child: Card(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: ListTile(
+                      leading: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Expanded(
-                            child: ListTile(
-                              leading: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(formatterTime.format(elem.start),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2),
-                                  Text(formatterTime.format(elem.end),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2),
-                                ],
-                              ),
-                              title: Text(
-                                elem.title,
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ),
-                              trailing: PopupMenuButton<Option>(
-                                onSelected: selectOption,
-                                color: primaryWhite,
-                                icon: Icon(
-                                  Icons.more_vert,
-                                  color: primaryWhite,
-                                ),
-                                itemBuilder: (BuildContext context) {
-                                  return options.map((Option option) {
-                                    return PopupMenuItem<Option>(
-                                      value: option.setEvent(elem),
-                                      child: Theme(
-                                          data: Theme.of(context).copyWith(
-                                              cardColor: primaryWhite),
-                                          child: Text(
-                                            option.title,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                .copyWith(color: primaryBlack),
-                                          )),
-                                    );
-                                  }).toList();
-                                },
-                              ),
-                            ),
-                          ),
+                          Text(formatterTime.format(elem.start),
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText2),
+                          Text(formatterTime.format(elem.end),
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText2),
                         ],
+                      ),
+                      title: Text(
+                        elem.title,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText2,
+                      ),
+                      trailing: PopupMenuButton<Option>(
+                        onSelected: selectOption,
+                        color: primaryWhite,
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: primaryWhite,
+                        ),
+                        itemBuilder: (BuildContext context) {
+                          return options.map((Option option) {
+                            return PopupMenuItem<Option>(
+                              value: option.setEvent(elem),
+                              child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                      cardColor: primaryWhite),
+                                  child: Text(
+                                    option.title,
+                                    style: Theme
+                                        .of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .copyWith(color: primaryBlack),
+                                  )),
+                            );
+                          }).toList();
+                        },
                       ),
                     ),
                   ),
-                ))
+                ],
+              ),
+            ),
+          ),
+        ))
             .toList())
         ..add(SizedBox(
           height: 16,
@@ -159,12 +179,12 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
       AutoScrollTag dayGroup = AutoScrollTag(
         key: ValueKey(CalendarService().getIndex(mapEvent, date)),
         index: CalendarService().getIndex(mapEvent, date),
-        controller: listController,
+        controller: _listController,
         child: AnimatedBuilder(
-          animation: animationController,
+          animation: _animationController,
           builder: (context, child) => Container(
             color: background
-                .evaluate(AlwaysStoppedAnimation(animationController.value)),
+                .evaluate(AlwaysStoppedAnimation(_animationController.value)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: row,
@@ -182,18 +202,21 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
       padding: EdgeInsets.all(16),
       child: Center(
           child: Column(
-        children: <Widget>[
-          Text('Non ci sono eventi in programma',
-              style: Theme.of(context).textTheme.subtitle2),
-          Container(
-              margin: EdgeInsets.only(top: 32),
-              child: Icon(
-                Icons.event_available,
-                size: 64,
-                color: secondaryLightGrey,
-              ))
-        ],
-      )),
+            children: <Widget>[
+              Text('Non ci sono eventi in programma',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .subtitle2),
+              Container(
+                  margin: EdgeInsets.only(top: 32),
+                  child: Icon(
+                    Icons.event_available,
+                    size: 64,
+                    color: secondaryLightGrey,
+                  ))
+            ],
+          )),
     );
   }
 
