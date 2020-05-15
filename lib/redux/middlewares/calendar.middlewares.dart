@@ -12,7 +12,8 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
   @override
   void call(Store<AppState> store, dynamic action, NextDispatcher next) async {
     if (action is AddEvent) {
-      LocalStorageService().insertEvent(action.event);
+      var id = await LocalStorageService().insertEvent(action.event);
+      action.event.setId(id);
     }
     if (action is RemoveEvent) {
       LocalStorageService().deleteEvent(action.event.id);
@@ -23,16 +24,17 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
     }
 
     if (action is SelectDay) {
-      calendarController.setSelectedDay(action.day);
-      if (listController != null) {
-        try {
-          listController.scrollToIndex(calendarService.getIndex(
-              store.state.calendarState.eventMapped, action.day));
-//          animationController.forward(from: 0);
-        } catch (e) {
-          print('no events for selected day');
-        }
-      }
+      // TODO animationController with redux
+//      calendarController.setSelectedDay(action.day);
+//      if (listController != null) {
+//        try {
+//          listController.scrollToIndex(calendarService.getIndex(
+//              store.state.calendarState.eventMapped, action.day));
+////          animationController.forward(from: 0);
+//        } catch (e) {
+//          print('no events for selected day');
+//        }
+//      }
     }
 
     next(action);

@@ -32,7 +32,6 @@ class SharedPreferenceService {
     await _prefs.clear();
   }
 
-  Future<String> get environment async => _prefs.getString('environment');
 
   CalendarFormat get calendarFormat {
     var format = _prefs.getString('calendarFormat');

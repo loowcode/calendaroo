@@ -40,7 +40,6 @@ class AppLocalizations {
   }
 
   String get newEventTitle => _localizedStrings['new-event-title'];
-
   String get newEvent => _localizedStrings['new-event'];
 
 }

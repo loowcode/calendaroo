@@ -1,9 +1,10 @@
-import 'dart:io';
 import 'dart:async';
+import 'dart:io';
+
+import 'package:calendaroo/constants.dart';
 import 'package:calendaroo/environments/environment.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:path/path.dart';
-
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -99,7 +100,7 @@ class LocalStorageService {
 
   FutureOr<void> _onConfigure(Database db) async {
     var env = Environment().environment;
-    if (env == 'develop') {
+    if (env == DEVELOP) {
       db.delete('events');
       print('DB deleted');
     }

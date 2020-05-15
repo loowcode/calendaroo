@@ -1,13 +1,13 @@
 import 'dart:collection';
 
+import 'package:calendaroo/constants.dart';
 import 'package:calendaroo/environments/environment.dart';
 import 'package:calendaroo/model/event.model.dart';
-import 'package:calendaroo/model/event-index.model.dart';
 import 'package:calendaroo/model/mocks/eventsList.mock.dart';
 
 class CalendarService {
   List<Event> eventsList() {
-    if (Environment().environment == 'develop') {
+    if (Environment().environment == DEVELOP) {
       return eventsListMock;
     } else {
       return List<Event>();
@@ -30,30 +30,27 @@ class CalendarService {
     return result;
   }
 
-  SplayTreeMap<EventIndex, List<Event>> toMapIndexed(List<Event> events) {
-    SplayTreeMap<EventIndex, List<Event>> result = new SplayTreeMap();
-    var i = 0;
-    events.forEach((Event elem) {
-      var date = removeTime(elem.start);
-      var index = EventIndex(i, date);
-      if (result.containsKey(index)) {
-        var list = result[index];
-        list.add(elem);
-        result[index] = list;
-      } else {
-        result.putIfAbsent(index, () => [elem]);
-      }
-      i++;
-    });
-    return result;
-  }
+//  SplayTreeMap<DateTime, List<Event>> toMapIndexed(List<Event> events) {
+//    SplayTreeMap<DateTime, List<Event>> result = new SplayTreeMap();
+//    var i = 0;
+//    events.forEach((Event elem) {
+//      var date = removeTime(elem.start);
+//      var index = DateTime(i, date);
+//      if (result.containsKey(index)) {
+//        var list = result[index];
+//        list.add(elem);
+//        result[index] = list;
+//      } else {
+//        result.putIfAbsent(index, () => [elem]);
+//      }
+//      i++;
+//    });
+//    return result;
+//  }
 
-  int getIndex(Map<EventIndex, List<Event>> days, DateTime day) {
+  int getIndex(Map<DateTime, List<Event>> days, DateTime day) {
     if (days.keys.length == null || days.keys.length == 0) return 0;
-    EventIndex index = days.keys.firstWhere((elem) {
-      return elem.dateTime.compareTo(removeTime(day)) == 0;
-    });
-    return index.index;
+    return days.keys.toList().indexOf(day);
   }
 
   DateTime removeTime(DateTime input) {

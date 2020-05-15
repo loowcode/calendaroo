@@ -1,6 +1,7 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/services/calendar.service.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -88,7 +89,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
       row
         ..add(Container(
             child: Text(
-          formatter.format(date.dateTime),
+          formatter.format(date),
           style: Theme.of(context).textTheme.headline5,
         )))
         ..addAll(list
@@ -156,8 +157,8 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
           height: 16,
         ));
       AutoScrollTag dayGroup = AutoScrollTag(
-        key: ValueKey(date.index),
-        index: date.index,
+        key: ValueKey(CalendarService().getIndex(mapEvent, date)),
+        index: CalendarService().getIndex(mapEvent, date),
         controller: listController,
         child: AnimatedBuilder(
           animation: animationController,

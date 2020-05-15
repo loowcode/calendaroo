@@ -25,9 +25,9 @@ class AppState {
   }
 
   AppState copyWith(
-      {AppStatusState lifecycleState, CalendarState calendarState}) {
+      {AppStatusState appStatusState, CalendarState calendarState}) {
     return AppState(
-        appStatusState: lifecycleState ?? this.appStatusState,
+        appStatusState: appStatusState ?? this.appStatusState,
         calendarState: calendarState ?? this.calendarState);
   }
 }

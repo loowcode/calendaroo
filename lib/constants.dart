@@ -1,3 +1,9 @@
+// General constants
+const String DEVELOP = 'develop';
+const String INTEGRATION = 'integration';
+const String VERSION = '0.0.1-alpha';
+
+// keys for translate json file
 class Texts {
   static const String APP_NAME = "appName";
   static const String HOME = "home";

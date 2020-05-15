@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-import 'package:calendaroo/model/event-index.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
@@ -8,7 +7,7 @@ import 'package:redux/redux.dart';
 
 class CalendarViewModel {
   final List<Event> events;
-  final SplayTreeMap<EventIndex, List<Event>> eventMapped;
+  final SplayTreeMap<DateTime, List<Event>> eventMapped;
 
   final Function(DateTime) selectDay;
 

@@ -28,5 +28,6 @@ class Event {
 
   Event setId(int id) {
     this.id = id;
+    return this;
   }
 }

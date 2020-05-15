@@ -6,7 +6,7 @@ import 'package:redux/redux.dart';
 
 class AppMiddleware extends MiddlewareClass<AppState> {
   @override
-  void call(Store<AppState> store, dynamic action, NextDispatcher next) async{
+  void call(Store<AppState> store, dynamic action, NextDispatcher next) async {
     if (action is StartApplication) {
       var eventsList = await LocalStorageService().events();
       next(LoadedEventsList(eventsList));

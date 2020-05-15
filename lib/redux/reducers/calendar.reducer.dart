@@ -13,8 +13,10 @@ final calendarReducer = combineReducers<CalendarState>([
 ]);
 
 CalendarState _addEvent(CalendarState state, AddEvent action) {
-  var id = state.events.last.id + 1;
-  final newEvents = state.events..add(action.event.setId(id));
+  var start = CalendarService().removeTime(action.event.start);
+  state.eventMapped.update(start, (value) => value..add(action.event),
+      ifAbsent: () => [action.event]);
+  final newEvents = state.events..add(action.event);
   return state.copyWith(events: newEvents);
 }
 
@@ -28,17 +30,16 @@ CalendarState _selectDay(CalendarState state, SelectDay action) {
 
 CalendarState _removeEvent(CalendarState state, RemoveEvent action) {
   final newEvents = state.events..removeWhere((el) => action.event.id == el.id);
-  var date =
-      state.eventMapped[CalendarService().removeTime(action.event.start)];
-  state.eventMapped.forEach((key, value) {
-    value.removeWhere((element) => action.event.id == element.id);
-  });
-
+  var date = CalendarService().removeTime(action.event.start);
+  if (state.eventMapped.containsKey(date)) {
+    state.eventMapped[date]
+        .removeWhere((element) => action.event.id == element.id);
+  }
   return state.copyWith(events: newEvents);
 }
 
 CalendarState _loadedEventsList(CalendarState state, LoadedEventsList action) {
   return state.copyWith(
       events: action.events,
-      eventMapped: CalendarService().toMapIndexed(action.events));
+      eventMapped: CalendarService().toMap(action.events));
 }
