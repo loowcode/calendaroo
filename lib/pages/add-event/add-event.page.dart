@@ -236,7 +236,7 @@ class _AddEventPageState extends State<AddEventPage> {
             ),
             child: Chip(
               backgroundColor: backgroundForm,
-              label: Text(_formatterDate.format(_startDate)),
+              label: Text(_formatterDate.format(start ? _startDate : _endDate)),
               avatar: Icon(
                 Icons.date_range,
                 color: secondaryBlue,
@@ -272,7 +272,7 @@ class _AddEventPageState extends State<AddEventPage> {
             ),
             child: Chip(
               backgroundColor: backgroundForm,
-              label: Text(_formatterTime.format(_startTime)),
+              label: Text(_formatterTime.format(start ? _startTime : _endTime)),
               avatar: Icon(
                 Icons.access_time,
                 color: accentPink,
