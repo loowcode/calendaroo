@@ -9,6 +9,7 @@ final calendarReducer = combineReducers<CalendarState>([
   TypedReducer<CalendarState, SelectDay>(_selectDay),
   TypedReducer<CalendarState, LoadedEventsList>(_loadedEventsList),
   TypedReducer<CalendarState, RemoveEvent>(_removeEvent),
+  TypedReducer<CalendarState, EditEvent>(_editEvent),
 ]);
 
 CalendarState _addEvent(CalendarState state, AddEvent action) {
@@ -17,6 +18,19 @@ CalendarState _addEvent(CalendarState state, AddEvent action) {
       ifAbsent: () => [action.event]);
   final newEvents = state.events..add(action.event);
   return state.copyWith(events: newEvents);
+}
+
+CalendarState _editEvent(CalendarState state, EditEvent action) {
+  var start = CalendarService().removeTime(action.event.start);
+  state.eventMapped.update(start, (value) {
+    final index = value.indexWhere((element) => element.id == action.event.id);
+    value[index] = action.event;
+    return value;
+  }, ifAbsent: () => [action.event]);
+  final index =
+      state.events.indexWhere((element) => element.id == action.event.id);
+  state.events[index] = action.event;
+  return state;
 }
 
 CalendarState _openEvent(CalendarState state, OpenEvent action) {

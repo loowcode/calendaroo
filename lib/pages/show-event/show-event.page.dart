@@ -2,6 +2,7 @@ import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/pages/show-event/show-event.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/services/navigation.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -64,9 +65,37 @@ class _ShowEventPageState extends State<ShowEventPage> {
                     Expanded(
                       child: ListView(
                         children: <Widget>[
-                          Text('Evento',
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.headline4),
+                          Row(
+                            children: <Widget>[
+                              Text('Evento',
+                                  textAlign: TextAlign.left,
+                                  style: Theme.of(context).textTheme.headline4),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _canModify = !_canModify;
+                                        });
+                                      },
+                                      icon: Icon(
+                                        Icons.mode_edit,
+                                        color: secondaryLightGrey,
+                                      )),
+                                  IconButton(
+                                      onPressed: () {
+                                        NavigationService().pop();
+                                      },
+                                      icon: Icon(
+                                        Icons.close,
+                                        color: secondaryLightGrey,
+                                      )),
+                                ],
+                              )
+                            ],
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          ),
                           buildTitle(event),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -93,6 +122,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
                         ],
                       ),
                     ),
+                    _canModify ? _buildButton(store, context) : SizedBox()
                   ],
                 ),
               ),
@@ -116,8 +146,9 @@ class _ShowEventPageState extends State<ShowEventPage> {
                 initialDate: start ? _startDate : _endDate,
                 minimumYear: start ? 1700 : _startDate.year,
                 maximumYear: 3000,
-                minimumDate:
-                start ? DateTime.now().subtract(Duration(days: 7)) : _startDate,
+                minimumDate: start
+                    ? DateTime.now().subtract(Duration(days: 7))
+                    : _startDate,
                 textColor: primaryWhite,
                 background: secondaryBlue,
                 borderRadius: 16,
@@ -281,5 +312,49 @@ class _ShowEventPageState extends State<ShowEventPage> {
         ),
       ],
     );
+  }
+
+  Padding _buildButton(ShowEventViewModel store, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 8, left: 32, right: 32),
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        color: secondaryBlue,
+        onPressed: () {
+          // Validate returns true if the form is valid, otherwise false.
+          if (_formKey.currentState.validate()) {
+            _formKey.currentState.save();
+            // If the form is valid, display a snackbar. In the real world,
+            // you'd often call a server or save the information in a database.
+            print('valido');
+            store.editEvent(_createEvent());
+            NavigationService().pop();
+          }
+        },
+        child: SizedBox(
+          height: 50,
+          width: 300,
+          child: Center(
+            child: Text(
+              'Salva Modifiche',
+              style: Theme.of(context).textTheme.button,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Event _createEvent() {
+    return Event(
+        id: null,
+        title: _title,
+        description: _description,
+        start: DateTime(_startDate.year, _startDate.month, _startDate.day,
+            _startTime.hour, _startTime.minute),
+        end: DateTime(_endDate.year, _endDate.month, _endDate.day,
+            _endTime.hour, _endTime.minute));
   }
 }
