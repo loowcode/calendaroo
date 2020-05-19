@@ -7,6 +7,7 @@ import 'package:calendaroo/model/mocks/eventsList.mock.dart';
 
 class CalendarService {
   static final CalendarService _instance = CalendarService._();
+
   CalendarService._();
 
   factory CalendarService() {
@@ -24,17 +25,25 @@ class CalendarService {
   Map<DateTime, List<Event>> toMap(List<Event> events) {
     SplayTreeMap<DateTime, List<Event>> result = new SplayTreeMap();
     events.forEach((Event elem) {
-//      var date = elem.start;
-      var date = DateTime(elem.start.year, elem.start.month, elem.start.day);
-      if (result.containsKey(date)) {
-        var list = result[date];
-        list.add(elem);
-        result[date] = list;
-      } else {
-        result.putIfAbsent(date, () => [elem]);
+      DateTime first = CalendarService().removeTime(elem.start);
+      DateTime index = CalendarService().removeTime(elem.start);
+      DateTime last = CalendarService().removeTime(elem.end);
+      for (var i = 0; i <= first.difference(last).inDays; i++) {
+        _insertIntoStore(result, index, elem);
+        index = index.add(Duration(days: 1));
       }
     });
     return result;
+  }
+
+  _insertIntoStore(map, date, event) {
+    if (map.containsKey(date)) {
+      var list = map[date];
+      list.add(event);
+      map[date] = list;
+    } else {
+      map.putIfAbsent(date, () => [event]);
+    }
   }
 
 //  SplayTreeMap<DateTime, List<Event>> toMapIndexed(List<Event> events) {

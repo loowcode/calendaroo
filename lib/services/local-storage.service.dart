@@ -12,6 +12,8 @@ class LocalStorageService {
   static final LocalStorageService _instance = LocalStorageService._();
   static Database _database;
 
+  static const int DB_VERSION = 1;
+
   LocalStorageService._();
 
   factory LocalStorageService() {
@@ -31,18 +33,19 @@ class LocalStorageService {
     Directory directory = await getApplicationDocumentsDirectory();
     String dbPath = join(directory.path, 'database.db');
     var database = openDatabase(dbPath,
-        version: 1,
+        version: DB_VERSION,
         onConfigure: _onConfigure,
         onCreate: _onCreate,
         onUpgrade: _onUpgrade);
     return database;
   }
 
-  void _onCreate(Database db, int version) {
-    db.execute('''
+  FutureOr<void> _onCreate(Database db, int version) async {
+    await db.execute('''
     CREATE TABLE events(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT,
+      uuid TEXT,
       description TEXT,
       start TEXT,
       end TEXT
@@ -91,6 +94,7 @@ class LocalStorageService {
       return Event(
         id: maps[i]['id'],
         title: maps[i]['title'],
+        uuid: maps[i]['uuid'],
         description: maps[i]['description'],
         start: DateTime.parse(maps[i]['start']),
         end: DateTime.parse(maps[i]['end']),
@@ -101,7 +105,8 @@ class LocalStorageService {
   FutureOr<void> _onConfigure(Database db) async {
     var env = Environment().environment;
     if (env == DEVELOP) {
-      db.delete('events');
+      await db.execute("drop table if exists events");
+      _onCreate(db, DB_VERSION);
       print('DB deleted');
     }
   }

@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 import 'add-event.viewmodel.dart';
 
@@ -38,7 +39,6 @@ class _AddEventPageState extends State<AddEventPage> {
     _endTime = now.add(Duration(hours: 1));
   }
 
-  // TODO grafica e translate
   @override
   Widget build(BuildContext context) {
     var _formatterDate =
@@ -298,7 +298,6 @@ class _AddEventPageState extends State<AddEventPage> {
             _formKey.currentState.save();
             // If the form is valid, display a snackbar. In the real world,
             // you'd often call a server or save the information in a database.
-            print('valido');
             store.createEvent(_createNewEvent());
             NavigationService().pop();
           }
@@ -318,10 +317,11 @@ class _AddEventPageState extends State<AddEventPage> {
   }
 
   Event _createNewEvent() {
-    print(_startTime);
+    var uuid = Uuid();
     return Event(
         id: null,
         title: _title,
+        uuid: uuid.v4(),
         description: _description,
         start: DateTime(_startDate.year, _startDate.month, _startDate.day,
             _startTime.hour, _startTime.minute),

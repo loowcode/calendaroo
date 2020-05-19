@@ -20,6 +20,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
 
   String _title;
   String _description;
+  String _uuid;
   DateTime _startDate;
   DateTime _endDate;
   DateTime _startTime;
@@ -32,6 +33,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
   void initState() {
     super.initState();
     _title = calendarooState.state.calendarState.showEvent.title;
+    _uuid = calendarooState.state.calendarState.showEvent.uuid;
     _titleController.text = _title;
     _description = calendarooState.state.calendarState.showEvent.description;
     final now = DateTime.now();
@@ -41,14 +43,13 @@ class _ShowEventPageState extends State<ShowEventPage> {
     _endTime = now.add(Duration(hours: 1));
   }
 
-  // TODO grafica e translate
   @override
   Widget build(BuildContext context) {
     Event event = ModalRoute.of(context).settings.arguments;
-    var _formatterDate = new DateFormat.yMMMMd(
-        Localizations.localeOf(context).toString()); // TODO locale
-    var _formatterTime = new DateFormat.Hm(
-        Localizations.localeOf(context).toString()); // TODO locale
+    var _formatterDate =
+        new DateFormat.yMMMMd(Localizations.localeOf(context).toString());
+    var _formatterTime =
+        new DateFormat.Hm(Localizations.localeOf(context).toString());
     return Scaffold(
       body: StoreConnector<AppState, ShowEventViewModel>(
           converter: (store) => ShowEventViewModel.fromStore(store),
@@ -328,8 +329,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
             _formKey.currentState.save();
             // If the form is valid, display a snackbar. In the real world,
             // you'd often call a server or save the information in a database.
-            print('valido');
-            store.editEvent(_createEvent());
+            store.editEvent(store.showEvent, _createEvent());
             NavigationService().pop();
           }
         },
@@ -351,6 +351,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
     return Event(
         id: null,
         title: _title,
+        uuid: _uuid,
         description: _description,
         start: DateTime(_startDate.year, _startDate.month, _startDate.day,
             _startTime.hour, _startTime.minute),
