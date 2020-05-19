@@ -4,16 +4,17 @@ import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:redux/redux.dart';
 
 class ShowEventViewModel {
-  final Event event;
+  final Event showEvent;
 
-  final Function(Event) editEvent;
+  final Function(Event, Event) editEvent;
 
-  ShowEventViewModel({this.event, this.editEvent});
+  ShowEventViewModel({this.showEvent, this.editEvent});
 
   static ShowEventViewModel fromStore(Store<AppState> store) {
     return ShowEventViewModel(
-      event: store.state.calendarState.showEvent,
-      editEvent: (event) => store.dispatch(new EditEvent(event)),
+      showEvent: store.state.calendarState.showEvent,
+      editEvent: (oldEvent, newEvent) =>
+          store.dispatch(new EditEvent(oldEvent, newEvent)),
     );
   }
 }

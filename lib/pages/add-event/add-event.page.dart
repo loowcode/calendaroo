@@ -39,7 +39,6 @@ class _AddEventPageState extends State<AddEventPage> {
     _endTime = now.add(Duration(hours: 1));
   }
 
-  // TODO grafica e translate
   @override
   Widget build(BuildContext context) {
     var _formatterDate =
@@ -299,7 +298,6 @@ class _AddEventPageState extends State<AddEventPage> {
             _formKey.currentState.save();
             // If the form is valid, display a snackbar. In the real world,
             // you'd often call a server or save the information in a database.
-            print('valido');
             store.createEvent(_createNewEvent());
             NavigationService().pop();
           }

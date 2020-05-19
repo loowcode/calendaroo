@@ -27,9 +27,10 @@ class OpenEvent {
 }
 
 class EditEvent {
-  final Event event;
+  final Event newEvent;
+  final Event oldEvent;
 
-  EditEvent(this.event);
+  EditEvent(this.oldEvent, this.newEvent);
 }
 
 class SelectDay {

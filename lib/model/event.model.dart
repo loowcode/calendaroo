@@ -8,7 +8,6 @@ class Event {
   DateTime start;
   DateTime end;
 
-// TODO ...
 
   Event(
       {@required this.id,
