@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 import 'add-event.viewmodel.dart';
 
@@ -318,10 +319,11 @@ class _AddEventPageState extends State<AddEventPage> {
   }
 
   Event _createNewEvent() {
-    print(_startTime);
+    var uuid = Uuid();
     return Event(
         id: null,
         title: _title,
+        uuid: uuid.v4(),
         description: _description,
         start: DateTime(_startDate.year, _startDate.month, _startDate.day,
             _startTime.hour, _startTime.minute),

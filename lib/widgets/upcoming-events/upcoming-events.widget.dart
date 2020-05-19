@@ -69,7 +69,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
               child: Stack(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.only(top: 16),
                     child: ListView(
                         controller: _listController,
                         padding: EdgeInsets.all(16),

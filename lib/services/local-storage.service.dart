@@ -43,6 +43,7 @@ class LocalStorageService {
     CREATE TABLE events(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT,
+      uuid TEXT,
       description TEXT,
       start TEXT,
       end TEXT
@@ -91,6 +92,7 @@ class LocalStorageService {
       return Event(
         id: maps[i]['id'],
         title: maps[i]['title'],
+        uuid: maps[i]['uuid'],
         description: maps[i]['description'],
         start: DateTime.parse(maps[i]['start']),
         end: DateTime.parse(maps[i]['end']),
