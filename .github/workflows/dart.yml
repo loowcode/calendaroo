@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 env:
-  flutter_version: "1.17.0"
+  flutter_version: "1.17.1"
   java_version: "12.x"
 
 jobs:
@@ -26,5 +26,6 @@ jobs:
         flutter-version: ${{ env.flutter_version }}
     - run: flutter pub get
     - run: flutter test
-    - run: flutter build apk -t lib/environments/develop.dart
+    - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64 -t lib/environments/integration.dart
+
 
