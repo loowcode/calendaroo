@@ -1,4 +1,5 @@
 import 'package:calendaroo/colors.dart';
+import 'package:calendaroo/model/received-notification.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
@@ -8,6 +9,20 @@ import 'package:calendaroo/theme.dart';
 import 'package:calendaroo/widgets/calendar/calendar.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:rxdart/rxdart.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+// Streams are created so that app can respond to notification-related events since the plugin is initialised in the `main` function
+final BehaviorSubject<ReceivedNotification> didReceiveLocalNotificationSubject =
+    BehaviorSubject<ReceivedNotification>();
+
+final BehaviorSubject<String> selectNotificationSubject =
+    BehaviorSubject<String>();
+
+NotificationAppLaunchDetails notificationAppLaunchDetails;
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,6 +30,66 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+    _requestIOSPermissions();
+    _configureDidReceiveLocalNotificationSubject();
+    _configureSelectNotificationSubject();
+  }
+
+  void _requestIOSPermissions() {
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  void _configureDidReceiveLocalNotificationSubject() {
+    didReceiveLocalNotificationSubject.stream
+        .listen((ReceivedNotification receivedNotification) async {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: receivedNotification.title != null
+              ? Text(receivedNotification.title)
+              : null,
+          content: receivedNotification.body != null
+              ? Text(receivedNotification.body)
+              : null,
+          actions: [
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: Text('Ok'),
+              onPressed: () async {
+                Navigator.of(context, rootNavigator: true).pop();
+                await NavigationService().navigateTo(SHOW_EVENT,
+                    arguments: receivedNotification.payload);
+              },
+            )
+          ],
+        ),
+      );
+    });
+  }
+
+  void _configureSelectNotificationSubject() {
+    selectNotificationSubject.stream.listen((String payload) async {
+      await NavigationService().navigateTo(SHOW_EVENT, arguments: payload);
+    });
+  }
+
+  @override
+  void dispose() {
+    didReceiveLocalNotificationSubject.close();
+    selectNotificationSubject.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -41,6 +116,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   AppLocalizations.of(context).translate('today'),
                   () => calendarooState.dispatch(SelectDay(DateTime.now()))),
               _buildBottomIcon(Icons.account_circle, "Account", () {}),
+              _buildBottomIcon(Icons.notifications, "Notifica", () async {
+                var androidPlatformChannelSpecifics =
+                    AndroidNotificationDetails('your channel id',
+                        'your channel name', 'your channel description',
+                        importance: Importance.Max,
+                        priority: Priority.High,
+                        ticker: 'ticker');
+                var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+                var platformChannelSpecifics = NotificationDetails(
+                    androidPlatformChannelSpecifics,
+                    iOSPlatformChannelSpecifics);
+                await flutterLocalNotificationsPlugin.show(
+                    0, 'plain title', 'plain body', platformChannelSpecifics,
+                    payload: 'item x');
+              }),
             ]),
       ),
     );
