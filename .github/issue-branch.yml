@@ -1,0 +1,14 @@
+mode: auto # or chatops
+silent: false
+branchName: '${issue.number}-${issue.title}'
+autoCloseIssue: true
+branches:
+  - label: task
+    prefix: feature/
+    name: master
+  - label: bug
+    prefix: bugfix/
+    name: master
+  - label: '*'
+    prefix: issues/
+    name: master
