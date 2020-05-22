@@ -2,8 +2,10 @@ import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/navigation.service.dart';
+import 'package:calendaroo/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
@@ -35,7 +37,7 @@ class _AddEventPageState extends State<AddEventPage> {
     final now = DateTime.now();
     _startDate = calendarooState.state.calendarState.selectedDay;
     _startTime = now;
-    _endDate = now;
+    _endDate = _startDate;
     _endTime = now.add(Duration(hours: 1));
   }
 
@@ -210,28 +212,10 @@ class _AddEventPageState extends State<AddEventPage> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           GestureDetector(
-            onTap: () => CupertinoRoundedDatePicker.show(
-              context,
-              locale: Localizations.localeOf(context),
-//              minimumYear: 1700,
-              initialDate: _startDate,
-              minimumYear: start ? 1700 : _startDate.year,
-              maximumYear: 3000,
-              minimumDate: start
-                  ? DateTime.now().subtract(Duration(days: 7))
-                  : _startDate,
-              textColor: primaryWhite,
-              background: secondaryBlue,
-              borderRadius: 16,
-              initialDatePickerMode: CupertinoDatePickerMode.date,
-              onDateTimeChanged: (newDate) {
-                setState(() {
-                  if (start) {
-                    _startDate = newDate;
-                  } else {
-                    _endDate = newDate;
-                  }
-                });
+            onTap: () => showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return _buildDatePicker(context, start);
               },
             ),
             child: Chip(
@@ -282,6 +266,97 @@ class _AddEventPageState extends State<AddEventPage> {
         ],
       )
     ]);
+  }
+
+  Widget _buildDatePicker(BuildContext context, bool start) {
+    DateTime _current = start ? _startDate : _endDate;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.primaryTheme.backgroundColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 250,
+//              child: CupertinoTheme(
+//                data: cupertinoTheme.copyWith(textTheme: textTheme),
+              child: CupertinoDatePicker(
+                initialDateTime: start ? _startDate : _endDate,
+                minimumDate: start ? null : _startDate,
+                mode: CupertinoDatePickerMode.date,
+                onDateTimeChanged: (value) {
+                  _current = value;
+                },
+              ),
+//              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FlatButton(
+                      textColor: secondaryBlue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text('Cancel'),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text('Save'),
+                      ),
+                      color: AppTheme.primaryTheme.buttonColor,
+                      textColor: AppTheme.primaryTheme.textTheme.button.color,
+                      onPressed: () {
+                        setState(() {
+                          if (start) {
+                            _startDate = _current;
+
+                            if (_endDate.isBefore(_startDate)) {
+                              _endDate = _startDate;
+                            }
+                          } else {
+                            _endDate = _current;
+                          }
+                        });
+
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Padding _buildButton(AddEventViewModel store, BuildContext context) {
