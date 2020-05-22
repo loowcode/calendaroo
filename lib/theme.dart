@@ -2,7 +2,7 @@ import 'package:calendaroo/colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static get primaryTheme {
+  static ThemeData get primaryTheme {
     final ThemeData base = ThemeData.light();
     return base.copyWith(
       backgroundColor: primaryWhite,
@@ -10,7 +10,7 @@ class AppTheme {
       primaryColor: primaryWhite,
       buttonColor: secondaryBlue,
       // hintColor: accentYellow,
-      // canvasColor: accentYellow,
+      canvasColor: transparent,
 //      scaffoldBackgroundColor: primaryWhite,
 //      cardColor: itemVeryLightGrayMostlyWhite,
       textSelectionColor: accentYellow,
@@ -19,7 +19,6 @@ class AppTheme {
 //      primaryTextTheme: _buildPrimaryTextTheme(base.primaryTextTheme),
 //      accentTextTheme: _buildPrimaryTextTheme(base.accentTextTheme),
       primaryIconTheme: base.iconTheme.copyWith(color: secondaryDarkBlue),
-      // buttonTheme: ButtonThemeData(),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
             borderSide: BorderSide(color: secondaryBlue, width: 2.0)),
@@ -35,44 +34,37 @@ class AppTheme {
     return base
         .copyWith(
           headline4: base.headline4.copyWith(
-//            fontSize: 32,
             color: primaryBlack,
             fontWeight: FontWeight.w700,
           ),
           headline5: base.headline5.copyWith(
-//            fontSize: 32,
             fontWeight: FontWeight.w700,
           ),
           subtitle1: base.subtitle1.copyWith(
-//            fontSize: 28,
             fontWeight: FontWeight.w700,
           ),
           headline6: base.headline6.copyWith(
-//            fontSize: 24.0,
             fontWeight: FontWeight.normal,
           ),
           subtitle2: base.subtitle2.copyWith(
-//              fontSize: 20.0,
-              fontWeight: FontWeight.w600,
-              color: secondaryDarkGrey),
+            fontWeight: FontWeight.w600,
+            color: secondaryDarkGrey,
+          ),
           bodyText2: base.bodyText2.copyWith(
-//            fontSize: 20.0,
             fontWeight: FontWeight.w700,
             color: primaryBlack,
           ),
           bodyText1: base.bodyText1.copyWith(
-//            fontSize: 20.0,
             fontWeight: FontWeight.normal,
             color: primaryWhite,
           ),
           caption: base.caption.copyWith(
             fontWeight: FontWeight.normal,
-//            fontSize: 24.0,
           ),
           button: base.button.copyWith(
-              fontWeight: FontWeight.bold,
-//              fontSize: 24.0,
-              color: primaryWhite),
+            fontWeight: FontWeight.bold,
+            color: primaryWhite,
+          ),
         )
         .apply(
           fontFamily: 'SourceSansPro',
@@ -121,49 +113,48 @@ class AppTheme {
   static TextTheme _buildSecondaryTextTheme(TextTheme base) {
     return base
         .copyWith(
-      headline4: base.headline4.copyWith(
+          headline4: base.headline4.copyWith(
 //            fontSize: 32,
-        fontWeight: FontWeight.w700,
-      ),
-      headline5: base.headline5.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+          headline5: base.headline5.copyWith(
 //            fontSize: 32,
-        fontWeight: FontWeight.w700,
-      ),
-      subtitle1: base.subtitle1.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+          subtitle1: base.subtitle1.copyWith(
 //            fontSize: 28,
-        fontWeight: FontWeight.w700,
-      ),
-      headline6: base.headline6.copyWith(
-
+            fontWeight: FontWeight.w700,
+          ),
+          headline6: base.headline6.copyWith(
 //            fontSize: 24.0,
-        fontWeight: FontWeight.normal,
-      ),
-      subtitle2: base.subtitle2.copyWith(
+            fontWeight: FontWeight.normal,
+          ),
+          subtitle2: base.subtitle2.copyWith(
 //              fontSize: 20.0,
-          fontWeight: FontWeight.w600,
-          color: secondaryDarkGrey),
-      bodyText2: base.bodyText2.copyWith(
+              fontWeight: FontWeight.w600,
+              color: secondaryDarkGrey),
+          bodyText2: base.bodyText2.copyWith(
 //            fontSize: 20.0,
-        fontWeight: FontWeight.w700,
-        color: primaryWhite,
-      ),
-      bodyText1: base.bodyText1.copyWith(
+            fontWeight: FontWeight.w700,
+            color: primaryWhite,
+          ),
+          bodyText1: base.bodyText1.copyWith(
 //            fontSize: 20.0,
-        fontWeight: FontWeight.normal,
-        color: primaryWhite,
-      ),
-      caption: base.caption.copyWith(
-        fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.normal,
+            color: primaryWhite,
+          ),
+          caption: base.caption.copyWith(
+            fontWeight: FontWeight.normal,
 //            fontSize: 24.0,
-      ),
-      button: base.button.copyWith(
-          fontWeight: FontWeight.bold,
+          ),
+          button: base.button.copyWith(
+              fontWeight: FontWeight.bold,
 //              fontSize: 24.0,
-          color: primaryWhite),
-    )
+              color: primaryWhite),
+        )
         .apply(
-      fontFamily: 'SourceSansPro',
-    );
+          fontFamily: 'SourceSansPro',
+        );
   }
 }
 
