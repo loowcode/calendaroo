@@ -11,6 +11,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'environment.dart';
 
+// TODO: main have too much work and some frames are skipped
 void main() async {
   await setUp();
   runApp(MyApp());
@@ -24,10 +25,12 @@ Future<void> setUp() async {
   InitializerAppService().preLoadingData();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
+  // TODO: too much duplicated code! develop and integration are very similar
   notificationAppLaunchDetails =
-  await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+      await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
-  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+  var initializationSettingsAndroid =
+      AndroidInitializationSettings('notification_icon');
   // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
   // of the `IOSFlutterLocalNotificationsPlugin` class
   var initializationSettingsIOS = IOSInitializationSettings(
@@ -43,11 +46,9 @@ Future<void> setUp() async {
       initializationSettingsAndroid, initializationSettingsIOS);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onSelectNotification: (String payload) async {
-        if (payload != null) {
-          debugPrint('notification payload: ' + payload);
-        }
-        selectNotificationSubject.add(payload);
-      });
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+    selectNotificationSubject.add(payload);
+  });
 }
-
-
