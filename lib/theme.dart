@@ -2,7 +2,7 @@ import 'package:calendaroo/colors.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static get primaryTheme {
+  static ThemeData get primaryTheme {
     final ThemeData base = ThemeData.light();
     return base.copyWith(
       backgroundColor: primaryWhite,
