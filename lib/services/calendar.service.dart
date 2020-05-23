@@ -66,6 +66,7 @@ class CalendarService {
 
   int getIndex(Map<DateTime, List<Event>> days, DateTime day) {
     if (days.keys.length == null || days.keys.length == 0) return 0;
+    
     return days.keys.toList().indexOf(day);
   }
 
