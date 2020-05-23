@@ -1,0 +1,19 @@
+mode: auto # or chatops
+silent: false
+branchName: '${issue.number}-${issue.title}'
+autoCloseIssue: true
+branches:
+  - label: feature
+    prefix: feature/
+    name: develop
+  - label: fix
+    prefix: fix/
+    name: develop
+  - label: bugfix
+    prefix: bugfix/
+    name: release
+  - label: hotfix
+    prefix: hotfix/
+    name: master
+  - label: '*'
+    name: develop
