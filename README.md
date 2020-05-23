@@ -24,9 +24,9 @@ A Fancy Flutter Calendar
 3. In a terminal run `git fetch` to update the list of branch
 
 ### BranchName Convention
-- from develop (default branch): `feature/<issue-number>-<branch-name>` `fix/<issue-number>-<branch-name>`
-- from release: `bugfix/<issue-number>-<branch-name>`
-- from master: `hotfix/<issue-number>-<branch-name>`
+- from develop (default branch): `feature/<issue-number>-<issue-name>` `fix/<issue-number>-<issue-name>`
+- from release: `bugfix/<issue-number>-<issue-name>`
+- from master: `hotfix/<issue-number>-<issue-name>`
 
 ## Pull Request
 1. When you create a pull request **include in the message a [keyword](https://help.github.com/en/enterprise/2.16/user/github/managing-your-work-on-github/closing-issues-using-keywords#about-issue-references)** (ex: `Close #1` this comment automitally closes the issue when you merge the PR). Select a reviewer.
