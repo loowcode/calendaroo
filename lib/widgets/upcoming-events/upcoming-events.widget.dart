@@ -56,6 +56,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
           try {
             _listController.scrollToIndex(CalendarService()
                 .getIndex(viewModel.eventMapped, viewModel.selectedDay));
+            
 //            _animationController.forward(from: 0);
           } catch (e) {
             print('no events for selected day');
