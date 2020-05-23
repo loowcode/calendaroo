@@ -40,7 +40,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   Icons.today,
                   AppLocalizations.of(context).translate('today'),
                   () => calendarooState.dispatch(SelectDay(DateTime.now()))),
-              _buildBottomIcon(Icons.account_circle, "Account", () {}),
+              _buildBottomIcon(Icons.settings, "Settings",
+                  () => NavigationService().navigateTo(SETTINGS)),
             ]),
       ),
     );

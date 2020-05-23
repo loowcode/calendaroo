@@ -3,6 +3,7 @@ import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/theme.dart';
+import 'package:calendaroo/widgets/common/page-title.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -57,28 +58,10 @@ class _AddEventPageState extends State<AddEventPage> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: 8,
-                    ),
                     Expanded(
                       child: ListView(
                         children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text('Nuovo Evento',
-                                  textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.headline4),
-                              IconButton(
-                                  onPressed: () {
-                                    NavigationService().pop();
-                                  },
-                                  icon: Icon(
-                                    Icons.close,
-                                    color: secondaryLightGrey,
-                                  ))
-                            ],
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          ),
+                          PageTitle('Nuovo Evento'),
                           _buildTitle(),
                           _buildTime(store, true, context, _formatterDate,
                               _formatterTime),
