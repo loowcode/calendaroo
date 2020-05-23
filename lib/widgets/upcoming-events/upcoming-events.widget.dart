@@ -26,7 +26,9 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     _listController = AutoScrollController(
         viewportBoundaryGetter: () =>
             Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-        axis: Axis.vertical);
+        axis: Axis.vertical,
+       // suggestedRowHeight: 500
+    );
 
     _animationController = AnimationController(
       duration: const Duration(seconds: 1),
@@ -55,7 +57,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         onDidChange: (viewModel) {
           try {
             _listController.scrollToIndex(CalendarService()
-                .getIndex(viewModel.eventMapped, viewModel.selectedDay));
+                .getIndex(viewModel.eventMapped, viewModel.selectedDay),preferPosition: AutoScrollPosition.begin);
             
 //            _animationController.forward(from: 0);
           } catch (e) {
