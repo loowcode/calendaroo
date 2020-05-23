@@ -21,6 +21,7 @@ A Fancy Flutter Calendar
 ## Create Issue
 1. Select a **type label** (feture, fix, bugfix, hotfix), a priority label, the milestone and the project
 2. Select the **assignee** *(Do this after the selection of a type label: **a github action creates for you an associated branch**)*
+3. In a terminal run `git fetch` to update the list of branch
 
 ### BranchName Convention
 - from develop (default branch): `feature/<branch-name>` `fix/<branch-name>`
