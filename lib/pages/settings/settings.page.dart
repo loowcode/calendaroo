@@ -94,7 +94,7 @@ class _SettingsPageState extends State<SettingsPage> {
   // TODO: make a common widget for button
   Widget _buildFeedbackButton() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(32.0),
       child: Column(
         children: [
           Row(
