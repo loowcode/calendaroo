@@ -55,7 +55,8 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         onDidChange: (viewModel) {
           try {
             _listController.scrollToIndex(CalendarService()
-                .getIndex(viewModel.eventMapped, viewModel.selectedDay));
+                .getIndex(viewModel.eventMapped, viewModel.selectedDay),preferPosition: AutoScrollPosition.begin);
+
 //            _animationController.forward(from: 0);
           } catch (e) {
             print('no events for selected day');

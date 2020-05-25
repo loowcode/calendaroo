@@ -33,7 +33,8 @@ CalendarState _openEvent(CalendarState state, OpenEvent action) {
 }
 
 CalendarState _selectDay(CalendarState state, SelectDay action) {
-  return state.copyWith(selectedDay: action.day);
+  return state.copyWith(selectedDay: CalendarService().removeTime(action.day));
+
 }
 
 CalendarState _removeEvent(CalendarState state, RemoveEvent action) {
