@@ -26,11 +26,8 @@ NotificationAppLaunchDetails notificationAppLaunchDetails;
 
 Future<void> scheduleNotification(Event event) async {
   var date;
-  if (Environment().environment == DEVELOP) {
-    date = DateTime.now().add(Duration(seconds: 10));
-  } else {
-    date = event.start;
-  }
+    date = DateTime.now().add(Duration(seconds: 15));
+
 
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'event_notification', 'Notifiche evento', 'Mostra le notifiche evento',
@@ -72,9 +69,9 @@ Future initNotification() async {
 Future _onSelectNotification(String payload) async {
   if (payload != null) {
     debugPrint('notification payload: ' + payload);
-    Event event = await EventsRepository().event(int.parse(payload));
-    calendarooState.dispatch(OpenEvent(event));
-    NavigationService().navigateTo(SHOW_EVENT, arguments: event);
+//    Event event = await EventsRepository().event(int.parse(payload));
+//    calendarooState.dispatch(OpenEvent(event));
+//    NavigationService().navigateTo(SHOW_EVENT, arguments: event);
   }
   selectNotificationSubject.add(payload);
 }
