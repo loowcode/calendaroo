@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           DefaultCupertinoLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,  // Add global cupertino localiztions.
+          GlobalCupertinoLocalizations.delegate,
         ],
         localeResolutionCallback: (locale, supportedLocales) {
           for (var supportedLocale in supportedLocales) {

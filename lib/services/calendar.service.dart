@@ -36,7 +36,7 @@ class CalendarService {
     return result;
   }
 
-  _insertIntoStore(map, date, event) {
+  _insertIntoStore(SplayTreeMap<DateTime, List<Event>>  map, date, event) {
     if (map.containsKey(date)) {
       var list = map[date];
       list.add(event);
