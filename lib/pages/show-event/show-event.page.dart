@@ -11,6 +11,10 @@ import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:intl/intl.dart';
 
 class ShowEventPage extends StatefulWidget {
+  Event event;
+
+  ShowEventPage(this.event);
+
   @override
   _ShowEventPageState createState() => _ShowEventPageState();
 }
@@ -45,7 +49,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
 
   @override
   Widget build(BuildContext context) {
-    Event event = ModalRoute.of(context).settings.arguments;
+    Event event = widget.event;
     var _formatterDate =
         new DateFormat.yMMMMd(Localizations.localeOf(context).toString());
     var _formatterTime =

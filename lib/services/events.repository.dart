@@ -29,6 +29,19 @@ class EventsRepository{
     return client.delete('events', where: 'id = ?', whereArgs: [id]);
   }
 
+  Future<Event> event(int id) async {
+    var client = await LocalStorageService().db;
+    final List<Map<String, dynamic>> maps = await client.query('events', where: 'id = ?', whereArgs: [id]);
+    return Event(
+      id: maps[0]['id'],
+      title: maps[0]['title'],
+      uuid: maps[0]['uuid'],
+      description: maps[0]['description'],
+      start: DateTime.parse(maps[0]['start']),
+      end: DateTime.parse(maps[0]['end']),
+    );
+  }
+
   Future<List<Event>> events() async {
     final Database client = await LocalStorageService().db;
 
