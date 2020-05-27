@@ -1,16 +1,8 @@
-import 'package:calendaroo/constants.dart';
-import 'package:calendaroo/environments/environment.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/model/received-notification.dart';
-import 'package:calendaroo/redux/actions/calendar.actions.dart';
-import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../routes.dart';
-import 'events.repository.dart';
-import 'navigation.service.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -26,8 +18,7 @@ NotificationAppLaunchDetails notificationAppLaunchDetails;
 
 Future<void> scheduleNotification(Event event) async {
   var date;
-    date = DateTime.now().add(Duration(seconds: 15));
-
+  date = DateTime.now().add(Duration(seconds: 15));
 
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'event_notification', 'Notifiche evento', 'Mostra le notifiche evento',

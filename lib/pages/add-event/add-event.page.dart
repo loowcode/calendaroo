@@ -5,7 +5,6 @@ import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
@@ -15,6 +14,10 @@ import 'package:uuid/uuid.dart';
 import 'add-event.viewmodel.dart';
 
 class AddEventPage extends StatefulWidget {
+  final Event event;
+
+  AddEventPage(this.event);
+
   @override
   _AddEventPageState createState() => _AddEventPageState();
 }
@@ -29,16 +32,17 @@ class _AddEventPageState extends State<AddEventPage> {
   DateTime _startTime;
   DateTime _endTime;
 
+
   @override
   void initState() {
     super.initState();
-    _title = "";
-    _description = "";
+    _title = widget.event.title ?? "";
+    _description = widget.event.description ??"";
     final now = DateTime.now();
-    _startDate = calendarooState.state.calendarState.selectedDay;
-    _startTime = now;
-    _endDate = _startDate;
-    _endTime = now.add(Duration(hours: 1));
+    _startDate = widget.event.start ?? calendarooState.state.calendarState.selectedDay;
+    _startTime = widget.event.start ?? now;
+    _endDate = widget.event.end ?? _startDate;
+    _endTime = widget.event.end ?? now.add(Duration(hours: 1));
   }
 
   @override

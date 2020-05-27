@@ -12,7 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class ShowEventPage extends StatefulWidget {
-  Event event;
+  final Event event;
 
   ShowEventPage(this.event);
 
@@ -21,33 +21,6 @@ class ShowEventPage extends StatefulWidget {
 }
 
 class _ShowEventPageState extends State<ShowEventPage> {
-  final _formKey = GlobalKey<FormState>();
-
-  String _title;
-  String _description;
-  String _uuid;
-  DateTime _startDate;
-  DateTime _endDate;
-  DateTime _startTime;
-  DateTime _endTime;
-  var _canModify = false;
-
-  var _titleController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _title = calendarooState.state.calendarState.showEvent.title;
-    _uuid = calendarooState.state.calendarState.showEvent.uuid;
-    _titleController.text = _title;
-    _description = calendarooState.state.calendarState.showEvent.description;
-    final now = DateTime.now();
-    _startDate = now;
-    _startTime = now;
-    _endDate = now.add(Duration(days: 1));
-    _endTime = now.add(Duration(hours: 1));
-  }
-
   @override
   Widget build(BuildContext context) {
     Event event = widget.event;
@@ -55,12 +28,12 @@ class _ShowEventPageState extends State<ShowEventPage> {
       body: StoreConnector<AppState, ShowEventViewModel>(
           converter: (store) => ShowEventViewModel.fromStore(store),
           builder: (context, store) {
-            return _buildHead(store, event);
+            return _buildPage(store, event);
           }),
     );
   }
 
-  Widget _buildHead(ShowEventViewModel store, Event event) {
+  Widget _buildPage(ShowEventViewModel store, Event event) {
     return CustomScrollView(slivers: <Widget>[
       SliverAppBar(
         expandedHeight: 200,
@@ -91,12 +64,12 @@ class _ShowEventPageState extends State<ShowEventPage> {
         backgroundColor: secondaryBlue,
       ),
       SliverFillRemaining(
-        child: _buildBody(store, event),
+        child: _buildInfoEvent(store, event),
       )
     ]);
   }
 
-  Widget _buildBody(ShowEventViewModel store, Event event) {
+  Widget _buildInfoEvent(ShowEventViewModel store, Event event) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -108,10 +81,10 @@ class _ShowEventPageState extends State<ShowEventPage> {
           SizedBox(
             height: 24,
           ),
-          _buildTime(true),
+          _buildTime(event, start: true),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
-            child: _buildTime(false),
+            child: _buildTime(event, start: false),
           ),
         ],
       ),
@@ -137,7 +110,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
     );
   }
 
-  Widget _buildTime(bool start) {
+  Widget _buildTime(Event event, {bool start}) {
     var _formatterDate =
         new DateFormat.yMMMMEEEEd(Localizations.localeOf(context).toString());
     var _formatterTime =
@@ -158,22 +131,17 @@ class _ShowEventPageState extends State<ShowEventPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-//            Text(
-//              start ? 'Inizio Evento' : 'Fine Evento',
-//              textAlign: TextAlign.left,
-//              style: Theme.of(context).textTheme.subtitle2,
-//            ),
             Row(children: <Widget>[
               Container(
                   margin: EdgeInsets.only(right: 8),
                   child: Text(
-                    _formatterTime.format(start ? _startTime : _endTime),
+                    _formatterTime.format(start ? event.start : event.end),
                     style: Theme.of(context)
                         .textTheme
                         .bodyText2
                         .copyWith(color: secondaryDarkBlue),
                   )),
-              Text(_formatterDate.format(start ? _startDate : _endDate)),
+              Text(_formatterDate.format(start ? event.start : event.end)),
             ]),
           ],
         ),
