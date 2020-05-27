@@ -75,38 +75,37 @@ class _ShowEventPageState extends State<ShowEventPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          event.description != null && event.description.isNotEmpty
+          event.description != null && event.description.length > 0
               ? _buildDescription(event)
-              : null,
-          SizedBox(
-            height: 24,
-          ),
+              : SizedBox(
+                  height: 0,
+                ),
           _buildTime(event, start: true),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: _buildTime(event, start: false),
-          ),
+          _buildTime(event, start: false),
         ],
       ),
     );
   }
 
-  Row _buildDescription(Event event) {
-    return Row(
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(right: 8),
-          child: Icon(
-            Icons.subject,
-            color: secondaryLightGrey,
+  Widget _buildDescription(Event event) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(right: 8),
+            child: Icon(
+              Icons.subject,
+              color: secondaryLightGrey,
+            ),
           ),
-        ),
-        Text(
-          event.description,
-          textAlign: TextAlign.left,
-          style: Theme.of(context).textTheme.subtitle1,
-        )
-      ],
+          Text(
+            event.description,
+            textAlign: TextAlign.left,
+            style: Theme.of(context).textTheme.subtitle1,
+          )
+        ],
+      ),
     );
   }
 
@@ -115,37 +114,40 @@ class _ShowEventPageState extends State<ShowEventPage> {
         new DateFormat.yMMMMEEEEd(Localizations.localeOf(context).toString());
     var _formatterTime =
         new DateFormat.Hm(Localizations.localeOf(context).toString());
-    return Row(
-      children: <Widget>[
-        Container(
-            margin: EdgeInsets.only(right: 8),
-            child: start
-                ? FaIcon(
-                    FontAwesomeIcons.clock,
-                    color: secondaryDarkBlue,
-                  )
-                : FaIcon(
-                    FontAwesomeIcons.dotCircle,
-                    color: secondaryDarkBlue,
-                  )),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(children: <Widget>[
-              Container(
-                  margin: EdgeInsets.only(right: 8),
-                  child: Text(
-                    _formatterTime.format(start ? event.start : event.end),
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .copyWith(color: secondaryDarkBlue),
-                  )),
-              Text(_formatterDate.format(start ? event.start : event.end)),
-            ]),
-          ],
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Row(
+        children: <Widget>[
+          Container(
+              margin: EdgeInsets.only(right: 8),
+              child: start
+                  ? FaIcon(
+                      FontAwesomeIcons.clock,
+                      color: secondaryDarkBlue,
+                    )
+                  : FaIcon(
+                      FontAwesomeIcons.dotCircle,
+                      color: secondaryDarkBlue,
+                    )),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(children: <Widget>[
+                Container(
+                    margin: EdgeInsets.only(right: 8),
+                    child: Text(
+                      _formatterTime.format(start ? event.start : event.end),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(color: secondaryDarkBlue),
+                    )),
+                Text(_formatterDate.format(start ? event.start : event.end)),
+              ]),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
