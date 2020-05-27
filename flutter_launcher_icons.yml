@@ -1,9 +1,12 @@
 # docs: https://github.com/fluttercommunity/flutter_launcher_icons
 flutter_icons:
-  android: true
-  ios: "logo_190417"
-  image_path_android: "assets/images/calendaroo_without_background.png"
-  image_path_ios: "assets/images/logo-calendaroo_without_background.png"
+  android: "app_icon"
+  ios: true
+  image_path: "assets/images/app_icon.png"
   # commentato per far funzionare le immagini ic_launcher_foreground senza sfondo. Serve per android M
-  # adaptive_icon_background: "#0f2f47"
+  adaptive_icon_background: "#313537"
   # adaptive_icon_foreground: "assets/images/logo-filled.png"
+
+#### Istruzioni per creare le icone ####
+  # flutter pub get
+  # flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons.yml
