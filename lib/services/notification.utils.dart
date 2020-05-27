@@ -60,9 +60,6 @@ Future initNotification() async {
 Future _onSelectNotification(String payload) async {
   if (payload != null) {
     debugPrint('notification payload: ' + payload);
-//    Event event = await EventsRepository().event(int.parse(payload));
-//    calendarooState.dispatch(OpenEvent(event));
-//    NavigationService().navigateTo(SHOW_EVENT, arguments: event);
   }
   selectNotificationSubject.add(payload);
 }
