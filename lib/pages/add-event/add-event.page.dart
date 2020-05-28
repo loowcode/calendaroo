@@ -32,17 +32,17 @@ class _AddEventPageState extends State<AddEventPage> {
   DateTime _startTime;
   DateTime _endTime;
 
-
   @override
   void initState() {
     super.initState();
-    _title = widget.event.title ?? "";
-    _description = widget.event.description ??"";
+    _title = widget.event?.title ?? "";
+    _description = widget.event?.description ?? "";
     final now = DateTime.now();
-    _startDate = widget.event.start ?? calendarooState.state.calendarState.selectedDay;
-    _startTime = widget.event.start ?? now;
-    _endDate = widget.event.end ?? _startDate;
-    _endTime = widget.event.end ?? now.add(Duration(hours: 1));
+    _startDate =
+        widget.event?.start ?? calendarooState.state.calendarState.selectedDay;
+    _startTime = widget.event?.start ?? now;
+    _endDate = widget.event?.end ?? _startDate;
+    _endTime = widget.event?.end ?? now.add(Duration(hours: 1));
   }
 
   @override
@@ -69,9 +69,16 @@ class _AddEventPageState extends State<AddEventPage> {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Text('Nuovo Evento',
-                                  textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.headline4),
+                              !_isEdit()
+                                  ? Text('Nuovo Evento',
+                                      textAlign: TextAlign.left,
+                                      style:
+                                          Theme.of(context).textTheme.headline4)
+                                  : Text('Modifica Evento',
+                                      textAlign: TextAlign.left,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4),
                               IconButton(
                                   onPressed: () {
                                     NavigationService().pop();
@@ -84,10 +91,10 @@ class _AddEventPageState extends State<AddEventPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           ),
                           _buildTitle(),
-                          _buildTime(store, true, context, _formatterDate,
-                              _formatterTime),
-                          _buildTime(store, false, context, _formatterDate,
-                              _formatterTime),
+                          _buildTime(
+                              true, context, _formatterDate, _formatterTime),
+                          _buildTime(
+                              false, context, _formatterDate, _formatterTime),
                         ],
                       ),
                     ),
@@ -115,6 +122,7 @@ class _AddEventPageState extends State<AddEventPage> {
               color: secondaryDarkBlue,
             ),
             title: TextFormField(
+              initialValue: _title,
               decoration: new InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: secondaryDarkBlue),
@@ -136,6 +144,8 @@ class _AddEventPageState extends State<AddEventPage> {
                     .bodyText2
                     .copyWith(color: primaryBlack),
               ),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 20),
               validator: (value) {
                 if (value != null && value.length > 0) {
                   return null;
@@ -165,6 +175,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 color: accentYellowText,
               ),
               title: TextFormField(
+                initialValue: _description,
                 decoration: new InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: secondaryDarkBlue),
@@ -186,6 +197,10 @@ class _AddEventPageState extends State<AddEventPage> {
                       .bodyText2
                       .copyWith(color: primaryBlack),
                 ),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 20),
                 onSaved: (value) {
                   setState(() {
                     _description = value;
@@ -199,8 +214,8 @@ class _AddEventPageState extends State<AddEventPage> {
     );
   }
 
-  Column _buildTime(AddEventViewModel store, bool start, BuildContext context,
-      DateFormat _formatterDate, DateFormat _formatterTime) {
+  Column _buildTime(bool start, BuildContext context, DateFormat _formatterDate,
+      DateFormat _formatterTime) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
         padding: const EdgeInsets.only(
@@ -375,9 +390,10 @@ class _AddEventPageState extends State<AddEventPage> {
           // Validate returns true if the form is valid, otherwise false.
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            // If the form is valid, display a snackbar. In the real world,
-            // you'd often call a server or save the information in a database.
-            store.createEvent(_createNewEvent());
+            _isEdit()
+                ? store.editEvent(
+                    widget.event, _createNewEvent(widget.event.id))
+                : store.createEvent(_createNewEvent(null));
             NavigationService().pop();
           }
         },
@@ -385,20 +401,25 @@ class _AddEventPageState extends State<AddEventPage> {
           height: 50,
           width: 300,
           child: Center(
-            child: Text(
-              'Crea Evento',
-              style: Theme.of(context).textTheme.button,
-            ),
+            child: !_isEdit()
+                ? Text(
+                    'Crea Evento',
+                    style: Theme.of(context).textTheme.button,
+                  )
+                : Text(
+                    'Modifica Evento',
+                    style: Theme.of(context).textTheme.button,
+                  ),
           ),
         ),
       ),
     );
   }
 
-  Event _createNewEvent() {
+  Event _createNewEvent(id) {
     var uuid = Uuid();
     return Event(
-        id: null,
+        id: id,
         title: _title,
         uuid: uuid.v4(),
         description: _description,
@@ -406,5 +427,9 @@ class _AddEventPageState extends State<AddEventPage> {
             _startTime.hour, _startTime.minute),
         end: DateTime(_endDate.year, _endDate.month, _endDate.day,
             _endTime.hour, _endTime.minute));
+  }
+
+  bool _isEdit() {
+    return widget.event != null;
   }
 }

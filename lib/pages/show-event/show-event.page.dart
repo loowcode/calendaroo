@@ -50,7 +50,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
                 Icons.edit,
                 color: primaryWhite,
               ),
-              onPressed: () => NavigationService().navigateTo(ADD_EVENT))
+              onPressed: () => NavigationService().navigateTo(ADD_EVENT, arguments: event))
         ],
         flexibleSpace: FlexibleSpaceBar(
           title: Text(

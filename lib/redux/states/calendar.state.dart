@@ -5,9 +5,9 @@ import 'package:flutter/cupertino.dart';
 
 @immutable
 class CalendarState {
-  final List<Event> events;
+  final List<Event> events; //TODO: remove this duplicated info
   final SplayTreeMap<DateTime, List<Event>> eventMapped;
-  final Event showEvent;
+  final Event showEvent; //TODO: remove this unused info
   final DateTime selectedDay;
 
   CalendarState(
