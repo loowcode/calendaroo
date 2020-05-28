@@ -38,7 +38,7 @@ class SharedPreferenceService {
     if (format == null || format == 'month') {
       return CalendarFormat.month;
     } else {
-      return CalendarFormat.week;
+      return CalendarFormat.twoWeeks;
     }
   }
 

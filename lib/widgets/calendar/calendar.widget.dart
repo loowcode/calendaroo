@@ -1,5 +1,6 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.widget.dart';
@@ -59,6 +60,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
     print('CALLBACK: _onVisibleDaysChanged');
+
     if (last.difference(first) == Duration(days: 6)) {
       SharedPreferenceService().setString(
           'calendarFormat', 'week');
@@ -99,7 +101,12 @@ class _CalendarWidgetState extends State<CalendarWidget>
 
   // More advanced TableCalendar configuration (using Builders & Styles)
   Widget _buildTableCalendarWithBuilders(CalendarViewModel store) {
+
     var locale = Localizations.localeOf(context);
+
+
+
+
     return TableCalendar(
       calendarController: _calendarController,
       events: store.eventMapped,
@@ -109,10 +116,12 @@ class _CalendarWidgetState extends State<CalendarWidget>
       formatAnimation: FormatAnimation.scale,
 //      startingDayOfWeek: StartingDayOfWeek.monday,
       availableGestures: AvailableGestures.all,
-      availableCalendarFormats: const {
-        CalendarFormat.month: 'Compatto',
-        CalendarFormat.twoWeeks: 'Espanso',
-      },
+
+      availableCalendarFormats: {
+        CalendarFormat.month: AppLocalizations.of(context).compact,
+        CalendarFormat.twoWeeks: AppLocalizations.of(context).expanded
+      }
+      ,
       locale: locale.toString(),
       calendarStyle: CalendarStyle(
           outsideDaysVisible: true,

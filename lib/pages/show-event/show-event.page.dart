@@ -2,6 +2,7 @@ import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/pages/show-event/show-event.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Text('Evento',
+                              Text(AppLocalizations.of(context).event,
                                   textAlign: TextAlign.left,
                                   style: Theme.of(context).textTheme.headline4),
                               Row(
@@ -103,7 +104,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
                               top: 8.0,
                             ),
                             child: Text(
-                              'Inizio Evento',
+                              AppLocalizations.of(context).eventStart,
                               style: Theme.of(context).textTheme.subtitle2,
                             ),
                           ),
@@ -114,7 +115,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
                               top: 8.0,
                             ),
                             child: Text(
-                              'Fine Evento',
+                              AppLocalizations.of(context).eventEnd,
                               style: Theme.of(context).textTheme.subtitle2,
                             ),
                           ),

@@ -1,10 +1,20 @@
 {
+  "add_event": "Nuovo Evento",
   "appName": "Calendaroo",
+  "compact" : "Compatto",
+  "description": "Descrizione",
+  "expanded" : "Espanso",
+  "event" : "Evento",
+  "event_end": "Fine Evento",
+  "event_start": "Inizio Evento",
   "home": "Home",
-  "todo": "Todo",
-  "today": "Oggi",
-  "profile": "Profilo",
   "new-event": "Nuovo Evento",
-  "new-event-title": "Crea Nuovo Evento",
-  "start": "start"
+  "new-event-title": "Crea Evento",
+  "no_events": "Non ci sono eventi in programma",
+  "profile": "Profilo",
+  "start": "start",
+  "title": "Titolo",
+  "today": "Oggi",
+  "todo": "Todo"
+
 }

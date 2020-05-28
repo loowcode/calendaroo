@@ -1,6 +1,7 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:flutter/cupertino.dart';
@@ -65,7 +66,8 @@ class _AddEventPageState extends State<AddEventPage> {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Text('Nuovo Evento',
+                              Text(AppLocalizations.of(context).newEvent,
+
                                   textAlign: TextAlign.left,
                                   style: Theme.of(context).textTheme.headline4),
                               IconButton(
@@ -126,7 +128,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 ),
                 contentPadding:
                     EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                labelText: 'Titolo',
+                labelText: AppLocalizations.of(context).title,
                 labelStyle: Theme.of(context)
                     .textTheme
                     .bodyText2
@@ -176,7 +178,7 @@ class _AddEventPageState extends State<AddEventPage> {
                   ),
                   contentPadding:
                       EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                  labelText: 'Descrizione',
+                  labelText: AppLocalizations.of(context).description,
                   labelStyle: Theme.of(context)
                       .textTheme
                       .bodyText2
@@ -203,7 +205,7 @@ class _AddEventPageState extends State<AddEventPage> {
           top: 8.0,
         ),
         child: Text(
-          start ? 'Inizio Evento' : 'Fine Evento',
+          start ? AppLocalizations.of(context).eventStart : AppLocalizations.of(context).eventEnd,
           style: Theme.of(context).textTheme.subtitle2,
         ),
       ),
@@ -382,7 +384,7 @@ class _AddEventPageState extends State<AddEventPage> {
           width: 300,
           child: Center(
             child: Text(
-              'Crea Evento',
+              AppLocalizations.of(context).newEventTitle,
               style: Theme.of(context).textTheme.button,
             ),
           ),

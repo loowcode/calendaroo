@@ -41,6 +41,36 @@ class AppLocalizations {
 
   String get newEventTitle => _localizedStrings['new-event-title'];
   String get newEvent => _localizedStrings['new-event'];
+  String get addEvent=> _localizedStrings['add_event'];
+
+  String get appName=> _localizedStrings['appName'];
+
+  String get compact=> _localizedStrings['compact'];
+
+  String get description=> _localizedStrings['description'];
+
+  String get expanded=> _localizedStrings['expanded'];
+
+  String get event=> _localizedStrings['event'];
+
+  String get eventEnd=> _localizedStrings['event_end'];
+
+  String get eventStart=> _localizedStrings['event_start'];
+
+  String get home=> _localizedStrings['home'];
+
+  String get noEvents=> _localizedStrings['no_events'];
+
+  String get profile=> _localizedStrings['profile'];
+
+  String get start=> _localizedStrings['start'];
+
+  String get title=> _localizedStrings['title'];
+
+  String get today=> _localizedStrings['today'];
+
+  String get todo=> _localizedStrings['todo'];
+
 
 }
 
