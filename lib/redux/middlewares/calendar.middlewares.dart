@@ -20,7 +20,9 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
     }
 
     if (action is OpenEvent) {
-      NavigationService().navigateTo(SHOW_EVENT, arguments: action.event);
+      if (action.event != null) {
+        NavigationService().navigateTo(SHOW_EVENT, arguments: action.event);
+      }
     }
 
     next(action);

@@ -1,6 +1,7 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/pages/show-event/show-event.viewmodel.dart';
+import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/navigation.service.dart';
@@ -12,28 +13,30 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class ShowEventPage extends StatefulWidget {
-  final Event event;
-
-  ShowEventPage(this.event);
-
   @override
   _ShowEventPageState createState() => _ShowEventPageState();
 }
 
 class _ShowEventPageState extends State<ShowEventPage> {
+
+  @override
+  void dispose(){
+    calendarooState.dispatch(OpenEvent(null));
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Event event = widget.event;
     return Scaffold(
       body: StoreConnector<AppState, ShowEventViewModel>(
           converter: (store) => ShowEventViewModel.fromStore(store),
           builder: (context, store) {
-            return _buildPage(store, event);
+            return _buildPage(store);
           }),
     );
   }
 
-  Widget _buildPage(ShowEventViewModel store, Event event) {
+  Widget _buildPage(ShowEventViewModel store) {
     return CustomScrollView(slivers: <Widget>[
       SliverAppBar(
         expandedHeight: 200,
@@ -50,11 +53,12 @@ class _ShowEventPageState extends State<ShowEventPage> {
                 Icons.edit,
                 color: primaryWhite,
               ),
-              onPressed: () => NavigationService().navigateTo(ADD_EVENT, arguments: event))
+              onPressed: () => NavigationService()
+                  .navigateTo(ADD_EVENT, arguments: store.showEvent))
         ],
         flexibleSpace: FlexibleSpaceBar(
           title: Text(
-            event.title,
+            store.showEvent.title,
             style: Theme.of(context)
                 .textTheme
                 .headline6
@@ -64,24 +68,25 @@ class _ShowEventPageState extends State<ShowEventPage> {
         backgroundColor: secondaryBlue,
       ),
       SliverFillRemaining(
-        child: _buildInfoEvent(store, event),
+        child: _buildInfoEvent(store),
       )
     ]);
   }
 
-  Widget _buildInfoEvent(ShowEventViewModel store, Event event) {
+  Widget _buildInfoEvent(ShowEventViewModel store) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          event.description != null && event.description.length > 0
-              ? _buildDescription(event)
+          store.showEvent.description != null &&
+                  store.showEvent.description.length > 0
+              ? _buildDescription(store.showEvent)
               : SizedBox(
                   height: 0,
                 ),
-          _buildTime(event, start: true),
-          _buildTime(event, start: false),
+          _buildTime(store.showEvent, start: true),
+          _buildTime(store.showEvent, start: false),
         ],
       ),
     );

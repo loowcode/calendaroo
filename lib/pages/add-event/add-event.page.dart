@@ -14,10 +14,6 @@ import 'package:uuid/uuid.dart';
 import 'add-event.viewmodel.dart';
 
 class AddEventPage extends StatefulWidget {
-  final Event event;
-
-  AddEventPage(this.event);
-
   @override
   _AddEventPageState createState() => _AddEventPageState();
 }
@@ -32,17 +28,20 @@ class _AddEventPageState extends State<AddEventPage> {
   DateTime _startTime;
   DateTime _endTime;
 
+  Event showEvent;
+
   @override
   void initState() {
     super.initState();
-    _title = widget.event?.title ?? "";
-    _description = widget.event?.description ?? "";
+    showEvent = calendarooState.state.calendarState.showEvent;
+    _title = showEvent?.title ?? "";
+    _description = showEvent?.description ?? "";
     final now = DateTime.now();
     _startDate =
-        widget.event?.start ?? calendarooState.state.calendarState.selectedDay;
-    _startTime = widget.event?.start ?? now;
-    _endDate = widget.event?.end ?? _startDate;
-    _endTime = widget.event?.end ?? now.add(Duration(hours: 1));
+        showEvent?.start ?? calendarooState.state.calendarState.selectedDay;
+    _startTime = showEvent?.start ?? now;
+    _endDate = showEvent?.end ?? _startDate;
+    _endTime = showEvent?.end ?? now.add(Duration(hours: 1));
   }
 
   @override
@@ -306,8 +305,6 @@ class _AddEventPageState extends State<AddEventPage> {
           children: [
             Container(
               height: 250,
-//              child: CupertinoTheme(
-//                data: cupertinoTheme.copyWith(textTheme: textTheme),
               child: CupertinoDatePicker(
                 initialDateTime: start ? _startDate : _endDate,
                 minimumDate: start ? null : _startDate,
@@ -316,7 +313,6 @@ class _AddEventPageState extends State<AddEventPage> {
                   _current = value;
                 },
               ),
-//              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -392,7 +388,7 @@ class _AddEventPageState extends State<AddEventPage> {
             _formKey.currentState.save();
             _isEdit()
                 ? store.editEvent(
-                    widget.event, _createNewEvent(widget.event.id))
+                    showEvent, _createNewEvent(showEvent.id))
                 : store.createEvent(_createNewEvent(null));
             NavigationService().pop();
           }
@@ -430,6 +426,6 @@ class _AddEventPageState extends State<AddEventPage> {
   }
 
   bool _isEdit() {
-    return widget.event != null;
+    return showEvent != null;
   }
 }
