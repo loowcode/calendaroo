@@ -1,8 +1,9 @@
 {
-  "add_event": "Nuovo Evento",
+  "add_event": "Aggiungi",
   "appName": "Calendaroo",
   "compact" : "Compatto",
   "cancel": "Cancella",
+  "delete": "Elimina",
   "description": "Descrizione",
   "edit_event": "Modifica Evento",
   "expanded" : "Espanso",
@@ -17,7 +18,7 @@
   "ok": "Ok",
   "profile": "Profilo",
   "save": "Salva",
-  "start": "start",
+  "start": "Inizio",
   "title": "Titolo",
   "today": "Oggi",
   "todo": "Todo"

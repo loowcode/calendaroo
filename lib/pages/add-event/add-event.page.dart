@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -38,11 +37,15 @@ class _AddEventPageState extends State<AddEventPage> {
     _title = showEvent?.title ?? "";
     _description = showEvent?.description ?? "";
     final now = DateTime.now();
+    var defaultTime = now;
+    if (calendarooState.state.calendarState.selectedDay.isAfter(now)) {
+      defaultTime = DateTime(now.year, now.month, now.day, 8, 0, 0);
+    }
     _startDate =
         showEvent?.start ?? calendarooState.state.calendarState.selectedDay;
-    _startTime = showEvent?.start ?? now;
+    _startTime = showEvent?.start ?? defaultTime;
     _endDate = showEvent?.end ?? _startDate;
-    _endTime = showEvent?.end ?? now.add(Duration(hours: 1));
+    _endTime = showEvent?.end ?? defaultTime.add(Duration(hours: 1));
   }
 
   @override
@@ -252,27 +255,10 @@ class _AddEventPageState extends State<AddEventPage> {
             width: 8,
           ),
           GestureDetector(
-            onTap: () => CupertinoRoundedDatePicker.show(
-              context,
-              locale: Localizations.localeOf(context),
-              initialDate: start ? _startTime : _endTime,
-              minimumYear: 1700,
-              maximumYear: 3000,
-              minimumDate: start
-                  ? DateTime.now().subtract(Duration(days: 7))
-                  : DateTime.now().subtract(Duration(days: 7)),
-              textColor: primaryWhite,
-              background: secondaryBlue,
-              borderRadius: 16,
-              initialDatePickerMode: CupertinoDatePickerMode.time,
-              onDateTimeChanged: (newDate) {
-                setState(() {
-                  if (start) {
-                    _startTime = newDate;
-                  } else {
-                    _endTime = newDate;
-                  }
-                });
+            onTap: () => showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return _buildTimePicker(context, start);
               },
             ),
             child: Chip(
@@ -361,6 +347,94 @@ class _AddEventPageState extends State<AddEventPage> {
                             }
                           } else {
                             _endDate = _current;
+                          }
+                        });
+
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTimePicker(BuildContext context, bool start) {
+    DateTime _current = start ? _startTime : _endTime;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.primaryTheme.backgroundColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 250,
+              child: CupertinoDatePicker(
+                initialDateTime: start ? _startTime : _endTime,
+                minimumDate: start ? null : _startTime,
+                mode: CupertinoDatePickerMode.time,
+                onDateTimeChanged: (value) {
+                  _current = value;
+                },
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FlatButton(
+                      textColor: secondaryBlue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(AppLocalizations.of(context).cancel),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(AppLocalizations.of(context).save),
+                      ),
+                      color: AppTheme.primaryTheme.buttonColor,
+                      textColor: AppTheme.primaryTheme.textTheme.button.color,
+                      onPressed: () {
+                        setState(() {
+                          if (start) {
+                            _startTime = _current;
+
+                            if (_endTime.isBefore(_startTime)) {
+                              _endTime = _startTime;
+                            }
+                          } else {
+                            _endTime = _current;
                           }
                         });
 
