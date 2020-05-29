@@ -15,7 +15,7 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
     case ADD_EVENT:
       return MaterialPageRoute(builder: (context) => AddEventPage(), settings: settings);
     case SHOW_EVENT:
-      return MaterialPageRoute(builder: (context) => ShowEventPage(settings.arguments), settings: settings);
+      return MaterialPageRoute(builder: (context) => ShowEventPage(), settings: settings);
     default:
       return MaterialPageRoute(builder: (context) => HomePage(), settings: settings);
   }

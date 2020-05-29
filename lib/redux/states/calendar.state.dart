@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 @immutable
 class CalendarState {
-  final List<Event> events;
+  final List<Event> events; //TODO: remove this duplicated info
   final SplayTreeMap<DateTime, List<Event>> eventMapped;
   final Event showEvent;
   final DateTime selectedDay;
@@ -17,15 +17,26 @@ class CalendarState {
     return CalendarState(events: List<Event>(), eventMapped: SplayTreeMap());
   }
 
-  CalendarState copyWith({List<Event> events,
-    SplayTreeMap<DateTime, List<Event>> eventMapped,
-    DateTime selectedDay,
-    Event showEvent}) {
+  CalendarState copyWith(
+      {List<Event> events,
+      SplayTreeMap<DateTime, List<Event>> eventMapped,
+      DateTime selectedDay,
+      Event showEvent}) {
     return CalendarState(
       events: events ?? this.events,
       eventMapped: eventMapped ?? this.eventMapped,
       showEvent: showEvent ?? this.showEvent,
       selectedDay: selectedDay ?? this.selectedDay,
+    );
+  }
+
+  // TODO: there is a better solution?
+  CalendarState copyWithAdmitNull(Event showEvent) {
+    return CalendarState(
+      events: this.events,
+      eventMapped: this.eventMapped,
+      showEvent: showEvent,
+      selectedDay: this.selectedDay,
     );
   }
 }

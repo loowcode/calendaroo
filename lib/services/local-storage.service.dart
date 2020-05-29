@@ -3,11 +3,10 @@ import 'dart:io';
 
 import 'package:calendaroo/constants.dart';
 import 'package:calendaroo/environments/environment.dart';
-import 'package:calendaroo/model/event.model.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
 class LocalStorageService {
   static final LocalStorageService _instance = LocalStorageService._();

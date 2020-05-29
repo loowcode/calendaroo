@@ -1,10 +1,12 @@
 import 'package:calendaroo/colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
   static ThemeData get primaryTheme {
     final ThemeData base = ThemeData.light();
     return base.copyWith(
+      appBarTheme: _buildAppBarTheme(base),
       backgroundColor: primaryWhite,
       accentColor: accentYellow,
       primaryColor: primaryWhite,
@@ -33,42 +35,44 @@ class AppTheme {
   static TextTheme _buildPrimaryTextTheme(TextTheme base) {
     return base
         .copyWith(
-          headline4: base.headline4.copyWith(
-            color: primaryBlack,
-            fontWeight: FontWeight.w700,
-          ),
-          headline5: base.headline5.copyWith(
-            fontWeight: FontWeight.w700,
-          ),
-          subtitle1: base.subtitle1.copyWith(
-            fontWeight: FontWeight.w700,
-          ),
-          headline6: base.headline6.copyWith(
-            fontWeight: FontWeight.normal,
-          ),
-          subtitle2: base.subtitle2.copyWith(
-            fontWeight: FontWeight.w600,
-            color: secondaryDarkGrey,
-          ),
-          bodyText2: base.bodyText2.copyWith(
-            fontWeight: FontWeight.w700,
-            color: primaryBlack,
-          ),
-          bodyText1: base.bodyText1.copyWith(
-            fontWeight: FontWeight.normal,
-            color: primaryWhite,
-          ),
-          caption: base.caption.copyWith(
-            fontWeight: FontWeight.normal,
-          ),
-          button: base.button.copyWith(
-            fontWeight: FontWeight.bold,
-            color: primaryWhite,
-          ),
-        )
+      headline4: base.headline4.copyWith(
+        color: primaryBlack,
+        fontWeight: FontWeight.w700,
+      ),
+      headline5: base.headline5.copyWith(
+        fontWeight: FontWeight.w700,
+      ),
+      headline6: base.headline6.copyWith(
+        fontWeight: FontWeight.w600,
+      ),
+      subtitle1: base.subtitle1.copyWith(
+        fontWeight: FontWeight.w500,
+        fontSize: 20,
+        color: secondaryGrey,
+      ),
+      subtitle2: base.subtitle2.copyWith(
+        fontWeight: FontWeight.w600,
+        color: secondaryDarkGrey,
+      ),
+      bodyText2: base.bodyText2.copyWith(
+        fontWeight: FontWeight.w700,
+        color: primaryBlack,
+      ),
+      bodyText1: base.bodyText1.copyWith(
+        fontWeight: FontWeight.normal,
+        color: primaryWhite,
+      ),
+      caption: base.caption.copyWith(
+        fontWeight: FontWeight.normal,
+      ),
+      button: base.button.copyWith(
+        fontWeight: FontWeight.bold,
+        color: primaryWhite,
+      ),
+    )
         .apply(
-          fontFamily: 'SourceSansPro',
-        );
+      fontFamily: 'SourceSansPro',
+    );
   }
 
   static get secondaryTheme {
@@ -110,51 +114,57 @@ class AppTheme {
     );
   }
 
+  static AppBarTheme _buildAppBarTheme(ThemeData base){
+    return AppBarTheme(
+      textTheme: _buildPrimaryTextTheme(base.textTheme)
+    );
+  }
+
   static TextTheme _buildSecondaryTextTheme(TextTheme base) {
     return base
         .copyWith(
-          headline4: base.headline4.copyWith(
+      headline4: base.headline4.copyWith(
 //            fontSize: 32,
-            fontWeight: FontWeight.w700,
-          ),
-          headline5: base.headline5.copyWith(
+        fontWeight: FontWeight.w700,
+      ),
+      headline5: base.headline5.copyWith(
 //            fontSize: 32,
-            fontWeight: FontWeight.w700,
-          ),
-          subtitle1: base.subtitle1.copyWith(
+        fontWeight: FontWeight.w700,
+      ),
+      subtitle1: base.subtitle1.copyWith(
 //            fontSize: 28,
-            fontWeight: FontWeight.w700,
-          ),
-          headline6: base.headline6.copyWith(
+        fontWeight: FontWeight.w700,
+      ),
+      headline6: base.headline6.copyWith(
 //            fontSize: 24.0,
-            fontWeight: FontWeight.normal,
-          ),
-          subtitle2: base.subtitle2.copyWith(
+        fontWeight: FontWeight.normal,
+      ),
+      subtitle2: base.subtitle2.copyWith(
 //              fontSize: 20.0,
-              fontWeight: FontWeight.w600,
-              color: secondaryDarkGrey),
-          bodyText2: base.bodyText2.copyWith(
+          fontWeight: FontWeight.w600,
+          color: secondaryDarkGrey),
+      bodyText2: base.bodyText2.copyWith(
 //            fontSize: 20.0,
-            fontWeight: FontWeight.w700,
-            color: primaryWhite,
-          ),
-          bodyText1: base.bodyText1.copyWith(
+        fontWeight: FontWeight.w700,
+        color: primaryWhite,
+      ),
+      bodyText1: base.bodyText1.copyWith(
 //            fontSize: 20.0,
-            fontWeight: FontWeight.normal,
-            color: primaryWhite,
-          ),
-          caption: base.caption.copyWith(
-            fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.normal,
+        color: primaryWhite,
+      ),
+      caption: base.caption.copyWith(
+        fontWeight: FontWeight.normal,
 //            fontSize: 24.0,
-          ),
-          button: base.button.copyWith(
-              fontWeight: FontWeight.bold,
+      ),
+      button: base.button.copyWith(
+          fontWeight: FontWeight.bold,
 //              fontSize: 24.0,
-              color: primaryWhite),
-        )
+          color: primaryWhite),
+    )
         .apply(
-          fontFamily: 'SourceSansPro',
-        );
+      fontFamily: 'SourceSansPro',
+    );
   }
 }
 
