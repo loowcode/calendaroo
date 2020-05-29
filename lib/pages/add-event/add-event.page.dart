@@ -74,7 +74,7 @@ class _AddEventPageState extends State<AddEventPage> {
                                       textAlign: TextAlign.left,
                                       style:
                                           Theme.of(context).textTheme.headline4)
-                                  : Text('Modifica Evento', // TODO translate
+                                  : Text(AppLocalizations.of(context).editEvent,
                                       textAlign: TextAlign.left,
                                       style: Theme.of(context)
                                           .textTheme
@@ -150,7 +150,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 if (value != null && value.length > 0) {
                   return null;
                 }
-                return 'Inserisci un titolo';
+                return AppLocalizations.of(context).insertATitle;
               },
               onSaved: (value) {
                 setState(() {
@@ -222,7 +222,9 @@ class _AddEventPageState extends State<AddEventPage> {
           top: 8.0,
         ),
         child: Text(
-          start ? AppLocalizations.of(context).eventStart : AppLocalizations.of(context).eventEnd,
+          start
+              ? AppLocalizations.of(context).eventStart
+              : AppLocalizations.of(context).eventEnd,
           style: Theme.of(context).textTheme.subtitle2,
         ),
       ),
@@ -328,7 +330,7 @@ class _AddEventPageState extends State<AddEventPage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Text('Cancel'),
+                        child: Text(AppLocalizations.of(context).cancel),
                       ),
                       onPressed: () {
                         Navigator.pop(context);
@@ -345,7 +347,7 @@ class _AddEventPageState extends State<AddEventPage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Text('Save'),
+                        child: Text(AppLocalizations.of(context).save),
                       ),
                       color: AppTheme.primaryTheme.buttonColor,
                       textColor: AppTheme.primaryTheme.textTheme.button.color,
@@ -388,8 +390,7 @@ class _AddEventPageState extends State<AddEventPage> {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
             _isEdit()
-                ? store.editEvent(
-                    showEvent, _createNewEvent(showEvent.id))
+                ? store.editEvent(showEvent, _createNewEvent(showEvent.id))
                 : store.createEvent(_createNewEvent(null));
             NavigationService().pop();
           }
@@ -400,11 +401,11 @@ class _AddEventPageState extends State<AddEventPage> {
           child: Center(
             child: !_isEdit()
                 ? Text(
-              AppLocalizations.of(context).newEventTitle,
+                    AppLocalizations.of(context).newEventTitle,
                     style: Theme.of(context).textTheme.button,
                   )
                 : Text(
-                    'Modifica Evento',
+                    AppLocalizations.of(context).editEvent,
                     style: Theme.of(context).textTheme.button,
                   ),
           ),
