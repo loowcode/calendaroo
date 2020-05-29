@@ -197,7 +197,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
           child: Column(
         children: <Widget>[
           Text(
-              "No planned events",
+              AppLocalizations.of(context).noEvents,
               style: Theme.of(context).textTheme.subtitle2,
           ),
           Container(

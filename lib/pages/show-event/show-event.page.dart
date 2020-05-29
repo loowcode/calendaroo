@@ -3,7 +3,6 @@ import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/pages/show-event/show-event.viewmodel.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
-import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:flutter/cupertino.dart';
