@@ -1,11 +1,26 @@
 {
+  "add_event": "Add Event",
   "appName": "Calendaroo",
+  "compact" : "Compact",
+  "cancel" : "Cancel",
+  "description": "Description",
+  "edit_event": "Edit Event",
+  "event_end": "End",
+  "event_start": "Start",
+  "event" : "Event",
+  "expanded" : "Expanded",
   "home": "Home",
-  "todo": "Todo",
-  "today": "Today",
-  "profile": "Profile",
-  "upcoming-events": "Upcoming",
-  "new-event": "New Event",
+  "insert_a_title": "Insert a tile",
   "new-event-title": "Create New Event",
-  "start": "start"
+  "new-event": "New Event",
+  "no_events": "No planned events",
+  "ok": "Ok",
+  "profile": "Profile",
+  "save": "Save",
+  "start": "start",
+  "title": "Title",
+  "today": "Today",
+  "todo": "Todo"
+
+
 }

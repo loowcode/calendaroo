@@ -1,5 +1,6 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
+import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/calendar.service.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.viewmodel.dart';
@@ -19,6 +20,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     with TickerProviderStateMixin {
   AutoScrollController _listController;
   AnimationController _animationController;
+
 
   @override
   void initState() {
@@ -194,8 +196,10 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
       child: Center(
           child: Column(
         children: <Widget>[
-          Text('Non ci sono eventi in programma',
-              style: Theme.of(context).textTheme.subtitle2),
+          Text(
+              AppLocalizations.of(context).noEvents,
+              style: Theme.of(context).textTheme.subtitle2,
+          ),
           Container(
               margin: EdgeInsets.only(top: 32),
               child: Icon(
