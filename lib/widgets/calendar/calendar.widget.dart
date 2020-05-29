@@ -16,12 +16,10 @@ class CalendarWidget extends StatefulWidget {
   _CalendarWidgetState createState() => _CalendarWidgetState();
 }
 
-
 class _CalendarWidgetState extends State<CalendarWidget>
     with TickerProviderStateMixin {
   AnimationController _animationController;
   CalendarController _calendarController;
-
 
   @override
   void initState() {
@@ -53,27 +51,20 @@ class _CalendarWidgetState extends State<CalendarWidget>
   }
 
   void _onDaySelected(CalendarViewModel store, DateTime day, List events) {
-    print('CALLBACK: _onDaySelected');
     store.selectDay(day);
   }
 
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
-    print('CALLBACK: _onVisibleDaysChanged');
-
-    if (last.difference(first) == Duration(days: 6)) {
-      SharedPreferenceService().setString(
-          'calendarFormat', 'week');
-    }
-    else{
-      SharedPreferenceService().setString(
-          'calendarFormat', 'month');
+    if (format == CalendarFormat.month) {
+      SharedPreferenceService().setCalendarFormat('month');
+    } else {
+      SharedPreferenceService().setCalendarFormat('week');
     }
   }
 
   void _onCalendarCreated(CalendarViewModel store, DateTime first,
       DateTime last, CalendarFormat format) {
-    print('CALLBACK: _onCalendarCreated');
     store.selectDay(DateTime.now());
   }
 
@@ -101,12 +92,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
 
   // More advanced TableCalendar configuration (using Builders & Styles)
   Widget _buildTableCalendarWithBuilders(CalendarViewModel store) {
-
     var locale = Localizations.localeOf(context);
-
-
-
-
     return TableCalendar(
       calendarController: _calendarController,
       events: store.eventMapped,

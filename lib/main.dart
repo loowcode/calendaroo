@@ -1,4 +1,3 @@
-import 'package:calendaroo/pages/show-event/show-event.page.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
@@ -60,9 +59,11 @@ class _MyAppState extends State<MyApp> {
               isDefaultAction: true,
               child: Text('Ok'),
               onPressed: () async {
-                Event event = await EventsRepository().event(int.parse(receivedNotification.payload));
+                Event event = await EventsRepository()
+                    .event(int.parse(receivedNotification.payload));
                 calendarooState.dispatch(OpenEvent(event));
-                await NavigationService().navigateTo(SHOW_EVENT, arguments: event);
+                await NavigationService()
+                    .navigateTo(SHOW_EVENT, arguments: event);
               },
             )
           ],

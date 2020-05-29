@@ -6,7 +6,6 @@ import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
@@ -30,16 +29,20 @@ class _AddEventPageState extends State<AddEventPage> {
   DateTime _startTime;
   DateTime _endTime;
 
+  Event showEvent;
+
   @override
   void initState() {
     super.initState();
-    _title = "";
-    _description = "";
+    showEvent = calendarooState.state.calendarState.showEvent;
+    _title = showEvent?.title ?? "";
+    _description = showEvent?.description ?? "";
     final now = DateTime.now();
-    _startDate = calendarooState.state.calendarState.selectedDay;
-    _startTime = now;
-    _endDate = _startDate;
-    _endTime = now.add(Duration(hours: 1));
+    _startDate =
+        showEvent?.start ?? calendarooState.state.calendarState.selectedDay;
+    _startTime = showEvent?.start ?? now;
+    _endDate = showEvent?.end ?? _startDate;
+    _endTime = showEvent?.end ?? now.add(Duration(hours: 1));
   }
 
   @override
@@ -66,10 +69,16 @@ class _AddEventPageState extends State<AddEventPage> {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Text(AppLocalizations.of(context).newEvent,
-
-                                  textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.headline4),
+                              !_isEdit()
+                                  ? Text(AppLocalizations.of(context).newEvent,
+                                      textAlign: TextAlign.left,
+                                      style:
+                                          Theme.of(context).textTheme.headline4)
+                                  : Text('Modifica Evento', // TODO translate
+                                      textAlign: TextAlign.left,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4),
                               IconButton(
                                   onPressed: () {
                                     NavigationService().pop();
@@ -82,10 +91,10 @@ class _AddEventPageState extends State<AddEventPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           ),
                           _buildTitle(),
-                          _buildTime(store, true, context, _formatterDate,
-                              _formatterTime),
-                          _buildTime(store, false, context, _formatterDate,
-                              _formatterTime),
+                          _buildTime(
+                              true, context, _formatterDate, _formatterTime),
+                          _buildTime(
+                              false, context, _formatterDate, _formatterTime),
                         ],
                       ),
                     ),
@@ -113,6 +122,7 @@ class _AddEventPageState extends State<AddEventPage> {
               color: secondaryDarkBlue,
             ),
             title: TextFormField(
+              initialValue: _title,
               decoration: new InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: secondaryDarkBlue),
@@ -134,6 +144,8 @@ class _AddEventPageState extends State<AddEventPage> {
                     .bodyText2
                     .copyWith(color: primaryBlack),
               ),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 20),
               validator: (value) {
                 if (value != null && value.length > 0) {
                   return null;
@@ -163,6 +175,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 color: accentYellowText,
               ),
               title: TextFormField(
+                initialValue: _description,
                 decoration: new InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: secondaryDarkBlue),
@@ -184,6 +197,10 @@ class _AddEventPageState extends State<AddEventPage> {
                       .bodyText2
                       .copyWith(color: primaryBlack),
                 ),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 20),
                 onSaved: (value) {
                   setState(() {
                     _description = value;
@@ -197,8 +214,8 @@ class _AddEventPageState extends State<AddEventPage> {
     );
   }
 
-  Column _buildTime(AddEventViewModel store, bool start, BuildContext context,
-      DateFormat _formatterDate, DateFormat _formatterTime) {
+  Column _buildTime(bool start, BuildContext context, DateFormat _formatterDate,
+      DateFormat _formatterTime) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
         padding: const EdgeInsets.only(
@@ -289,8 +306,6 @@ class _AddEventPageState extends State<AddEventPage> {
           children: [
             Container(
               height: 250,
-//              child: CupertinoTheme(
-//                data: cupertinoTheme.copyWith(textTheme: textTheme),
               child: CupertinoDatePicker(
                 initialDateTime: start ? _startDate : _endDate,
                 minimumDate: start ? null : _startDate,
@@ -299,7 +314,6 @@ class _AddEventPageState extends State<AddEventPage> {
                   _current = value;
                 },
               ),
-//              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -373,9 +387,10 @@ class _AddEventPageState extends State<AddEventPage> {
           // Validate returns true if the form is valid, otherwise false.
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            // If the form is valid, display a snackbar. In the real world,
-            // you'd often call a server or save the information in a database.
-            store.createEvent(_createNewEvent());
+            _isEdit()
+                ? store.editEvent(
+                    showEvent, _createNewEvent(showEvent.id))
+                : store.createEvent(_createNewEvent(null));
             NavigationService().pop();
           }
         },
@@ -383,20 +398,25 @@ class _AddEventPageState extends State<AddEventPage> {
           height: 50,
           width: 300,
           child: Center(
-            child: Text(
+            child: !_isEdit()
+                ? Text(
               AppLocalizations.of(context).newEventTitle,
-              style: Theme.of(context).textTheme.button,
-            ),
+                    style: Theme.of(context).textTheme.button,
+                  )
+                : Text(
+                    'Modifica Evento',
+                    style: Theme.of(context).textTheme.button,
+                  ),
           ),
         ),
       ),
     );
   }
 
-  Event _createNewEvent() {
+  Event _createNewEvent(id) {
     var uuid = Uuid();
     return Event(
-        id: null,
+        id: id,
         title: _title,
         uuid: uuid.v4(),
         description: _description,
@@ -404,5 +424,9 @@ class _AddEventPageState extends State<AddEventPage> {
             _startTime.hour, _startTime.minute),
         end: DateTime(_endDate.year, _endDate.month, _endDate.day,
             _endTime.hour, _endTime.minute));
+  }
+
+  bool _isEdit() {
+    return showEvent != null;
   }
 }
