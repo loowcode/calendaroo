@@ -1,14 +1,13 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -29,16 +28,24 @@ class _AddEventPageState extends State<AddEventPage> {
   DateTime _startTime;
   DateTime _endTime;
 
+  Event showEvent;
+
   @override
   void initState() {
     super.initState();
-    _title = "";
-    _description = "";
+    showEvent = calendarooState.state.calendarState.showEvent;
+    _title = showEvent?.title ?? "";
+    _description = showEvent?.description ?? "";
     final now = DateTime.now();
-    _startDate = calendarooState.state.calendarState.selectedDay;
-    _startTime = now;
-    _endDate = _startDate;
-    _endTime = now.add(Duration(hours: 1));
+    var defaultTime = now;
+    if (calendarooState.state.calendarState.selectedDay.isAfter(now)) {
+      defaultTime = DateTime(now.year, now.month, now.day, 8, 0, 0);
+    }
+    _startDate =
+        showEvent?.start ?? calendarooState.state.calendarState.selectedDay;
+    _startTime = showEvent?.start ?? defaultTime;
+    _endDate = showEvent?.end ?? _startDate;
+    _endTime = showEvent?.end ?? defaultTime.add(Duration(hours: 1));
   }
 
   @override
@@ -65,9 +72,16 @@ class _AddEventPageState extends State<AddEventPage> {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Text('Nuovo Evento',
-                                  textAlign: TextAlign.left,
-                                  style: Theme.of(context).textTheme.headline4),
+                              !_isEdit()
+                                  ? Text(AppLocalizations.of(context).newEvent,
+                                      textAlign: TextAlign.left,
+                                      style:
+                                          Theme.of(context).textTheme.headline4)
+                                  : Text(AppLocalizations.of(context).editEvent,
+                                      textAlign: TextAlign.left,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4),
                               IconButton(
                                   onPressed: () {
                                     NavigationService().pop();
@@ -80,10 +94,10 @@ class _AddEventPageState extends State<AddEventPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           ),
                           _buildTitle(),
-                          _buildTime(store, true, context, _formatterDate,
-                              _formatterTime),
-                          _buildTime(store, false, context, _formatterDate,
-                              _formatterTime),
+                          _buildTime(
+                              true, context, _formatterDate, _formatterTime),
+                          _buildTime(
+                              false, context, _formatterDate, _formatterTime),
                         ],
                       ),
                     ),
@@ -111,6 +125,7 @@ class _AddEventPageState extends State<AddEventPage> {
               color: secondaryDarkBlue,
             ),
             title: TextFormField(
+              initialValue: _title,
               decoration: new InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: secondaryDarkBlue),
@@ -126,17 +141,19 @@ class _AddEventPageState extends State<AddEventPage> {
                 ),
                 contentPadding:
                     EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                labelText: 'Titolo',
+                labelText: AppLocalizations.of(context).title,
                 labelStyle: Theme.of(context)
                     .textTheme
                     .bodyText2
                     .copyWith(color: primaryBlack),
               ),
+              style:
+                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 20),
               validator: (value) {
                 if (value != null && value.length > 0) {
                   return null;
                 }
-                return 'Inserisci un titolo';
+                return AppLocalizations.of(context).insertATitle;
               },
               onSaved: (value) {
                 setState(() {
@@ -161,6 +178,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 color: accentYellowText,
               ),
               title: TextFormField(
+                initialValue: _description,
                 decoration: new InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: secondaryDarkBlue),
@@ -176,12 +194,16 @@ class _AddEventPageState extends State<AddEventPage> {
                   ),
                   contentPadding:
                       EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                  labelText: 'Descrizione',
+                  labelText: AppLocalizations.of(context).description,
                   labelStyle: Theme.of(context)
                       .textTheme
                       .bodyText2
                       .copyWith(color: primaryBlack),
                 ),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2
+                    .copyWith(fontSize: 20),
                 onSaved: (value) {
                   setState(() {
                     _description = value;
@@ -195,15 +217,17 @@ class _AddEventPageState extends State<AddEventPage> {
     );
   }
 
-  Column _buildTime(AddEventViewModel store, bool start, BuildContext context,
-      DateFormat _formatterDate, DateFormat _formatterTime) {
+  Column _buildTime(bool start, BuildContext context, DateFormat _formatterDate,
+      DateFormat _formatterTime) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
         padding: const EdgeInsets.only(
           top: 8.0,
         ),
         child: Text(
-          start ? 'Inizio Evento' : 'Fine Evento',
+          start
+              ? AppLocalizations.of(context).eventStart
+              : AppLocalizations.of(context).eventEnd,
           style: Theme.of(context).textTheme.subtitle2,
         ),
       ),
@@ -231,27 +255,10 @@ class _AddEventPageState extends State<AddEventPage> {
             width: 8,
           ),
           GestureDetector(
-            onTap: () => CupertinoRoundedDatePicker.show(
-              context,
-              locale: Localizations.localeOf(context),
-              initialDate: start ? _startTime : _endTime,
-              minimumYear: 1700,
-              maximumYear: 3000,
-              minimumDate: start
-                  ? DateTime.now().subtract(Duration(days: 7))
-                  : DateTime.now().subtract(Duration(days: 7)),
-              textColor: primaryWhite,
-              background: secondaryBlue,
-              borderRadius: 16,
-              initialDatePickerMode: CupertinoDatePickerMode.time,
-              onDateTimeChanged: (newDate) {
-                setState(() {
-                  if (start) {
-                    _startTime = newDate;
-                  } else {
-                    _endTime = newDate;
-                  }
-                });
+            onTap: () => showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return _buildTimePicker(context, start);
               },
             ),
             child: Chip(
@@ -287,8 +294,6 @@ class _AddEventPageState extends State<AddEventPage> {
           children: [
             Container(
               height: 250,
-//              child: CupertinoTheme(
-//                data: cupertinoTheme.copyWith(textTheme: textTheme),
               child: CupertinoDatePicker(
                 initialDateTime: start ? _startDate : _endDate,
                 minimumDate: start ? null : _startDate,
@@ -297,7 +302,6 @@ class _AddEventPageState extends State<AddEventPage> {
                   _current = value;
                 },
               ),
-//              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -312,7 +316,7 @@ class _AddEventPageState extends State<AddEventPage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Text('Cancel'),
+                        child: Text(AppLocalizations.of(context).cancel),
                       ),
                       onPressed: () {
                         Navigator.pop(context);
@@ -329,7 +333,7 @@ class _AddEventPageState extends State<AddEventPage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Text('Save'),
+                        child: Text(AppLocalizations.of(context).save),
                       ),
                       color: AppTheme.primaryTheme.buttonColor,
                       textColor: AppTheme.primaryTheme.textTheme.button.color,
@@ -359,6 +363,94 @@ class _AddEventPageState extends State<AddEventPage> {
     );
   }
 
+  Widget _buildTimePicker(BuildContext context, bool start) {
+    DateTime _current = start ? _startTime : _endTime;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.primaryTheme.backgroundColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 250,
+              child: CupertinoDatePicker(
+                initialDateTime: start ? _startTime : _endTime,
+                minimumDate: start ? null : _startTime,
+                mode: CupertinoDatePickerMode.time,
+                onDateTimeChanged: (value) {
+                  _current = value;
+                },
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FlatButton(
+                      textColor: secondaryBlue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(AppLocalizations.of(context).cancel),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(AppLocalizations.of(context).save),
+                      ),
+                      color: AppTheme.primaryTheme.buttonColor,
+                      textColor: AppTheme.primaryTheme.textTheme.button.color,
+                      onPressed: () {
+                        setState(() {
+                          if (start) {
+                            _startTime = _current;
+
+                            if (_endTime.isBefore(_startTime)) {
+                              _endTime = _startTime;
+                            }
+                          } else {
+                            _endTime = _current;
+                          }
+                        });
+
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Padding _buildButton(AddEventViewModel store, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8, left: 32, right: 32),
@@ -371,9 +463,9 @@ class _AddEventPageState extends State<AddEventPage> {
           // Validate returns true if the form is valid, otherwise false.
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            // If the form is valid, display a snackbar. In the real world,
-            // you'd often call a server or save the information in a database.
-            store.createEvent(_createNewEvent());
+            _isEdit()
+                ? store.editEvent(showEvent, _createNewEvent(showEvent.id))
+                : store.createEvent(_createNewEvent(null));
             NavigationService().pop();
           }
         },
@@ -381,20 +473,25 @@ class _AddEventPageState extends State<AddEventPage> {
           height: 50,
           width: 300,
           child: Center(
-            child: Text(
-              'Crea Evento',
-              style: Theme.of(context).textTheme.button,
-            ),
+            child: !_isEdit()
+                ? Text(
+                    AppLocalizations.of(context).newEventTitle,
+                    style: Theme.of(context).textTheme.button,
+                  )
+                : Text(
+                    AppLocalizations.of(context).editEvent,
+                    style: Theme.of(context).textTheme.button,
+                  ),
           ),
         ),
       ),
     );
   }
 
-  Event _createNewEvent() {
+  Event _createNewEvent(id) {
     var uuid = Uuid();
     return Event(
-        id: null,
+        id: id,
         title: _title,
         uuid: uuid.v4(),
         description: _description,
@@ -402,5 +499,9 @@ class _AddEventPageState extends State<AddEventPage> {
             _startTime.hour, _startTime.minute),
         end: DateTime(_endDate.year, _endDate.month, _endDate.day,
             _endTime.hour, _endTime.minute));
+  }
+
+  bool _isEdit() {
+    return showEvent != null;
   }
 }

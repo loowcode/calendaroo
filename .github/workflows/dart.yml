@@ -2,9 +2,9 @@ name: Flutter basics
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, release, develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, release, develop ]
 
 env:
   flutter_version: "1.17.1"

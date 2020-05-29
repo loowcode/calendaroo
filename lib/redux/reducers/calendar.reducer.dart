@@ -25,15 +25,15 @@ CalendarState _editEvent(CalendarState state, EditEvent action) {
   final indexList =
       state.events.indexWhere((element) => element.id == action.oldEvent.id);
   state.events[indexList] = action.newEvent;
-  return state;
+  return state.copyWith(showEvent: action.newEvent);
 }
 
 CalendarState _openEvent(CalendarState state, OpenEvent action) {
-  return state.copyWith(showEvent: action.event);
+  return state.copyWithAdmitNull(action.event);
 }
 
 CalendarState _selectDay(CalendarState state, SelectDay action) {
-  return state.copyWith(selectedDay: action.day);
+  return state.copyWith(selectedDay: CalendarService().removeTime(action.day));
 }
 
 CalendarState _removeEvent(CalendarState state, RemoveEvent action) {

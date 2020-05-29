@@ -5,15 +5,21 @@ import 'package:redux/redux.dart';
 
 class AddEventViewModel {
   final DateTime selectedDay;
+  final Event showEvent;
 
   final Function(Event) createEvent;
+  final Function(Event, Event) editEvent;
 
-  AddEventViewModel({this.selectedDay, this.createEvent});
+  AddEventViewModel(
+      {this.selectedDay, this.showEvent, this.createEvent, this.editEvent});
 
   static AddEventViewModel fromStore(Store<AppState> store) {
     return AddEventViewModel(
       selectedDay: store.state.calendarState.selectedDay,
+      showEvent: store.state.calendarState.showEvent,
       createEvent: (newEvent) => store.dispatch(new AddEvent(newEvent)),
+      editEvent: (oldEvent, newEvent) =>
+          store.dispatch(new EditEvent(oldEvent, newEvent)),
     );
   }
 }

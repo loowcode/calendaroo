@@ -1,5 +1,6 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.widget.dart';
@@ -15,12 +16,10 @@ class CalendarWidget extends StatefulWidget {
   _CalendarWidgetState createState() => _CalendarWidgetState();
 }
 
-
 class _CalendarWidgetState extends State<CalendarWidget>
     with TickerProviderStateMixin {
   AnimationController _animationController;
   CalendarController _calendarController;
-
 
   @override
   void initState() {
@@ -52,26 +51,20 @@ class _CalendarWidgetState extends State<CalendarWidget>
   }
 
   void _onDaySelected(CalendarViewModel store, DateTime day, List events) {
-    print('CALLBACK: _onDaySelected');
     store.selectDay(day);
   }
 
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
-    print('CALLBACK: _onVisibleDaysChanged');
-    if (last.difference(first) == Duration(days: 6)) {
-      SharedPreferenceService().setString(
-          'calendarFormat', 'week');
-    }
-    else{
-      SharedPreferenceService().setString(
-          'calendarFormat', 'month');
+    if (format == CalendarFormat.month) {
+      SharedPreferenceService().setCalendarFormat('month');
+    } else {
+      SharedPreferenceService().setCalendarFormat('week');
     }
   }
 
   void _onCalendarCreated(CalendarViewModel store, DateTime first,
       DateTime last, CalendarFormat format) {
-    print('CALLBACK: _onCalendarCreated');
     store.selectDay(DateTime.now());
   }
 
@@ -109,10 +102,12 @@ class _CalendarWidgetState extends State<CalendarWidget>
       formatAnimation: FormatAnimation.scale,
 //      startingDayOfWeek: StartingDayOfWeek.monday,
       availableGestures: AvailableGestures.all,
-      availableCalendarFormats: const {
-        CalendarFormat.month: 'Compatto',
-        CalendarFormat.twoWeeks: 'Espanso',
-      },
+
+      availableCalendarFormats: {
+        CalendarFormat.month: AppLocalizations.of(context).compact,
+        CalendarFormat.twoWeeks: AppLocalizations.of(context).expanded
+      }
+      ,
       locale: locale.toString(),
       calendarStyle: CalendarStyle(
           outsideDaysVisible: true,

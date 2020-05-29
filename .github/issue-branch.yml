@@ -3,12 +3,17 @@ silent: false
 branchName: '${issue.number}-${issue.title}'
 autoCloseIssue: true
 branches:
-  - label: task
+  - label: feature
     prefix: feature/
-    name: master
-  - label: bug
+    name: develop
+  - label: fix
+    prefix: fix/
+    name: develop
+  - label: bugfix
     prefix: bugfix/
+    name: release
+  - label: hotfix
+    prefix: hotfix/
     name: master
   - label: '*'
-    prefix: issues/
-    name: master
+    name: develop
