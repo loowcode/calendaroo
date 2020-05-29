@@ -3,6 +3,7 @@
   "appName": "Calendaroo",
   "compact" : "Compact",
   "cancel" : "Cancel",
+  "delete": "Delete",
   "description": "Description",
   "edit_event": "Edit Event",
   "event_end": "End",
@@ -17,7 +18,7 @@
   "ok": "Ok",
   "profile": "Profile",
   "save": "Save",
-  "start": "start",
+  "start": "Start",
   "title": "Title",
   "today": "Today",
   "todo": "Todo"

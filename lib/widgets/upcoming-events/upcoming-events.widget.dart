@@ -148,7 +148,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                                           data: Theme.of(context).copyWith(
                                               cardColor: primaryWhite),
                                           child: Text(
-                                            option.title,
+                                            AppLocalizations.of(context).translate(option.title),
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyText1
