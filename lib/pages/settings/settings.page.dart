@@ -8,7 +8,9 @@ import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:calendaroo/widgets/common/page-title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alert/flutter_alert.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // TODO: Use Theme
 class SettingsPage extends StatefulWidget {
@@ -126,7 +128,9 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             color: AppTheme.primaryTheme.buttonColor,
             textColor: AppTheme.primaryTheme.textTheme.button.color,
-            onPressed: () {},
+            onPressed: () {
+              _launchEmailUrl();
+            },
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
@@ -205,6 +209,20 @@ class _SettingsPageState extends State<SettingsPage> {
     } else {
       SharedPreferenceService().setBool('enableNotifications', false);
       cancelAllNotifications();
+    }
+  }
+
+  _launchEmailUrl() async {
+    var url = 'mailto:loowcode@gmail.com?subject=Feedback';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      showAlert(
+        context: context,
+        title: 'Attenzione',
+        body: 'Nessuna applicazione trovata per l\'invio di email!',
+        barrierDismissible: true,
+      );
     }
   }
 }
