@@ -42,6 +42,10 @@ class SharedPreferenceService {
     }
   }
 
+  bool get enableNotifications {
+    return _prefs.getBool('enableNotifications') ?? true;
+  }
+
   factory SharedPreferenceService() {
     return _instance;
   }

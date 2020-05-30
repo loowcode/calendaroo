@@ -2,6 +2,9 @@ import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/environments/environment.dart';
 import 'package:calendaroo/pages/settings/settings.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/services/calendar.service.dart';
+import 'package:calendaroo/services/notification.utils.dart';
+import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:calendaroo/widgets/common/page-title.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +17,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _notifications = false;
+  bool _notifications = SharedPreferenceService().enableNotifications;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +73,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   icon: Icons.done,
                   label: 'Yes',
                   onTap: () {
+                    _enableNotifications(true);
                     setState(() {
                       _notifications = true;
                     });
@@ -79,6 +83,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   icon: Icons.close,
                   label: 'No',
                   onTap: () {
+                    _enableNotifications(false);
+
                     setState(() {
                       _notifications = false;
                     });
@@ -181,5 +187,24 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     );
+  }
+
+  _enableNotifications(bool enableNotifications) {
+    if (enableNotifications) {
+      SharedPreferenceService().setBool('enableNotifications', true);
+      var now = DateTime.now();
+      calendarooState.state.calendarState.eventMapped.forEach((key, value) {
+        if (CalendarService().removeTime(now).compareTo(key) <= 0) {
+          value.forEach((element) {
+            if (now.isBefore(element.start)) {
+              scheduleNotification(element);
+            }
+          });
+        }
+      });
+    } else {
+      SharedPreferenceService().setBool('enableNotifications', false);
+      cancelAllNotifications();
+    }
   }
 }
