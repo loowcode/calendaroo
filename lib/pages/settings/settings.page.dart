@@ -2,6 +2,7 @@ import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/environments/environment.dart';
 import 'package:calendaroo/pages/settings/settings.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/calendar.service.dart';
 import 'package:calendaroo/services/notification.utils.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
@@ -32,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                PageTitle('Settings'),
+                PageTitle(AppLocalizations.of(context).settings),
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +63,7 @@ class _SettingsPageState extends State<SettingsPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Notifications',
+                  AppLocalizations.of(context).notifications,
                   style: Theme.of(context).textTheme.headline6,
                 ),
               )
@@ -73,7 +74,7 @@ class _SettingsPageState extends State<SettingsPage> {
             children: [
               _buildButton(
                   icon: Icons.done,
-                  label: 'Yes',
+                  label: AppLocalizations.of(context).yes,
                   onTap: () {
                     _enableNotifications(true);
                     setState(() {
@@ -83,7 +84,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   selected: _notifications),
               _buildButton(
                   icon: Icons.close,
-                  label: 'No',
+                  label: AppLocalizations.of(context).no,
                   onTap: () {
                     _enableNotifications(false);
 
@@ -111,7 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Feedback',
+                  AppLocalizations.of(context).feedback,
                   style: Theme.of(context).textTheme.headline6,
                 ),
               )
@@ -124,7 +125,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text('Send us an email'),
+              child: Text(AppLocalizations.of(context).sendFeedback),
             ),
             color: AppTheme.primaryTheme.buttonColor,
             textColor: AppTheme.primaryTheme.textTheme.button.color,
@@ -135,7 +136,7 @@ class _SettingsPageState extends State<SettingsPage> {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              'Every feedback is important to us!',
+              AppLocalizations.of(context).feedbackInfo,
               style: AppTheme.primaryTheme.textTheme.bodyText1.copyWith(
                 color: Colors.black,
               ),
@@ -151,7 +152,7 @@ class _SettingsPageState extends State<SettingsPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Version ' + Environment().version + '\nMade with ❤ by LoowCode',
+          AppLocalizations.of(context).version + ' ' + Environment().version + '\n' + AppLocalizations.of(context).madeWithLove,
           style: AppTheme.primaryTheme.textTheme.caption,
           textAlign: TextAlign.center,
         ),
@@ -219,8 +220,8 @@ class _SettingsPageState extends State<SettingsPage> {
     } else {
       showAlert(
         context: context,
-        title: 'Attenzione',
-        body: 'Nessuna applicazione trovata per l\'invio di email!',
+        title: AppLocalizations.of(context).warning,
+        body: AppLocalizations.of(context).warningNoEmailApp,
         barrierDismissible: true,
       );
     }
