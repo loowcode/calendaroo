@@ -10,6 +10,8 @@ class AppLocalizations {
 
   AppLocalizations(this.locale);
 
+
+
   // Helper method to keep the code in the widgets concise
   // Localizations are accessed using an InheritedWidget "of" syntax
   static AppLocalizations of(BuildContext context) {
@@ -39,8 +41,32 @@ class AppLocalizations {
     return _localizedStrings[key];
   }
 
-  String get newEventTitle => _localizedStrings['new-event-title'];
+  static const String DELETE = 'delete';
+  String get addEvent=> _localizedStrings['add_event'];
+  String get appName=> _localizedStrings['appName'];
+  String get cancel => _localizedStrings['cancel'];
+  String get compact=> _localizedStrings['compact'];
+  String get delete=> _localizedStrings[DELETE];
+  String get description=> _localizedStrings['description'];
+  String get editEvent => _localizedStrings['editEvent'];
+  String get event=> _localizedStrings['event'];
+  String get eventEnd=> _localizedStrings['event_end'];
+  String get eventStart=> _localizedStrings['event_start'];
+  String get expanded=> _localizedStrings['expanded'];
+  String get home=> _localizedStrings['home'];
+  String get insertATitle=> _localizedStrings['insert_a_title'];
   String get newEvent => _localizedStrings['new-event'];
+  String get newEventTitle => _localizedStrings['new-event-title'];
+  String get noEvents=> _localizedStrings['no_events'];
+  String get ok=> _localizedStrings['Ok'];
+  String get profile=> _localizedStrings['profile'];
+  String get settings=> _localizedStrings['settings'];
+  String get save=> _localizedStrings['save'];
+  String get start=> _localizedStrings['start'];
+  String get title=> _localizedStrings['title'];
+  String get today=> _localizedStrings['today'];
+  String get todo=> _localizedStrings['todo'];
+
 
 }
 

@@ -1,10 +1,10 @@
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
-import 'package:calendaroo/services/notification.utils.dart';
 import 'package:calendaroo/services/events.repository.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
+import 'package:calendaroo/services/notification.utils.dart';
 import 'package:redux/redux.dart';
 
 class CalendarMiddleware extends MiddlewareClass<AppState> {
@@ -24,7 +24,9 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
     }
 
     if (action is OpenEvent) {
-      NavigationService().navigateTo(SHOW_EVENT, arguments: action.event);
+      if (action.event != null) {
+        NavigationService().navigateTo(SHOW_EVENT, arguments: action.event);
+      }
     }
 
     next(action);

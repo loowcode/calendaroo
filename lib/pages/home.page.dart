@@ -34,13 +34,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              _buildBottomIcon(Icons.add, "Add Event",
+              _buildBottomIcon(Icons.add, AppLocalizations.of(context).addEvent,
                   () => NavigationService().navigateTo(ADD_EVENT)),
               _buildBottomIcon(
                   Icons.today,
-                  AppLocalizations.of(context).translate('today'),
+                  AppLocalizations.of(context).today,
                   () => calendarooState.dispatch(SelectDay(DateTime.now()))),
-              _buildBottomIcon(Icons.settings, "Settings",
+              _buildBottomIcon(Icons.settings, AppLocalizations.of(context).settings,
                   () => NavigationService().navigateTo(SETTINGS)),
             ]),
       ),

@@ -11,6 +11,7 @@ class Texts {
   static const String PROFILE = "profile";
   static const String UPCOMING_EVENTS = "upcoming-events";
   static const String START = "start";
+
 }
 
 // Example holidays

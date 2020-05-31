@@ -32,14 +32,17 @@ class SharedPreferenceService {
     await _prefs.clear();
   }
 
-
   CalendarFormat get calendarFormat {
     var format = _prefs.getString('calendarFormat');
     if (format == null || format == 'month') {
       return CalendarFormat.month;
     } else {
-      return CalendarFormat.week;
+      return CalendarFormat.twoWeeks;
     }
+  }
+
+  void setCalendarFormat(String value) {
+    _prefs.setString('calendarFormat', value);
   }
 
   bool get enableNotifications {

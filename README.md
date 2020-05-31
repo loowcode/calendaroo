@@ -3,6 +3,8 @@ A Fancy Flutter Calendar
 
 ![Banner](https://github.com/jacopo1395/calendaroo/blob/master/android/app/src/main/res/drawable/banner_calendaroo.png?raw=true)
 
+<img src="https://github.com/jacopo1395/calendaroo/blob/develop/Screenshot_1590763281.png" alt="gitflow" height="400"/>
+
 # Install
 1. Install [Flutter](https://flutter.dev/docs/get-started/install)
 2. In a terminal run `git clone https://github.com/jacopo1395/calendaroo.git`
