@@ -53,18 +53,29 @@ class AppLocalizations {
   String get eventEnd=> _localizedStrings['event_end'];
   String get eventStart=> _localizedStrings['event_start'];
   String get expanded=> _localizedStrings['expanded'];
+  String get feedback=> _localizedStrings['feedback'];
+  String get feedbackInfo=> _localizedStrings['feedback_info'];
   String get home=> _localizedStrings['home'];
   String get insertATitle=> _localizedStrings['insert_a_title'];
+  String get madeWithLove=> _localizedStrings['made_with_love'];
   String get newEvent => _localizedStrings['new-event'];
   String get newEventTitle => _localizedStrings['new-event-title'];
+  String get no=> _localizedStrings['no'];
   String get noEvents=> _localizedStrings['no_events'];
+  String get notifications=> _localizedStrings['notifications'];
   String get ok=> _localizedStrings['Ok'];
   String get profile=> _localizedStrings['profile'];
   String get save=> _localizedStrings['save'];
+  String get sendFeedback=> _localizedStrings['send_feedback'];
+  String get settings=> _localizedStrings['settings'];
   String get start=> _localizedStrings['start'];
   String get title=> _localizedStrings['title'];
   String get today=> _localizedStrings['today'];
   String get todo=> _localizedStrings['todo'];
+  String get version=> _localizedStrings['version'];
+  String get warning=> _localizedStrings['warning'];
+  String get warningNoEmailApp=> _localizedStrings['warning_no_email_app'];
+  String get yes=> _localizedStrings['yes'];
 
 
 }

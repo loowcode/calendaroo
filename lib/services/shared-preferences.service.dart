@@ -45,6 +45,10 @@ class SharedPreferenceService {
     _prefs.setString('calendarFormat', value);
   }
 
+  bool get enableNotifications {
+    return _prefs.getBool('enableNotifications') ?? true;
+  }
+
   factory SharedPreferenceService() {
     return _instance;
   }

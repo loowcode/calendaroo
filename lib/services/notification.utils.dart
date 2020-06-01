@@ -33,6 +33,10 @@ Future<void> cancelNotification(int id) async {
   await flutterLocalNotificationsPlugin.cancel(id);
 }
 
+Future<void> cancelAllNotifications() async {
+  await flutterLocalNotificationsPlugin.cancelAll();
+}
+
 Future initNotification() async {
   notificationAppLaunchDetails =
       await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
