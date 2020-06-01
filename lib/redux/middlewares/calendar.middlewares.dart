@@ -3,6 +3,7 @@ import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/events.repository.dart';
 import 'package:calendaroo/services/navigation.service.dart';
+import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:calendaroo/services/notification.utils.dart';
 import 'package:redux/redux.dart';
 
@@ -12,7 +13,10 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
     if (action is AddEvent) {
       var id = await EventsRepository().insertEvent(action.event);
       action.event.setId(id);
-      scheduleNotification(action.event);
+
+      if (SharedPreferenceService().enableNotifications) {
+        scheduleNotification(action.event);
+      }
     }
     if (action is RemoveEvent) {
       EventsRepository().deleteEvent(action.event.id);
