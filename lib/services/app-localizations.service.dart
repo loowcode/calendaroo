@@ -43,12 +43,12 @@ class AppLocalizations {
 
   static const String DELETE = 'delete';
   String get addEvent=> _localizedStrings['add_event'];
-  String get appName=> _localizedStrings['appName'];
+  String get appName=> _localizedStrings['app_name'];
   String get cancel => _localizedStrings['cancel'];
   String get compact=> _localizedStrings['compact'];
   String get delete=> _localizedStrings[DELETE];
   String get description=> _localizedStrings['description'];
-  String get editEvent => _localizedStrings['editEvent'];
+  String get editEvent => _localizedStrings['edit_event'];
   String get event=> _localizedStrings['event'];
   String get eventEnd=> _localizedStrings['event_end'];
   String get eventStart=> _localizedStrings['event_start'];
@@ -58,8 +58,8 @@ class AppLocalizations {
   String get home=> _localizedStrings['home'];
   String get insertATitle=> _localizedStrings['insert_a_title'];
   String get madeWithLove=> _localizedStrings['made_with_love'];
-  String get newEvent => _localizedStrings['new-event'];
-  String get newEventTitle => _localizedStrings['new-event-title'];
+  String get newEvent => _localizedStrings['new_event'];
+  String get newEventTitle => _localizedStrings['new_event_title'];
   String get no=> _localizedStrings['no'];
   String get noEvents=> _localizedStrings['no_events'];
   String get notifications=> _localizedStrings['notifications'];

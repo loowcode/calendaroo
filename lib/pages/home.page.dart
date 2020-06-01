@@ -36,9 +36,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             children: <Widget>[
               _buildBottomIcon(Icons.add, AppLocalizations.of(context).addEvent,
                   () => NavigationService().navigateTo(ADD_EVENT)),
-              _buildBottomIcon(
-                  Icons.today,
-                  AppLocalizations.of(context).today,
+              _buildBottomIcon(Icons.today, AppLocalizations.of(context).today,
                   () => calendarooState.dispatch(SelectDay(DateTime.now()))),
               _buildBottomIcon(Icons.settings, AppLocalizations.of(context).settings,
                   () => NavigationService().navigateTo(SETTINGS)),
@@ -47,16 +45,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  Material _buildBottomIcon(icon, text, onSelect) {
-    return Material(
-      shape: CircleBorder(),
-      color: backgroundWhite, // button color
-      child: InkWell(
-        radius: 64,
-        customBorder: CircleBorder(),
-        child: SizedBox(
-          height: 64,
-          width: 64,
+  Widget _buildBottomIcon(icon, text, onSelect) {
+    return Expanded(
+      child: Material(
+        shape: CircleBorder(),
+        color: backgroundWhite, // button color
+        child: InkWell(
+          customBorder: CircleBorder(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -73,8 +68,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               )
             ],
           ),
+          onTap: onSelect,
         ),
-        onTap: onSelect,
       ),
     );
   }

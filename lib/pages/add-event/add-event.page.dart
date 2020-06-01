@@ -68,11 +68,9 @@ class _AddEventPageState extends State<AddEventPage> {
                     Expanded(
                       child: ListView(
                         children: <Widget>[
-                          PageTitle(
-                              !_isEdit()
-                                  ? AppLocalizations.of(context).newEvent
-                                  : AppLocalizations.of(context).editEvent
-                          ),
+                          PageTitle(!_isEdit()
+                              ? AppLocalizations.of(context).newEvent
+                              : AppLocalizations.of(context).editEvent),
                           _buildTitle(),
                           _buildTime(
                               true, context, _formatterDate, _formatterTime),
@@ -94,57 +92,65 @@ class _AddEventPageState extends State<AddEventPage> {
     return Column(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(top: 16, bottom: 16),
           margin: EdgeInsets.only(top: 16),
           decoration: BoxDecoration(
               color: backgroundForm,
               borderRadius: BorderRadius.only(topRight: Radius.circular(16))),
-          child: ListTile(
-            leading: Icon(
-              Icons.title,
-              color: secondaryDarkBlue,
-            ),
-            title: TextFormField(
-              initialValue: _title,
-              decoration: new InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: secondaryDarkBlue),
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.title,
+                  color: secondaryDarkBlue,
                 ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: secondaryDarkBlue),
-                ),
-                errorBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: secondaryDarkBlue),
-                ),
-                disabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: secondaryDarkBlue),
-                ),
-                contentPadding:
-                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                labelText: AppLocalizations.of(context).title,
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    .copyWith(color: primaryBlack),
               ),
-              style:
-                  Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 20),
-              validator: (value) {
-                if (value != null && value.length > 0) {
-                  return null;
-                }
-                return AppLocalizations.of(context).insertATitle;
-              },
-              onSaved: (value) {
-                setState(() {
-                  _title = value;
-                });
-              },
-            ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    initialValue: _title,
+                    decoration: new InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: secondaryDarkBlue),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: secondaryDarkBlue),
+                      ),
+                      errorBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: secondaryDarkBlue),
+                      ),
+                      disabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: secondaryDarkBlue),
+                      ),
+                      labelText: AppLocalizations.of(context).title,
+                      labelStyle: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(color: primaryBlack),
+                    ),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .copyWith(fontSize: 20),
+                    validator: (value) {
+                      if (value != null && value.length > 0) {
+                        return null;
+                      }
+                      return AppLocalizations.of(context).insertATitle;
+                    },
+                    onSaved: (value) {
+                      setState(() {
+                        _title = value;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         Container(
-          padding: EdgeInsets.only(top: 16, bottom: 16),
           margin: EdgeInsets.only(top: 8, bottom: 16),
           decoration: BoxDecoration(
               color: backgroundForm,
@@ -152,44 +158,52 @@ class _AddEventPageState extends State<AddEventPage> {
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16))),
           child: Container(
-            child: ListTile(
-              leading: Icon(
-                Icons.subject,
-                color: accentYellowText,
-              ),
-              title: TextFormField(
-                initialValue: _description,
-                decoration: new InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: secondaryDarkBlue),
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    Icons.subject,
+                    color: accentYellowText,
                   ),
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: secondaryDarkBlue),
-                  ),
-                  errorBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: secondaryDarkBlue),
-                  ),
-                  disabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: secondaryDarkBlue),
-                  ),
-                  contentPadding:
-                      EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-                  labelText: AppLocalizations.of(context).description,
-                  labelStyle: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      .copyWith(color: primaryBlack),
                 ),
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    .copyWith(fontSize: 20),
-                onSaved: (value) {
-                  setState(() {
-                    _description = value;
-                  });
-                },
-              ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      initialValue: _description,
+                      decoration: new InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: secondaryDarkBlue),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: secondaryDarkBlue),
+                        ),
+                        errorBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: secondaryDarkBlue),
+                        ),
+                        disabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: secondaryDarkBlue),
+                        ),
+                        labelText: AppLocalizations.of(context).description,
+                        labelStyle: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .copyWith(color: primaryBlack),
+                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(fontSize: 20),
+                      onSaved: (value) {
+                        setState(() {
+                          _description = value;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

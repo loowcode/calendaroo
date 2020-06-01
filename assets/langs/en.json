@@ -1,6 +1,6 @@
 {
   "add_event": "Add Event",
-  "appName": "Calendaroo",
+  "app_name": "Calendaroo",
   "cancel": "Cancel",
   "compact": "Compact",
   "delete": "Delete",
@@ -15,8 +15,8 @@
   "home": "Home",
   "insert_a_title": "Insert a tile",
   "made_with_love": "Made with ❤ by LoowCode",
-  "new-event-title": "Create New Event",
-  "new-event": "New Event",
+  "new_event_title": "Create New Event",
+  "new_event": "New Event",
   "no": "No",
   "no_events": "No planned events",
   "notifications": "Notifications",

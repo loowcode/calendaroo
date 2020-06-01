@@ -57,12 +57,15 @@ class _ShowEventPageState extends State<ShowEventPage> {
                   .navigateTo(ADD_EVENT, arguments: store.showEvent))
         ],
         flexibleSpace: FlexibleSpaceBar(
-          title: Text(
-            store.showEvent.title,
-            style: Theme.of(context)
-                .textTheme
-                .headline6
-                .copyWith(color: primaryWhite, fontSize: 20),
+          title: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              store.showEvent.title,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6
+                  .copyWith(color: primaryWhite, fontSize: 20),
+            ),
           ),
         ),
         backgroundColor: secondaryBlue,
