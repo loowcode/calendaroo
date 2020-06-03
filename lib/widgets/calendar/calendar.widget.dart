@@ -100,7 +100,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
       onHeaderTapped: _onHeaderTapped,
       initialCalendarFormat: SharedPreferenceService().calendarFormat,
       formatAnimation: FormatAnimation.scale,
-//      startingDayOfWeek: StartingDayOfWeek.monday,
+      startingDayOfWeek: StartingDayOfWeek.monday,
       availableGestures: AvailableGestures.all,
 
       availableCalendarFormats: {
