@@ -11,7 +11,6 @@ class AppLocalizations {
   AppLocalizations(this.locale);
 
 
-
   // Helper method to keep the code in the widgets concise
   // Localizations are accessed using an InheritedWidget "of" syntax
   static AppLocalizations of(BuildContext context) {
@@ -43,6 +42,7 @@ class AppLocalizations {
 
   static const String DELETE = 'delete';
   String get addEvent=> _localizedStrings['add_event'];
+  String get alarm => _localizedStrings['alarm'];
   String get appName=> _localizedStrings['app_name'];
   String get cancel => _localizedStrings['cancel'];
   String get compact=> _localizedStrings['compact'];

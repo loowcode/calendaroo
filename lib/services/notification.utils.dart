@@ -1,8 +1,12 @@
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/model/received-notification.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
+
+final MethodChannel platform =
+    MethodChannel('crossingthestreams.io/resourceResolver');
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -24,9 +28,25 @@ Future<void> scheduleNotification(Event event) async {
   var platformChannelSpecifics = NotificationDetails(
       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
-  await flutterLocalNotificationsPlugin.schedule(
-      event.id, event.title, event.description, event.start, platformChannelSpecifics,
+  await flutterLocalNotificationsPlugin.schedule(event.id, event.title,
+      event.description, event.start, platformChannelSpecifics,
       androidAllowWhileIdle: true, payload: event.id.toString());
+}
+
+Future<void> showSoundUriNotification() async {
+  // this calls a method over a platform channel implemented within the example app to return the Uri for the default
+  // alarm sound and uses as the notification sound
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'event_notification', 'Notifiche evento', 'Mostra le notifiche evento',
+      importance: Importance.Max,
+      priority: Priority.Max,
+      playSound: true,
+      styleInformation: DefaultStyleInformation(true, true));
+  var iOSPlatformChannelSpecifics = IOSNotificationDetails(presentSound: false);
+  var platformChannelSpecifics = NotificationDetails(
+      androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+  await flutterLocalNotificationsPlugin.show(
+      0, 'uri sound title', 'uri sound body', platformChannelSpecifics);
 }
 
 Future<void> cancelNotification(int id) async {

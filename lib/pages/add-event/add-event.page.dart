@@ -3,6 +3,7 @@ import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
+import 'package:calendaroo/services/notification.utils.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:calendaroo/widgets/common/page-title.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,6 +31,7 @@ class _AddEventPageState extends State<AddEventPage> {
   DateTime _endTime;
 
   Event showEvent;
+  bool _alarm;
 
   @override
   void initState() {
@@ -47,6 +49,7 @@ class _AddEventPageState extends State<AddEventPage> {
     _startTime = showEvent?.start ?? defaultTime;
     _endDate = showEvent?.end ?? _startDate;
     _endTime = showEvent?.end ?? defaultTime.add(Duration(hours: 1));
+    _alarm = false;
   }
 
   @override
@@ -76,6 +79,7 @@ class _AddEventPageState extends State<AddEventPage> {
                               true, context, _formatterDate, _formatterTime),
                           _buildTime(
                               false, context, _formatterDate, _formatterTime),
+                          _buildNotification()
                         ],
                       ),
                     ),
@@ -86,6 +90,28 @@ class _AddEventPageState extends State<AddEventPage> {
             ),
           );
         });
+  }
+
+  Widget _buildNotification() {
+    return Row(
+      children: <Widget>[
+        Text(
+          AppLocalizations.of(context).alarm,
+          style: Theme.of(context).textTheme.subtitle2,
+        ),
+        Switch(
+          value: _alarm,
+          onChanged: (value) {
+            setState(() {
+              _alarm = value;
+            });
+          },
+        ),
+        RaisedButton(onPressed: (){
+          showSoundUriNotification();
+        },)
+      ],
+    );
   }
 
   Column _buildTitle() {
