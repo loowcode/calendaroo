@@ -100,6 +100,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
               ? _buildDescription(store.showEvent)
               : SizedBox(
                   height: 0,
+
                 ),
           _buildTime(store.showEvent, start: true),
           _buildTime(store.showEvent, start: false),
@@ -121,9 +122,10 @@ class _ShowEventPageState extends State<ShowEventPage> {
               color: secondaryLightGrey,
             ),
           ),
-    Container(
-          width: 300,
-          child: Text(
+    SizedBox(
+        width: MediaQuery.of(context).size.width-70,
+        child:
+          Text(
             event.description,
             textAlign: TextAlign.left,
             maxLines: 100,
