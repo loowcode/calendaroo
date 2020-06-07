@@ -54,8 +54,19 @@ class _ShowEventPageState extends State<ShowEventPage> {
                 color: primaryWhite,
               ),
               onPressed: () => NavigationService()
-                  .navigateTo(ADD_EVENT, arguments: store.showEvent))
+                  .navigateTo(ADD_EVENT, arguments: store.showEvent)),
+      //DELETE ACTION IN DETAIL PAGE
+          IconButton(
+              icon: Icon(
+                Icons.delete,
+                color: primaryWhite,
+              ),
+              onPressed: ()  {
+                store.removeEvent(store.showEvent);
+                NavigationService().pop();
+              })
         ],
+
         flexibleSpace: FlexibleSpaceBar(
           title: Padding(
             padding: const EdgeInsets.all(8.0),
