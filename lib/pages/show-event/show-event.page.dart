@@ -88,6 +88,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
   }
 
   Widget _buildInfoEvent(ShowEventViewModel store) {
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -95,6 +96,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
         children: <Widget>[
           store.showEvent.description != null &&
                   store.showEvent.description.length > 0
+
               ? _buildDescription(store.showEvent)
               : SizedBox(
                   height: 0,
@@ -112,17 +114,21 @@ class _ShowEventPageState extends State<ShowEventPage> {
       child: Row(
         children: <Widget>[
           Container(
+
             margin: EdgeInsets.only(right: 8),
             child: Icon(
               Icons.subject,
               color: secondaryLightGrey,
             ),
           ),
-          Text(
+    Container(
+          width: 300,
+          child: Text(
             event.description,
             textAlign: TextAlign.left,
+            maxLines: 100,
             style: Theme.of(context).textTheme.subtitle1,
-          )
+          ))
         ],
       ),
     );
