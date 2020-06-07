@@ -39,4 +39,4 @@ A Fancy Flutter Calendar
 Thanks to [Vladimir Gubanov](https://dribbble.com/Vladimir_Gubanov) for inspirations
 
 # Contributors
-Made with ❤ by Jacopo Carlini, Pellegrino Durante, Giovanna Flore
+Made with ❤ by Jacopo Carlini, Pellegrino Durante, Giovanna Flore, Gianluca Galli
