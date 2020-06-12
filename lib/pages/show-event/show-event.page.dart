@@ -54,8 +54,19 @@ class _ShowEventPageState extends State<ShowEventPage> {
                 color: primaryWhite,
               ),
               onPressed: () => NavigationService()
-                  .navigateTo(ADD_EVENT, arguments: store.showEvent))
+                  .navigateTo(ADD_EVENT, arguments: store.showEvent)),
+      //DELETE ACTION IN DETAIL PAGE
+          IconButton(
+              icon: Icon(
+                Icons.delete,
+                color: primaryWhite,
+              ),
+              onPressed: ()  {
+                store.removeEvent(store.showEvent);
+                NavigationService().pop();
+              })
         ],
+
         flexibleSpace: FlexibleSpaceBar(
           title: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -77,6 +88,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
   }
 
   Widget _buildInfoEvent(ShowEventViewModel store) {
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -84,9 +96,11 @@ class _ShowEventPageState extends State<ShowEventPage> {
         children: <Widget>[
           store.showEvent.description != null &&
                   store.showEvent.description.length > 0
+
               ? _buildDescription(store.showEvent)
               : SizedBox(
                   height: 0,
+
                 ),
           _buildTime(store.showEvent, start: true),
           _buildTime(store.showEvent, start: false),
@@ -101,17 +115,22 @@ class _ShowEventPageState extends State<ShowEventPage> {
       child: Row(
         children: <Widget>[
           Container(
+
             margin: EdgeInsets.only(right: 8),
             child: Icon(
               Icons.subject,
               color: secondaryLightGrey,
             ),
           ),
+    SizedBox(
+        width: MediaQuery.of(context).size.width-70,
+        child:
           Text(
             event.description,
             textAlign: TextAlign.left,
+            maxLines: 100,
             style: Theme.of(context).textTheme.subtitle1,
-          )
+          ))
         ],
       ),
     );
