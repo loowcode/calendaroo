@@ -1,5 +1,5 @@
 import 'package:calendaroo/pages/add-event/add-event.page.dart';
-import 'package:calendaroo/pages/home.page.dart';
+import 'package:calendaroo/pages/container.page.dart';
 import 'package:calendaroo/pages/settings/settings.page.dart';
 import 'package:calendaroo/pages/show-event/show-event.page.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
     (RouteSettings settings) {
   switch (settings.name) {
     case HOMEPAGE:
-      return MaterialPageRoute(builder: (context) => HomePage(), settings: settings);
+      return MaterialPageRoute(builder: (context) => ContainerPage(), settings: settings);
     case ADD_EVENT:
       return MaterialPageRoute(builder: (context) => AddEventPage(), settings: settings);
     case SHOW_EVENT:
@@ -21,6 +21,6 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
     case SETTINGS:
       return MaterialPageRoute(builder: (context) => SettingsPage(), settings: settings);
     default:
-      return MaterialPageRoute(builder: (context) => HomePage(), settings: settings);
+      return MaterialPageRoute(builder: (context) => ContainerPage(), settings: settings);
   }
 };

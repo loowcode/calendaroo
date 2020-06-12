@@ -13,6 +13,7 @@ class AppTheme {
       buttonColor: secondaryBlue,
       // hintColor: accentYellow,
       canvasColor: transparent,
+
 //      scaffoldBackgroundColor: primaryWhite,
 //      cardColor: itemVeryLightGrayMostlyWhite,
       textSelectionColor: accentYellow,
