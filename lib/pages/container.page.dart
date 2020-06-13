@@ -1,10 +1,11 @@
 import 'package:calendaroo/colors.dart';
-import 'package:calendaroo/pages/calendar.page.dart';
 import 'package:calendaroo/pages/today/today.page.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:calendaroo/widgets/fab-button.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'file:///C:/Users/carlinija/Desktop/git/calendaroo/lib/pages/calendar/calendar.page.dart';
 
 class ContainerPage extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class ContainerPage extends StatefulWidget {
 
 class _ContainerPageState extends State<ContainerPage>
     with TickerProviderStateMixin {
-  var _index;
+  int _index;
   List<StatefulWidget> _fragments;
 
   @override
@@ -49,7 +50,7 @@ class _ContainerPageState extends State<ContainerPage>
                     icon: Icon(
                       Icons.home,
                       //darken the icon if it is selected or else give it a different color
-                      color: secondaryDarkGrey,
+                      color: _index == 0 ? secondaryBlue : secondaryGrey,
                     ),
                   ),
                   IconButton(
@@ -61,7 +62,7 @@ class _ContainerPageState extends State<ContainerPage>
                     iconSize: 27.0,
                     icon: Icon(
                       Icons.calendar_today,
-                      color: secondaryDarkGrey,
+                      color: _index == 1 ? secondaryBlue : secondaryGrey,
                     ),
                   ),
                   IconButton(
@@ -69,7 +70,7 @@ class _ContainerPageState extends State<ContainerPage>
                     iconSize: 27.0,
                     icon: Icon(
                       Icons.pie_chart,
-                      color: secondaryDarkGrey,
+                      color: _index == 2 ? secondaryBlue : secondaryGrey,
                     ),
                   ),
                   //to leave space in between the bottom app bar items and below the FAB
