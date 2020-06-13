@@ -77,12 +77,13 @@ class _CalendarWidgetState extends State<CalendarWidget>
         builder: (context, store) {
           return Container(
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
                 gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
                     colors: cyanGradient)),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(top: 8.0),
               child: _buildTableCalendarWithBuilders(store),
             ),
           );
@@ -109,27 +110,27 @@ class _CalendarWidgetState extends State<CalendarWidget>
       calendarStyle: CalendarStyle(
           outsideDaysVisible: true,
           outsideHolidayStyle:
-              TextStyle().copyWith(color: primaryTransparentWhite),
+              TextStyle().copyWith(color: transparentWhite),
           outsideWeekendStyle:
-              TextStyle().copyWith(color: primaryTransparentWhite),
-          outsideStyle: TextStyle().copyWith(color: primaryTransparentWhite),
-          weekendStyle: TextStyle().copyWith(color: primaryWhite),
-          holidayStyle: TextStyle().copyWith(color: primaryWhite),
-          weekdayStyle: TextStyle().copyWith(color: primaryWhite)),
+              TextStyle().copyWith(color: transparentWhite),
+          outsideStyle: TextStyle().copyWith(color: transparentWhite),
+          weekendStyle: TextStyle().copyWith(color: white),
+          holidayStyle: TextStyle().copyWith(color: white),
+          weekdayStyle: TextStyle().copyWith(color: white)),
       daysOfWeekStyle: DaysOfWeekStyle(
-          weekendStyle: TextStyle().copyWith(color: primaryWhite),
-          weekdayStyle: TextStyle().copyWith(color: primaryWhite)),
+          weekendStyle: TextStyle().copyWith(color: white),
+          weekdayStyle: TextStyle().copyWith(color: white)),
       headerStyle: HeaderStyle(
-        leftChevronIcon: Icon(Icons.chevron_left, color: primaryWhite),
-        rightChevronIcon: Icon(Icons.chevron_right, color: primaryWhite),
+        leftChevronIcon: Icon(Icons.chevron_left, color: white),
+        rightChevronIcon: Icon(Icons.chevron_right, color: white),
         centerHeaderTitle: true,
         formatButtonVisible: true,
         formatButtonDecoration:
             BoxDecoration(border: Border.all(color: transparent)),
         formatButtonTextStyle:
-            TextStyle().copyWith(color: primaryTransparentWhite),
+            TextStyle().copyWith(color: transparentWhite),
         titleTextStyle:
-            Theme.of(context).textTheme.headline5.copyWith(color: primaryWhite),
+            Theme.of(context).textTheme.headline5.copyWith(color: white),
       ),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {
@@ -140,12 +141,12 @@ class _CalendarWidgetState extends State<CalendarWidget>
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: primaryWhite),
+                    color: white),
                 child: Center(
                   child: Text(
                     '${date.day}',
                     style: TextStyle()
-                        .copyWith(fontSize: 16.0, color: secondaryBlue),
+                        .copyWith(fontSize: 16.0, color: blue),
                   ),
                 ),
               ),
@@ -158,12 +159,12 @@ class _CalendarWidgetState extends State<CalendarWidget>
             child: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: primaryTransparentWhite),
+                  color: transparentWhite),
               child: Center(
                 child: Text(
                   '${date.day}',
                   style: TextStyle()
-                      .copyWith(fontSize: 16.0, color: secondaryDarkBlue),
+                      .copyWith(fontSize: 16.0, color: darkBlue),
                 ),
               ),
             ),
@@ -213,8 +214,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(3),
         color: _calendarController.isSelected(date)
-            ? accentPink
-            : _calendarController.isToday(date) ? accentPink : accentPink,
+            ? pink
+            : _calendarController.isToday(date) ? pink : pink,
       ),
       width: 16.0,
       height: 16.0,
@@ -222,7 +223,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
         child: Text(
           '${events.length}',
           style: TextStyle().copyWith(
-            color: primaryWhite,
+            color: white,
             fontSize: 12.0,
           ),
         ),

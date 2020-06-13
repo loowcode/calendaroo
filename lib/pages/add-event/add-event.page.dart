@@ -94,7 +94,7 @@ class _AddEventPageState extends State<AddEventPage> {
         Container(
           margin: EdgeInsets.only(top: 16),
           decoration: BoxDecoration(
-              color: backgroundForm,
+              color: cyan,
               borderRadius: BorderRadius.only(topRight: Radius.circular(16))),
           child: Row(
             children: <Widget>[
@@ -102,7 +102,7 @@ class _AddEventPageState extends State<AddEventPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Icon(
                   Icons.title,
-                  color: secondaryDarkBlue,
+                  color: darkBlue,
                 ),
               ),
               Expanded(
@@ -112,22 +112,22 @@ class _AddEventPageState extends State<AddEventPage> {
                     initialValue: _title,
                     decoration: new InputDecoration(
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: secondaryDarkBlue),
+                        borderSide: BorderSide(color: darkBlue),
                       ),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: secondaryDarkBlue),
+                        borderSide: BorderSide(color: darkBlue),
                       ),
                       errorBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: secondaryDarkBlue),
+                        borderSide: BorderSide(color: darkBlue),
                       ),
                       disabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: secondaryDarkBlue),
+                        borderSide: BorderSide(color: darkBlue),
                       ),
                       labelText: AppLocalizations.of(context).title,
                       labelStyle: Theme.of(context)
                           .textTheme
                           .bodyText2
-                          .copyWith(color: primaryBlack),
+                          .copyWith(color: black),
                     ),
                     style: Theme.of(context)
                         .textTheme
@@ -153,7 +153,7 @@ class _AddEventPageState extends State<AddEventPage> {
         Container(
           margin: EdgeInsets.only(top: 8, bottom: 16),
           decoration: BoxDecoration(
-              color: backgroundForm,
+              color: cyan,
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16))),
@@ -164,7 +164,7 @@ class _AddEventPageState extends State<AddEventPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Icon(
                     Icons.subject,
-                    color: accentYellowText,
+                    color: lightYellow,
                   ),
                 ),
                 Expanded(
@@ -174,22 +174,22 @@ class _AddEventPageState extends State<AddEventPage> {
                       initialValue: _description,
                       decoration: new InputDecoration(
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: secondaryDarkBlue),
+                          borderSide: BorderSide(color: darkBlue),
                         ),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: secondaryDarkBlue),
+                          borderSide: BorderSide(color: darkBlue),
                         ),
                         errorBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: secondaryDarkBlue),
+                          borderSide: BorderSide(color: darkBlue),
                         ),
                         disabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: secondaryDarkBlue),
+                          borderSide: BorderSide(color: darkBlue),
                         ),
                         labelText: AppLocalizations.of(context).description,
                         labelStyle: Theme.of(context)
                             .textTheme
                             .bodyText2
-                            .copyWith(color: primaryBlack),
+                            .copyWith(color: black),
                       ),
                       style: Theme.of(context)
                           .textTheme
@@ -237,11 +237,11 @@ class _AddEventPageState extends State<AddEventPage> {
               },
             ),
             child: Chip(
-              backgroundColor: backgroundForm,
+              backgroundColor: cyan,
               label: Text(_formatterDate.format(start ? _startDate : _endDate)),
               avatar: Icon(
                 Icons.date_range,
-                color: secondaryBlue,
+                color: blue,
               ),
             ),
           ),
@@ -256,11 +256,11 @@ class _AddEventPageState extends State<AddEventPage> {
               },
             ),
             child: Chip(
-              backgroundColor: backgroundForm,
+              backgroundColor: cyan,
               label: Text(_formatterTime.format(start ? _startTime : _endTime)),
               avatar: Icon(
                 Icons.access_time,
-                color: accentPink,
+                color: pink,
               ),
             ),
           ),
@@ -304,7 +304,7 @@ class _AddEventPageState extends State<AddEventPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: FlatButton(
-                      textColor: secondaryBlue,
+                      textColor: blue,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -392,7 +392,7 @@ class _AddEventPageState extends State<AddEventPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: FlatButton(
-                      textColor: secondaryBlue,
+                      textColor: blue,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -452,7 +452,7 @@ class _AddEventPageState extends State<AddEventPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
-        color: secondaryBlue,
+        color: blue,
         onPressed: () {
           // Validate returns true if the form is valid, otherwise false.
           if (_formKey.currentState.validate()) {

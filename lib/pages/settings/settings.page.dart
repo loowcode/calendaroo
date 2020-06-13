@@ -169,7 +169,7 @@ class _SettingsPageState extends State<SettingsPage> {
       padding: const EdgeInsets.all(8.0),
       child: RaisedButton(
         onPressed: onTap,
-        color: selected ? secondaryBlue : Colors.white,
+        color: selected ? blue : Colors.white,
         textColor: selected ? Colors.white : Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),

@@ -91,8 +91,8 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
               curve: Interval(0.0, 1.0 - 3 / 2 / 2.0, curve: Curves.easeOut),
             ),
             child: FloatingActionButton(
-              backgroundColor: primaryWhite,
-              foregroundColor: secondaryGrey,
+              backgroundColor: white,
+              foregroundColor: grey,
               mini: true,
               child: Icon(Icons.close),
               onPressed: () {
@@ -109,8 +109,8 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
               curve: Interval(0.0, 1.0 - 2 / 2 / 2.0, curve: Curves.easeOut),
             ),
             child: FloatingActionButton(
-              backgroundColor: primaryWhite,
-              foregroundColor: accentYellow,
+              backgroundColor: white,
+              foregroundColor: yellow,
               mini: true,
               child: Icon(Icons.calendar_today),
               onPressed: () {
@@ -127,8 +127,8 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
               curve: Interval(0.0, 1.0 - 1 / 2 / 2.0, curve: Curves.easeOut),
             ),
             child: FloatingActionButton(
-              backgroundColor: primaryWhite,
-              foregroundColor: accentYellow,
+              backgroundColor: white,
+              foregroundColor: yellow,
               mini: true,
               child: Icon(Icons.flag),
               onPressed: () {

@@ -4,22 +4,26 @@ import 'package:flutter/material.dart';
 
 
 const transparent = const Color(0x00FFFFFF);
-const primaryWhite = Colors.white;
-const backgroundWhite = const Color(0xFFf0f2f3);
-const primaryTransparentWhite = const Color(0xaaFFFFFF);
-const secondaryLightGrey = const Color(0xFFbfbfbf);
-const secondaryGrey = const Color(0xFF808080);
-const secondaryDarkGrey = const Color(0xFF303436);
-const primaryBlack = const Color(0xFF0e0e0f);
+const transparentWhite = const Color(0xaaFFFFFF);
+const white = Colors.white;
+const lightGrey = const Color(0xFFbfbfbf);
+const grey = const Color(0xFF808080);
+const darkGrey = const Color(0xFF303436);
+const black = const Color(0xFF0e0e0f);
 
-const backgroundForm =  const Color(0xFFcae3e6);
-const secondaryLightBlue =  const Color(0xFF28b6f6);
-const secondaryBlue = const Color(0xFF0084ff);
-const secondaryDarkBlue = const Color(0xFF00579c);
-const accentYellow =  const Color(0xFFffcc00);
-const accentYellowText =  const Color(0xFFe8bb07);
-const accentPink =  Colors.pink;
-const accentRed =  const Color(0xFFcc4037);
+
+const pink =  const Color(0xFFFF006E);
+const fuchsia =  const Color(0xFFFF0AF7);
+const cyan =  const Color(0xFF00E1FF);
+const lightBlue =  const Color(0xFF28b6f6);
+const blue = const Color(0xFF0084ff);
+const darkBlue = const Color(0xFF00579c);
+const purple =  const Color(0xFF8338EC);
+const green =  const Color(0xFF0AFF0A);
+const yellow =  const Color(0xFFFFBE0B);
+const lightYellow =  const Color(0xFFe8bb07);
+const orange =  const Color(0xFFFB5607);
+const red =  const Color(0xFFFF0000);
 
 
 
@@ -40,9 +44,9 @@ const MaterialColor materialSecondaryBlue = const MaterialColor(
 );
 
 
-// gradient
-const cyanGradient = [Colors.cyan, Colors.blue];
-const blueGradient = [Colors.blue, Colors.purple];
-const orangeGradient = [Colors.deepOrangeAccent, Colors.pink];
-const purpleGradient = [Colors.purpleAccent, Colors.deepPurple];
-const greenGradient = [Colors.lightGreen, Colors.yellow];
+// gradients
+const cyanGradient = [cyan, purple];
+const blueGradient = [blue, purple];
+const orangeGradient = [orange, pink];
+const purpleGradient = [fuchsia, purple];
+const greenGradient = [green, yellow];

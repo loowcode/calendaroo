@@ -7,28 +7,28 @@ class AppTheme {
     final ThemeData base = ThemeData.light();
     return base.copyWith(
       appBarTheme: _buildAppBarTheme(base),
-      backgroundColor: primaryWhite,
-      accentColor: accentYellow,
-      primaryColor: primaryWhite,
-      buttonColor: secondaryBlue,
+      backgroundColor: white,
+      accentColor: yellow,
+      primaryColor: white,
+      buttonColor: blue,
       // hintColor: accentYellow,
       canvasColor: transparent,
 
 //      scaffoldBackgroundColor: primaryWhite,
 //      cardColor: itemVeryLightGrayMostlyWhite,
-      textSelectionColor: accentYellow,
+      textSelectionColor: yellow,
 //      errorColor: errorStrongRed,
       textTheme: _buildPrimaryTextTheme(base.textTheme),
 //      primaryTextTheme: _buildPrimaryTextTheme(base.primaryTextTheme),
 //      accentTextTheme: _buildPrimaryTextTheme(base.accentTextTheme),
-      primaryIconTheme: base.iconTheme.copyWith(color: secondaryDarkBlue),
+      primaryIconTheme: base.iconTheme.copyWith(color: darkBlue),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
-            borderSide: BorderSide(color: secondaryBlue, width: 2.0)),
+            borderSide: BorderSide(color: blue, width: 2.0)),
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: secondaryBlue, width: 2.0)),
+            borderSide: BorderSide(color: blue, width: 2.0)),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: secondaryBlue, width: 2.0)),
+            borderSide: BorderSide(color: blue, width: 2.0)),
       ),
     );
   }
@@ -39,13 +39,13 @@ class AppTheme {
       // Title Page
       headline4: base.headline4.copyWith(
         fontSize: 36,
-        color: primaryBlack,
+        color: black,
         fontWeight: FontWeight.w700,
       ),
       // Title heading
       headline5: base.headline5.copyWith(
         fontSize: 24,
-        color: primaryBlack,
+        color: black,
         fontWeight: FontWeight.w700,
       ),
       headline6: base.headline6.copyWith(
@@ -54,33 +54,33 @@ class AppTheme {
       subtitle1: base.subtitle1.copyWith(
         fontWeight: FontWeight.w500,
         fontSize: 20,
-        color: secondaryGrey,
+        color: grey,
       ),
       subtitle2: base.subtitle2.copyWith(
         fontWeight: FontWeight.w600,
-        color: secondaryDarkGrey,
+        color: darkGrey,
       ),
       // Text
       bodyText1: base.bodyText1.copyWith(
         fontSize: 20,
-        fontWeight: FontWeight.normal,
-        color: primaryBlack,
+        fontWeight: FontWeight.w600,
+        color: black,
       ),
       // SubText
       bodyText2: base.bodyText2.copyWith(
         fontWeight: FontWeight.normal,
         fontSize: 16,
-        color: secondaryGrey,
+        color: grey,
       ),
       // Caption (is like Subtext but with lightgrey)
       caption: base.caption.copyWith(
         fontWeight: FontWeight.normal,
-        color: secondaryLightGrey,
+        color: lightGrey,
         fontSize: 16,
       ),
       button: base.button.copyWith(
         fontWeight: FontWeight.bold,
-        color: primaryWhite,
+        color: white,
       ),
     )
         .apply(
@@ -92,28 +92,28 @@ class AppTheme {
     final ThemeData base = ThemeData.light();
     return base.copyWith(
 //      backgroundColor: secondaryBlue,
-      accentColor: accentYellow,
-      primaryColor: primaryWhite,
-      buttonColor: secondaryBlue,
+      accentColor: yellow,
+      primaryColor: white,
+      buttonColor: blue,
 //      appBarTheme: AppBarTheme(color: secondaryBlue, elevation: 0.0),
       // hintColor: accentYellow,
 //      canvasColor: secondaryBlue,
-      scaffoldBackgroundColor: secondaryBlue,
-      cardColor: secondaryBlue,
-      textSelectionColor: accentYellow,
+      scaffoldBackgroundColor: blue,
+      cardColor: blue,
+      textSelectionColor: yellow,
 //      errorColor: errorStrongRed,
       textTheme: _buildSecondaryTextTheme(base.textTheme),
       primaryTextTheme: _buildSecondaryTextTheme(base.primaryTextTheme),
       accentTextTheme: _buildSecondaryTextTheme(base.accentTextTheme),
-      primaryIconTheme: base.iconTheme.copyWith(color: secondaryDarkBlue),
+      primaryIconTheme: base.iconTheme.copyWith(color: darkBlue),
       // buttonTheme: ButtonThemeData(),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
-            borderSide: BorderSide(color: secondaryBlue, width: 2.0)),
+            borderSide: BorderSide(color: blue, width: 2.0)),
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: secondaryBlue, width: 2.0)),
+            borderSide: BorderSide(color: blue, width: 2.0)),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: secondaryBlue, width: 2.0)),
+            borderSide: BorderSide(color: blue, width: 2.0)),
       ),
     );
   }
@@ -121,9 +121,9 @@ class AppTheme {
   static get datePicker {
     final ThemeData base = ThemeData.light();
     return base.copyWith(
-      primaryColor: secondaryBlue,
-      accentColor: secondaryBlue,
-      dialogBackgroundColor: primaryWhite,
+      primaryColor: blue,
+      accentColor: blue,
+      dialogBackgroundColor: white,
     );
   }
 
@@ -155,16 +155,16 @@ class AppTheme {
       subtitle2: base.subtitle2.copyWith(
 //              fontSize: 20.0,
           fontWeight: FontWeight.w600,
-          color: secondaryDarkGrey),
+          color: darkGrey),
       bodyText2: base.bodyText2.copyWith(
 //            fontSize: 20.0,
         fontWeight: FontWeight.w700,
-        color: primaryWhite,
+        color: white,
       ),
       bodyText1: base.bodyText1.copyWith(
 //            fontSize: 20.0,
         fontWeight: FontWeight.normal,
-        color: primaryWhite,
+        color: white,
       ),
       caption: base.caption.copyWith(
         fontWeight: FontWeight.normal,
@@ -173,7 +173,7 @@ class AppTheme {
       button: base.button.copyWith(
           fontWeight: FontWeight.bold,
 //              fontSize: 24.0,
-          color: primaryWhite),
+          color: white),
     )
         .apply(
       fontFamily: 'SourceSansPro',

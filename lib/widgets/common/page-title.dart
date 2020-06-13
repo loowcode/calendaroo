@@ -27,7 +27,7 @@ class _TitleState extends State<PageTitle> {
               },
               icon: Icon(
                 Icons.close,
-                color: secondaryLightGrey,
+                color: lightGrey,
               ))
         ],
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

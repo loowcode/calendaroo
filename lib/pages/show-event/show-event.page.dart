@@ -46,12 +46,12 @@ class _ShowEventPageState extends State<ShowEventPage> {
                 bottomRight: Radius.circular(30))),
         floating: false,
         pinned: true,
-        iconTheme: Theme.of(context).iconTheme.copyWith(color: primaryWhite),
+        iconTheme: Theme.of(context).iconTheme.copyWith(color: white),
         actions: <Widget>[
           IconButton(
               icon: Icon(
                 Icons.edit,
-                color: primaryWhite,
+                color: white,
               ),
               onPressed: () => NavigationService()
                   .navigateTo(ADD_EVENT, arguments: store.showEvent)),
@@ -59,7 +59,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
           IconButton(
               icon: Icon(
                 Icons.delete,
-                color: primaryWhite,
+                color: white,
               ),
               onPressed: ()  {
                 store.removeEvent(store.showEvent);
@@ -75,11 +75,11 @@ class _ShowEventPageState extends State<ShowEventPage> {
               style: Theme.of(context)
                   .textTheme
                   .headline6
-                  .copyWith(color: primaryWhite, fontSize: 20),
+                  .copyWith(color: white, fontSize: 20),
             ),
           ),
         ),
-        backgroundColor: secondaryBlue,
+        backgroundColor: blue,
       ),
       SliverFillRemaining(
         child: _buildInfoEvent(store),
@@ -119,7 +119,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
             margin: EdgeInsets.only(right: 8),
             child: Icon(
               Icons.subject,
-              color: secondaryLightGrey,
+              color: lightGrey,
             ),
           ),
     SizedBox(
@@ -150,11 +150,11 @@ class _ShowEventPageState extends State<ShowEventPage> {
               child: start
                   ? FaIcon(
                       FontAwesomeIcons.clock,
-                      color: secondaryDarkBlue,
+                      color: darkBlue,
                     )
                   : FaIcon(
                       FontAwesomeIcons.dotCircle,
-                      color: secondaryDarkBlue,
+                      color: darkBlue,
                     )),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,7 +167,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2
-                          .copyWith(color: secondaryDarkBlue),
+                          .copyWith(color: darkBlue),
                     )),
                 Text(_formatterDate.format(start ? event.start : event.end)),
               ]),

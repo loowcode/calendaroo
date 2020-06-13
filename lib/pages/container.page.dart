@@ -50,7 +50,7 @@ class _ContainerPageState extends State<ContainerPage>
                     icon: Icon(
                       Icons.home,
                       //darken the icon if it is selected or else give it a different color
-                      color: _index == 0 ? secondaryBlue : secondaryGrey,
+                      color: _index == 0 ? blue : grey,
                     ),
                   ),
                   IconButton(
@@ -62,7 +62,7 @@ class _ContainerPageState extends State<ContainerPage>
                     iconSize: 27.0,
                     icon: Icon(
                       Icons.calendar_today,
-                      color: _index == 1 ? secondaryBlue : secondaryGrey,
+                      color: _index == 1 ? blue : grey,
                     ),
                   ),
                   IconButton(
@@ -70,7 +70,7 @@ class _ContainerPageState extends State<ContainerPage>
                     iconSize: 27.0,
                     icon: Icon(
                       Icons.pie_chart,
-                      color: _index == 2 ? secondaryBlue : secondaryGrey,
+                      color: _index == 2 ? blue : grey,
                     ),
                   ),
                   //to leave space in between the bottom app bar items and below the FAB
@@ -80,7 +80,7 @@ class _ContainerPageState extends State<ContainerPage>
                 ],
               )),
           shape: CircularNotchedRectangle(),
-          color: primaryWhite,
+          color: white,
         ),
       ),
     );

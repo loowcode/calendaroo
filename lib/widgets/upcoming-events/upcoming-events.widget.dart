@@ -63,17 +63,13 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         builder: (context, store) {
           return Expanded(
             child: Container(
-              decoration:
-                  BoxDecoration(color: primaryWhite, borderRadius: radius),
+              decoration: BoxDecoration(color: white, borderRadius: radius),
               child: Stack(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: ListView(
-                        controller: _listController,
-                        padding: EdgeInsets.all(16),
-                        children: _buildAgenda(store)),
-                  ),
+                  ListView(
+                      controller: _listController,
+                      padding: EdgeInsets.all(16),
+                      children: _buildAgenda(store)),
                 ],
               ),
             ),
@@ -97,9 +93,12 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
       var list = mapEvent[date];
       row
         ..add(Container(
-            child: Text(
-          formatter.format(date),
-          style: Theme.of(context).textTheme.headline5,
+            child: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: Text(
+            formatter.format(date),
+            style: Theme.of(context).textTheme.headline5,
+          ),
         )))
         ..addAll(list
             .map((elem) => Container(
@@ -154,8 +153,11 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                 ),
               ),
               IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.calendar_today, color: Colors.blue,),
+                onPressed: () {},
+                icon: Icon(
+                  Icons.calendar_today,
+                  color: Colors.blue,
+                ),
               ),
               Expanded(
                 child: Column(
@@ -174,25 +176,24 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
               ),
               PopupMenuButton<Option>(
                 onSelected: selectOption,
-                color: primaryWhite,
+                color: white,
                 icon: Icon(
                   Icons.more_vert,
-                  color: secondaryGrey,
+                  color: grey,
                 ),
                 itemBuilder: (BuildContext context) {
                   return options.map((Option option) {
                     return PopupMenuItem<Option>(
                       value: option.setEvent(elem),
                       child: Theme(
-                          data: Theme.of(context)
-                              .copyWith(cardColor: primaryWhite),
+                          data: Theme.of(context).copyWith(cardColor: white),
                           child: Text(
                             AppLocalizations.of(context)
                                 .translate(option.title),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1
-                                .copyWith(color: primaryBlack),
+                                .copyWith(color: black),
                           )),
                     );
                   }).toList();
@@ -275,11 +276,10 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
               child: Icon(
                 Icons.event_available,
                 size: 64,
-                color: secondaryLightGrey,
+                color: lightGrey,
               ))
         ],
       )),
     );
   }
-
 }
