@@ -36,11 +36,16 @@ class AppTheme {
   static TextTheme _buildPrimaryTextTheme(TextTheme base) {
     return base
         .copyWith(
+      // Title Page
       headline4: base.headline4.copyWith(
+        fontSize: 36,
         color: primaryBlack,
         fontWeight: FontWeight.w700,
       ),
+      // Title heading
       headline5: base.headline5.copyWith(
+        fontSize: 24,
+        color: primaryBlack,
         fontWeight: FontWeight.w700,
       ),
       headline6: base.headline6.copyWith(
@@ -55,16 +60,23 @@ class AppTheme {
         fontWeight: FontWeight.w600,
         color: secondaryDarkGrey,
       ),
-      bodyText2: base.bodyText2.copyWith(
-        fontWeight: FontWeight.w700,
-        color: primaryBlack,
-      ),
+      // Text
       bodyText1: base.bodyText1.copyWith(
+        fontSize: 20,
         fontWeight: FontWeight.normal,
         color: primaryWhite,
       ),
+      // SubText
+      bodyText2: base.bodyText2.copyWith(
+        fontWeight: FontWeight.normal,
+        fontSize: 16,
+        color: secondaryGrey,
+      ),
+      // Caption (is like Subtext but with lightgrey)
       caption: base.caption.copyWith(
         fontWeight: FontWeight.normal,
+        color: secondaryLightGrey,
+        fontSize: 16,
       ),
       button: base.button.copyWith(
         fontWeight: FontWeight.bold,

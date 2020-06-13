@@ -12,21 +12,18 @@ class FabButton extends StatefulWidget {
 
 class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
   AnimationController _controller;
-  FocusNode focusNode;
 
   OverlayEntry _overlayEntry;
 
   @override
   void dispose() {
     _controller.dispose();
-    focusNode.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    focusNode = FocusNode();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 250),
@@ -46,7 +43,6 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
         } else {
           _controller.reverse();
         }
-
         if (this._overlayEntry == null) {
           this._overlayEntry = this._createOverlayEntry();
           Overlay.of(context).insert(this._overlayEntry);
@@ -95,7 +91,6 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
               curve: Interval(0.0, 1.0 - 3 / 2 / 2.0, curve: Curves.easeOut),
             ),
             child: FloatingActionButton(
-              key: Key('mini-event'),
               backgroundColor: primaryWhite,
               foregroundColor: secondaryGrey,
               mini: true,
@@ -114,7 +109,6 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
               curve: Interval(0.0, 1.0 - 2 / 2 / 2.0, curve: Curves.easeOut),
             ),
             child: FloatingActionButton(
-              key: Key('mini-event'),
               backgroundColor: primaryWhite,
               foregroundColor: accentYellow,
               mini: true,
@@ -133,7 +127,6 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
               curve: Interval(0.0, 1.0 - 1 / 2 / 2.0, curve: Curves.easeOut),
             ),
             child: FloatingActionButton(
-              key: Key('mini-goal'),
               backgroundColor: primaryWhite,
               foregroundColor: accentYellow,
               mini: true,
