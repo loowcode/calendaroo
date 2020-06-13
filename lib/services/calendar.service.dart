@@ -1,9 +1,6 @@
 import 'dart:collection';
 
-import 'package:calendaroo/constants.dart';
-import 'package:calendaroo/environments/environment.dart';
 import 'package:calendaroo/model/event.model.dart';
-import 'package:calendaroo/model/mocks/eventsList.mock.dart';
 
 class CalendarService {
   static final CalendarService _instance = CalendarService._();
@@ -14,13 +11,6 @@ class CalendarService {
     return _instance;
   }
 
-  List<Event> eventsList() {
-    if (Environment().environment == DEVELOP) {
-      return eventsListMock;
-    } else {
-      return List<Event>();
-    }
-  }
 
   Map<DateTime, List<Event>> toMap(List<Event> events) {
     SplayTreeMap<DateTime, List<Event>> result = new SplayTreeMap();

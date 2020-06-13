@@ -48,31 +48,31 @@ class AppTheme {
         color: black,
         fontWeight: FontWeight.w700,
       ),
-      headline6: base.headline6.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
+      // Text bold
       subtitle1: base.subtitle1.copyWith(
-        fontWeight: FontWeight.w500,
-        fontSize: 20,
-        color: grey,
-      ),
-      subtitle2: base.subtitle2.copyWith(
         fontWeight: FontWeight.w600,
-        color: darkGrey,
-      ),
-      // Text
-      bodyText1: base.bodyText1.copyWith(
         fontSize: 20,
-        fontWeight: FontWeight.w600,
         color: black,
       ),
-      // SubText
+      // Subtext bold
+      subtitle2: base.subtitle2.copyWith(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: grey,
+      ),
+      // Text normal
+      bodyText1: base.bodyText1.copyWith(
+        fontSize: 20,
+        fontWeight: FontWeight.normal,
+        color: black,
+      ),
+      // Subtext normal
       bodyText2: base.bodyText2.copyWith(
         fontWeight: FontWeight.normal,
         fontSize: 16,
         color: grey,
       ),
-      // Caption (is like Subtext but with lightgrey)
+      // Caption (like Subtext but with lightgrey)
       caption: base.caption.copyWith(
         fontWeight: FontWeight.normal,
         color: lightGrey,

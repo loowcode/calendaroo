@@ -166,7 +166,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                   children: <Widget>[
                     Text(
                       elem.title,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
                     Text(
                         "${formatterTime.format(elem.start)} - ${formatterTime.format(elem.start)}",
