@@ -38,3 +38,11 @@ const MaterialColor materialSecondaryBlue = const MaterialColor(
     900: const Color(0xFF4A5BF6),
   },
 );
+
+
+// gradient
+const cyanGradient = [Colors.cyan, Colors.blue];
+const blueGradient = [Colors.blue, Colors.purple];
+const orangeGradient = [Colors.deepOrangeAccent, Colors.pink];
+const purpleGradient = [Colors.purpleAccent, Colors.deepPurple];
+const greenGradient = [Colors.lightGreen, Colors.yellow];

@@ -1,7 +1,8 @@
 import 'package:calendaroo/colors.dart';
+import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
-import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/calendar.service.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.viewmodel.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,6 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     with TickerProviderStateMixin {
   AutoScrollController _listController;
   AnimationController _animationController;
-
 
   @override
   void initState() {
@@ -56,8 +56,10 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         converter: (store) => UpcomingEventsViewModel.fromStore(store),
         onDidChange: (viewModel) {
           try {
-            _listController.scrollToIndex(CalendarService()
-                .getIndex(viewModel.eventMapped, viewModel.selectedDay),preferPosition: AutoScrollPosition.begin);
+            _listController.scrollToIndex(
+                CalendarService()
+                    .getIndex(viewModel.eventMapped, viewModel.selectedDay),
+                preferPosition: AutoScrollPosition.begin);
 
 //            _animationController.forward(from: 0);
           } catch (e) {
@@ -107,63 +109,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         )))
         ..addAll(list
             .map((elem) => Container(
-                  child: GestureDetector(
-                    onTap: () {
-                      store.openEvent(elem);
-                    },
-                    child: Card(
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: ListTile(
-                              leading: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(formatterTime.format(elem.start),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2),
-                                  Text(formatterTime.format(elem.end),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2),
-                                ],
-                              ),
-                              title: Text(
-                                elem.title,
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ),
-                              trailing: PopupMenuButton<Option>(
-                                onSelected: selectOption,
-                                color: primaryWhite,
-                                icon: Icon(
-                                  Icons.more_vert,
-                                  color: primaryWhite,
-                                ),
-                                itemBuilder: (BuildContext context) {
-                                  return options.map((Option option) {
-                                    return PopupMenuItem<Option>(
-                                      value: option.setEvent(elem),
-                                      child: Theme(
-                                          data: Theme.of(context).copyWith(
-                                              cardColor: primaryWhite),
-                                          child: Text(
-                                            AppLocalizations.of(context).translate(option.title),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                .copyWith(color: primaryBlack),
-                                          )),
-                                    );
-                                  }).toList();
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  child: _buildCardEvent(store, elem, formatterTime),
                 ))
             .toList())
         ..add(SizedBox(
@@ -190,6 +136,148 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     return widgets;
   }
 
+  GestureDetector _buildCardEvent(
+      UpcomingEventsViewModel store, Event elem, DateFormat formatterTime) {
+    return GestureDetector(
+      onTap: () {
+        store.openEvent(elem);
+      },
+      child: Card(
+        color: Colors.red,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        elevation: 8,
+        child: SizedBox(
+          height: 64,
+          width: MediaQuery.of(context).size.width,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              SizedBox(
+                width: 45,
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.0),
+                          bottomLeft: Radius.circular(10.0)),
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: blueGradient)),
+                ),
+              ),
+              IconButton(
+                onPressed: (){},
+                icon: Icon(Icons.calendar_today, color: Colors.blue,),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      elem.title,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    Text(
+                      elem.description,
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    Text(
+                        "${formatterTime.format(elem.start)} - ${formatterTime.format(elem.start)}",
+                        style: Theme.of(context).textTheme.bodyText2),
+                  ],
+                ),
+              ),
+              PopupMenuButton<Option>(
+                onSelected: selectOption,
+                color: primaryWhite,
+                icon: Icon(
+                  Icons.more_vert,
+                  color: secondaryGrey,
+                ),
+                itemBuilder: (BuildContext context) {
+                  return options.map((Option option) {
+                    return PopupMenuItem<Option>(
+                      value: option.setEvent(elem),
+                      child: Theme(
+                          data: Theme.of(context)
+                              .copyWith(cardColor: primaryWhite),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate(option.title),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(color: primaryBlack),
+                          )),
+                    );
+                  }).toList();
+                },
+              ),
+            ],
+          ),
+        ),
+//                    child: ListTile(
+//                      leading: Container(
+//                        decoration: BoxDecoration(
+//                            gradient: LinearGradient(
+//                                begin: Alignment.topRight,
+//                                end: Alignment.bottomLeft,
+//                                colors: [Colors.blue, Colors.red])),
+//                      ),
+//                      title: Column(
+//                        children: <Widget>[
+//                          Text(
+//                            elem.title,
+//                            style: Theme.of(context).textTheme.bodyText2,
+//                          ),
+//                          Column(
+//                            mainAxisAlignment: MainAxisAlignment.center,
+//                            children: <Widget>[
+//                              Text(formatterTime.format(elem.start),
+//                                  style: Theme.of(context)
+//                                      .textTheme
+//                                      .bodyText2),
+//                              Text(formatterTime.format(elem.end),
+//                                  style: Theme.of(context)
+//                                      .textTheme
+//                                      .bodyText2),
+//                            ],
+//                          ),
+//                        ],
+//                      ),
+//                      trailing: PopupMenuButton<Option>(
+//                        onSelected: selectOption,
+//                        color: primaryWhite,
+//                        icon: Icon(
+//                          Icons.more_vert,
+//                          color: primaryWhite,
+//                        ),
+//                        itemBuilder: (BuildContext context) {
+//                          return options.map((Option option) {
+//                            return PopupMenuItem<Option>(
+//                              value: option.setEvent(elem),
+//                              child: Theme(
+//                                  data: Theme.of(context).copyWith(
+//                                      cardColor: primaryWhite),
+//                                  child: Text(
+//                                    AppLocalizations.of(context).translate(option.title),
+//                                    style: Theme.of(context)
+//                                        .textTheme
+//                                        .bodyText1
+//                                        .copyWith(color: primaryBlack),
+//                                  )),
+//                            );
+//                          }).toList();
+//                        },
+//                      ),
+//                    ),
+      ),
+    );
+  }
+
   Container _buildEmptyAgenda() {
     return Container(
       padding: EdgeInsets.all(16),
@@ -197,8 +285,8 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
           child: Column(
         children: <Widget>[
           Text(
-              AppLocalizations.of(context).noEvents,
-              style: Theme.of(context).textTheme.subtitle2,
+            AppLocalizations.of(context).noEvents,
+            style: Theme.of(context).textTheme.subtitle2,
           ),
           Container(
               margin: EdgeInsets.only(top: 32),
