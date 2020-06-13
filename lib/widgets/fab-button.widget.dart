@@ -83,7 +83,7 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
           child: ScaleTransition(
             scale: CurvedAnimation(
               parent: _controller,
-              curve: Interval(0.0, 1.0 - 2 / 2 / 2.0, curve: Curves.easeOut),
+              curve: Interval(0.0, 1.0 - 4 / 2 / 2.0, curve: Curves.easeOut),
             ),
             child: FloatingActionButton(
               key: Key('mini-event'),
