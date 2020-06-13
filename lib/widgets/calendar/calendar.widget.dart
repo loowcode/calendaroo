@@ -76,7 +76,11 @@ class _CalendarWidgetState extends State<CalendarWidget>
         },
         builder: (context, store) {
           return Container(
-            color: secondaryBlue,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: cyanGradient)),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: _buildTableCalendarWithBuilders(store),

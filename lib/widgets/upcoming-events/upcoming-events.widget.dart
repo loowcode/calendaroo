@@ -20,7 +20,6 @@ class UpcomingEventsWidget extends StatefulWidget {
 class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     with TickerProviderStateMixin {
   AutoScrollController _listController;
-  AnimationController _animationController;
 
   @override
   void initState() {
@@ -30,10 +29,6 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
             Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
         axis: Axis.vertical);
 
-    _animationController = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    )..forward();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       calendarooState.dispatch(SelectDay(DateTime.now()));
     });
@@ -41,7 +36,6 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
 
   @override
   void dispose() {
-    _animationController.dispose();
     _listController.dispose();
     super.dispose();
   }
@@ -119,16 +113,9 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         key: ValueKey(CalendarService().getIndex(mapEvent, date)),
         index: CalendarService().getIndex(mapEvent, date),
         controller: _listController,
-        child: AnimatedBuilder(
-          animation: _animationController,
-          builder: (context, child) => Container(
-            color: background
-                .evaluate(AlwaysStoppedAnimation(_animationController.value)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: row,
-            ),
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: row,
         ),
       );
       widgets.add(dayGroup);
@@ -143,13 +130,12 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         store.openEvent(elem);
       },
       child: Card(
-        color: Colors.red,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
         elevation: 8,
         child: SizedBox(
-          height: 64,
+          height: 68,
           width: MediaQuery.of(context).size.width,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -179,10 +165,6 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                     Text(
                       elem.title,
                       style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    Text(
-                      elem.description,
-                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                     Text(
                         "${formatterTime.format(elem.start)} - ${formatterTime.format(elem.start)}",
@@ -300,20 +282,4 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     );
   }
 
-  Animatable<Color> background = TweenSequence<Color>([
-    TweenSequenceItem(
-      weight: 1.0,
-      tween: ColorTween(
-        begin: primaryWhite,
-        end: accentYellow,
-      ),
-    ),
-    TweenSequenceItem(
-      weight: 1.0,
-      tween: ColorTween(
-        begin: accentYellow,
-        end: primaryWhite,
-      ),
-    ),
-  ]);
 }

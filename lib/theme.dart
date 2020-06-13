@@ -64,7 +64,7 @@ class AppTheme {
       bodyText1: base.bodyText1.copyWith(
         fontSize: 20,
         fontWeight: FontWeight.normal,
-        color: primaryWhite,
+        color: primaryBlack,
       ),
       // SubText
       bodyText2: base.bodyText2.copyWith(
