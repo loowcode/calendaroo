@@ -12,18 +12,21 @@ class FabButton extends StatefulWidget {
 
 class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
   AnimationController _controller;
+  FocusNode focusNode;
 
   OverlayEntry _overlayEntry;
 
   @override
-  void dispose(){
+  void dispose() {
     _controller.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    focusNode = FocusNode();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 250),
@@ -43,7 +46,7 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
         } else {
           _controller.reverse();
         }
-        print("long");
+
         if (this._overlayEntry == null) {
           this._overlayEntry = this._createOverlayEntry();
           Overlay.of(context).insert(this._overlayEntry);
@@ -67,10 +70,16 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
     RenderBox renderBox = context.findRenderObject();
     var size = renderBox.size;
     var offset = renderBox.localToGlobal(Offset.zero);
+    var nMiniButtons = 3;
+    var minibuttonHeight = (64 + 32) * nMiniButtons + 16;
+    var padding = 16;
     return OverlayEntry(
         builder: (context) => Positioned(
-              left: offset.dx - 4.0,
-              top: offset.dy - (size.height / 2) - 110.0,
+              left: offset.dx - padding / 4.0,
+              top: offset.dy -
+                  (size.height / 2) -
+                  minibuttonHeight / 2 -
+                  padding,
               child: _floatingMiniButtons(),
             ));
   }
@@ -78,6 +87,25 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
   Widget _floatingMiniButtons() {
     return Column(
       children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ScaleTransition(
+            scale: CurvedAnimation(
+              parent: _controller,
+              curve: Interval(0.0, 1.0 - 3 / 2 / 2.0, curve: Curves.easeOut),
+            ),
+            child: FloatingActionButton(
+              key: Key('mini-event'),
+              backgroundColor: primaryWhite,
+              foregroundColor: secondaryGrey,
+              mini: true,
+              child: Icon(Icons.close),
+              onPressed: () {
+                removeMiniButtons();
+              },
+            ),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: ScaleTransition(
