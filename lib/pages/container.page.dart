@@ -4,8 +4,8 @@ import 'package:calendaroo/theme.dart';
 import 'package:calendaroo/widgets/fab-button.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'calendar/calendar.page.dart';
 
-import 'file:///C:/Users/carlinija/Desktop/git/calendaroo/lib/pages/calendar/calendar.page.dart';
 
 class ContainerPage extends StatefulWidget {
   @override
