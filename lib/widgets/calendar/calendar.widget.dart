@@ -3,7 +3,6 @@ import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
-import 'package:calendaroo/widgets/upcoming-events/upcoming-events.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -77,14 +76,10 @@ class _CalendarWidgetState extends State<CalendarWidget>
         },
         builder: (context, store) {
           return Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                const SizedBox(height: 32.0),
-                _buildTableCalendarWithBuilders(store),
-                const SizedBox(height: 2.0),
-                UpcomingEventsWidget()
-              ],
+            color: secondaryBlue,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _buildTableCalendarWithBuilders(store),
             ),
           );
         });
@@ -102,12 +97,10 @@ class _CalendarWidgetState extends State<CalendarWidget>
       formatAnimation: FormatAnimation.scale,
       startingDayOfWeek: StartingDayOfWeek.monday,
       availableGestures: AvailableGestures.all,
-
       availableCalendarFormats: {
         CalendarFormat.month: AppLocalizations.of(context).compact,
         CalendarFormat.twoWeeks: AppLocalizations.of(context).expanded
-      }
-      ,
+      },
       locale: locale.toString(),
       calendarStyle: CalendarStyle(
           outsideDaysVisible: true,
