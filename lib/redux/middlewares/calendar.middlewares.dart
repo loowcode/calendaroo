@@ -1,3 +1,4 @@
+import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
@@ -18,6 +19,7 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
         scheduleNotification(action.event);
       }
     }
+
     if (action is RemoveEvent) {
       EventsRepository().deleteEvent(action.event.id);
       cancelNotification(action.event.id);
@@ -32,3 +34,5 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
     next(action);
   }
 }
+
+

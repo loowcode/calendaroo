@@ -6,14 +6,14 @@ import 'package:weather/weather_library.dart';
 class WeatherService {
   WeatherService._();
 
-  WeatherDescription resultCached;
-  DateTime timestamp;
-
   static final WeatherService _instance = WeatherService._();
 
   factory WeatherService() {
     return _instance;
   }
+
+  WeatherDescription resultCached;
+  DateTime timestamp;
 
   Future<WeatherDescription> getWeather() async {
     try {

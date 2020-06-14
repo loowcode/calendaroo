@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -10,7 +11,7 @@ class SharedPreferenceService {
 
   Future<bool> getSharedPreferencesInstance() async {
     _prefs = await SharedPreferences.getInstance().catchError((e) {
-      print("shared prefrences error : $e");
+      debugPrint("shared prefrences error : $e");
       return false;
     });
     return true;

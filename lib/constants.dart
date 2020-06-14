@@ -1,4 +1,5 @@
 // General constants
+const String CALENDAROO = 'calendaroo';
 const String DEVELOP = 'develop';
 const String INTEGRATION = 'integration';
 const String VERSION = 'v0.2-alpha';

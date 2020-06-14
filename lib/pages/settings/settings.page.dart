@@ -3,7 +3,7 @@ import 'package:calendaroo/environments/environment.dart';
 import 'package:calendaroo/pages/settings/settings.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
-import 'package:calendaroo/services/calendar.service.dart';
+import 'package:calendaroo/services/calendar.utils.dart';
 import 'package:calendaroo/services/notification.utils.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:calendaroo/theme.dart';
@@ -199,7 +199,7 @@ class _SettingsPageState extends State<SettingsPage> {
       SharedPreferenceService().setBool('enableNotifications', true);
       var now = DateTime.now();
       calendarooState.state.calendarState.eventMapped.forEach((key, value) {
-        if (CalendarService().removeTime(now).compareTo(key) <= 0) {
+        if (CalendarUtils.removeTime(now).compareTo(key) <= 0) {
           value.forEach((element) {
             if (now.isBefore(element.start)) {
               scheduleNotification(element);

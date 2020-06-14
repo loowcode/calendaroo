@@ -1,3 +1,4 @@
+import 'package:calendaroo/constants.dart';
 import 'package:calendaroo/environments/environment.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
@@ -5,7 +6,9 @@ import 'package:calendaroo/services/events.repository.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:sqflite/sqflite.dart';
 
+import 'local-storage.service.dart';
 import 'notification.utils.dart';
 
 class InitializerAppService {
@@ -37,6 +40,16 @@ class InitializerAppService {
   }
 
   _preLoadingDataFromDB() async {
+    try {
+      var env = Environment().environment;
+      if (env == DEVELOP) {
+        final Database clientDB = await LocalStorageService().db;
+        await LocalStorageService().dropTable(clientDB);
+        debugPrint('DB deleted');
+      }
+    } catch (e) {
+      debugPrint("error during drop db: ${e.toString()}");
+    }
     var eventsList = await EventsRepository().events();
     calendarooState.dispatch(LoadedEventsList(eventsList));
   }

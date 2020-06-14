@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:calendaroo/constants.dart';
-import 'package:calendaroo/environments/environment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path/path.dart';
@@ -42,9 +40,34 @@ class LocalStorageService {
   }
 
   FutureOr<void> _onCreate(Database db, int version) async {
-    String sql = await rootBundle.loadString('assets/resources/create-db.sql');
-    await db.execute(sql);
-    print("Database was created!");
+    try {
+      String sql =
+          await rootBundle.loadString('assets/resources/create-db.sql');
+      await createTable(db);
+      debugPrint("Database was created!");
+    } catch (e) {
+      debugPrint("error during creation db: ${e.toString()}");
+    }
+  }
+
+  Future createTable(Database db) async {
+    await db.execute("""create TABLE events(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          title TEXT,
+          uuid TEXT,
+          description TEXT,
+          start TEXT,
+          end TEXT
+      );""");
+    await db.execute("""create TABLE eventInstances(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        uuid TEXT,
+        eventId INTEGER NOT NULL,
+        start TEXT,
+        end TEXT,
+        FOREIGN KEY (eventId) REFERENCES events (id)
+          ON DELETE NO ACTION ON UPDATE NO ACTION
+    );""");
   }
 
   void _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -55,16 +78,21 @@ class LocalStorageService {
   }
 
   FutureOr<void> _onConfigure(Database db) async {
-    try {
-      var env = Environment().environment;
-      if (env == DEVELOP) {
-        await db.execute("drop table if exists events");
-        _onCreate(db, DB_VERSION);
-        print('DB deleted');
-      }
-    }
-    catch(e){
-      debugPrint("error during drop db: ${e}");
-    }
+//    try {
+//      var env = Environment().environment;
+//      if (env == DEVELOP) {
+//        await db.execute("drop table if exists events;");
+//        await db.execute("drop table if exists eventInstances;");
+//        debugPrint('DB deleted');
+//      }
+//    } catch (e) {
+//      debugPrint("error during drop db: ${e.toString()}");
+//    }
+  }
+
+  FutureOr<void> dropTable(Database db) async {
+    await db.execute("drop table if exists events;");
+    await db.execute("drop table if exists eventInstances;");
+    await createTable(db);
   }
 }

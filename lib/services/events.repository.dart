@@ -1,19 +1,39 @@
+import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:uuid/uuid.dart';
 
+import 'calendar.utils.dart';
 import 'local-storage.service.dart';
 
-class EventsRepository{
-
+class EventsRepository {
   Future<int> insertEvent(Event event) async {
     // Get a reference to the database.
     var client = await LocalStorageService().db;
 
-    return await client.insert(
+    var id = await client.insert(
       'events',
       event.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+
+    DateTime first = CalendarUtils.removeTime(event.start);
+    DateTime index = CalendarUtils.removeTime(event.start);
+    DateTime last = CalendarUtils.removeTime(event.end);
+    var uuid = Uuid();
+    for (var i = 0; i <= last.difference(first).inDays; i++) {
+      EventInstance eventInstance = EventInstance(
+        // TODO start and end datetime for instance
+          id: null, uuid: uuid.v4(), eventId: id, start: index, end: event.end);
+      await client.insert(
+        'eventInstances',
+        eventInstance.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      index = index.add(Duration(days: 1));
+    }
+
+    return id;
   }
 
   Future<int> updateEvent(Event newEvent) async {
@@ -31,7 +51,8 @@ class EventsRepository{
 
   Future<Event> event(int id) async {
     var client = await LocalStorageService().db;
-    final List<Map<String, dynamic>> maps = await client.query('events', where: 'id = ?', whereArgs: [id]);
+    final List<Map<String, dynamic>> maps =
+        await client.query('events', where: 'id = ?', whereArgs: [id]);
     return Event(
       id: maps[0]['id'],
       title: maps[0]['title'],
@@ -57,5 +78,4 @@ class EventsRepository{
       );
     });
   }
-
 }

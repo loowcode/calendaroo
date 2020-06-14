@@ -1,7 +1,9 @@
+import 'package:calendaroo/constants.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/model/received-notification.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -17,6 +19,7 @@ final BehaviorSubject<String> selectNotificationSubject =
 NotificationAppLaunchDetails notificationAppLaunchDetails;
 
 Future<void> scheduleNotification(Event event) async {
+  var formatterTime = DateFormat.Hm();
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'event_notification', 'Notifiche evento', 'Mostra le notifiche evento',
       importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
@@ -25,8 +28,13 @@ Future<void> scheduleNotification(Event event) async {
       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
   await flutterLocalNotificationsPlugin.schedule(
-      event.id, event.title, event.description, event.start, platformChannelSpecifics,
-      androidAllowWhileIdle: true, payload: event.id.toString());
+      event.id,
+      event.title,
+      "${formatterTime.format(event.start)} - ${formatterTime.format(event.end)}",
+      event.start,
+      platformChannelSpecifics,
+      androidAllowWhileIdle: true,
+      payload: event.id.toString());
 }
 
 Future<void> cancelNotification(int id) async {

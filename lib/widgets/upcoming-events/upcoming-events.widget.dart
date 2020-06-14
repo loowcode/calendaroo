@@ -3,7 +3,7 @@ import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
-import 'package:calendaroo/services/calendar.service.dart';
+import 'package:calendaroo/services/calendar.utils.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.viewmodel.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +52,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         onDidChange: (viewModel) {
           try {
             _listController.scrollToIndex(
-                CalendarService()
+                CalendarUtils
                     .getIndex(viewModel.eventMapped, viewModel.selectedDay),
                 preferPosition: AutoScrollPosition.begin);
 
@@ -110,8 +110,8 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
           height: 16,
         ));
       AutoScrollTag dayGroup = AutoScrollTag(
-        key: ValueKey(CalendarService().getIndex(mapEvent, date)),
-        index: CalendarService().getIndex(mapEvent, date),
+        key: ValueKey(CalendarUtils.getIndex(mapEvent, date)),
+        index: CalendarUtils.getIndex(mapEvent, date),
         controller: _listController,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,7 +173,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
                     Text(
-                        "${formatterTime.format(elem.start)} - ${formatterTime.format(elem.start)}",
+                        "${formatterTime.format(elem.start)} - ${formatterTime.format(elem.end)}",
                         style: Theme.of(context).textTheme.bodyText2),
                   ],
                 ),
