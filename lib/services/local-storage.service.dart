@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:calendaroo/constants.dart';
+import 'package:calendaroo/environments/environment.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -52,11 +55,16 @@ class LocalStorageService {
   }
 
   FutureOr<void> _onConfigure(Database db) async {
-//    var env = Environment().environment;
-//    if (env == DEVELOP) {
-//      await db.execute("drop table if exists events");
-//      _onCreate(db, DB_VERSION);
-//      print('DB deleted');
-//    }
+    try {
+      var env = Environment().environment;
+      if (env == DEVELOP) {
+        await db.execute("drop table if exists events");
+        _onCreate(db, DB_VERSION);
+        print('DB deleted');
+      }
+    }
+    catch(e){
+      debugPrint("error during drop db: ${e}");
+    }
   }
 }

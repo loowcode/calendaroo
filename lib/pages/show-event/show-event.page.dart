@@ -5,11 +5,11 @@ import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/navigation.service.dart';
+import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class ShowEventPage extends StatefulWidget {
@@ -18,9 +18,8 @@ class ShowEventPage extends StatefulWidget {
 }
 
 class _ShowEventPageState extends State<ShowEventPage> {
-
   @override
-  void dispose(){
+  void dispose() {
     calendarooState.dispatch(OpenEvent(null));
     super.dispose();
   }
@@ -55,18 +54,17 @@ class _ShowEventPageState extends State<ShowEventPage> {
               ),
               onPressed: () => NavigationService()
                   .navigateTo(ADD_EVENT, arguments: store.showEvent)),
-      //DELETE ACTION IN DETAIL PAGE
+          //DELETE ACTION IN DETAIL PAGE
           IconButton(
               icon: Icon(
                 Icons.delete,
                 color: white,
               ),
-              onPressed: ()  {
+              onPressed: () {
                 store.removeEvent(store.showEvent);
                 NavigationService().pop();
               })
         ],
-
         flexibleSpace: FlexibleSpaceBar(
           title: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -88,7 +86,6 @@ class _ShowEventPageState extends State<ShowEventPage> {
   }
 
   Widget _buildInfoEvent(ShowEventViewModel store) {
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -96,11 +93,9 @@ class _ShowEventPageState extends State<ShowEventPage> {
         children: <Widget>[
           store.showEvent.description != null &&
                   store.showEvent.description.length > 0
-
               ? _buildDescription(store.showEvent)
               : SizedBox(
                   height: 0,
-
                 ),
           _buildTime(store.showEvent, start: true),
           _buildTime(store.showEvent, start: false),
@@ -115,22 +110,20 @@ class _ShowEventPageState extends State<ShowEventPage> {
       child: Row(
         children: <Widget>[
           Container(
-
             margin: EdgeInsets.only(right: 8),
             child: Icon(
               Icons.subject,
               color: lightGrey,
             ),
           ),
-    SizedBox(
-        width: MediaQuery.of(context).size.width-70,
-        child:
-          Text(
-            event.description,
-            textAlign: TextAlign.left,
-            maxLines: 100,
-            style: Theme.of(context).textTheme.subtitle1,
-          ))
+          SizedBox(
+              width: MediaQuery.of(context).size.width - 70,
+              child: Text(
+                event.description,
+                textAlign: TextAlign.left,
+                maxLines: 100,
+                style: Theme.of(context).textTheme.subtitle1,
+              ))
         ],
       ),
     );
@@ -148,12 +141,12 @@ class _ShowEventPageState extends State<ShowEventPage> {
           Container(
               margin: EdgeInsets.only(right: 8),
               child: start
-                  ? FaIcon(
-                      FontAwesomeIcons.clock,
+                  ? Icon(
+                      FeatherIcons.clock,
                       color: darkBlue,
                     )
-                  : FaIcon(
-                      FontAwesomeIcons.dotCircle,
+                  : Icon(
+                      FeatherIcons.circle,
                       color: darkBlue,
                     )),
           Column(

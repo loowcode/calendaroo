@@ -3,9 +3,9 @@ import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/services/weather.service.dart';
+import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class TodayPage extends StatefulWidget {
@@ -39,7 +39,7 @@ class _TodayPageState extends State<TodayPage> with TickerProviderStateMixin {
                     onPressed: () {
                       NavigationService().navigateTo(SETTINGS);
                     },
-                    icon: FaIcon(FontAwesomeIcons.user, color: grey,),
+                    icon: Icon(FeatherIcons.user, color: grey,),
                   )
                 ],
               ),
@@ -102,21 +102,21 @@ class _TodayPageState extends State<TodayPage> with TickerProviderStateMixin {
   Widget iconWeather(WeatherDescription weather) {
     switch (weather) {
       case WeatherDescription.CLEAR:
-        return FaIcon(FontAwesomeIcons.sun, color: yellow,);
+        return Icon(FeatherIcons.sun, color: yellow,);
       case WeatherDescription.CLOUD_SUN:
-        return FaIcon(FontAwesomeIcons.cloudSun, color: grey,);
+        return Icon(FeatherIcons.sun, color: yellow,);
       case WeatherDescription.CLOUD:
-        return Icon(Icons.cloud_queue);
+        return Icon(FeatherIcons.cloud, color: grey);
       case WeatherDescription.RAIN:
-        return FaIcon(FontAwesomeIcons.cloudRain, color: lightBlue,);
+        return Icon(FeatherIcons.cloudRain, color: lightBlue,);
       case WeatherDescription.STORM:
-        return FaIcon(FontAwesomeIcons.cloudShowersHeavy, color: lightBlue,);
+        return Icon(FeatherIcons.cloudLightning, color: lightBlue,);
       case WeatherDescription.SNOW:
-        return FaIcon(FontAwesomeIcons.snowflake, color: lightBlue,);
+        return Icon(FeatherIcons.cloudSnow, color: lightBlue,);
       case WeatherDescription.MIST:
-        return FaIcon(FontAwesomeIcons.wind, color: grey,);
+        return Icon(FeatherIcons.alignCenter, color: grey,);
       default:
-        return Icon(Icons.cloud_off, color: lightGrey,);
+        return Icon(FeatherIcons.cloudOff, color: lightGrey,);
     }
   }
 }

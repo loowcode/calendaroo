@@ -5,6 +5,7 @@ import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/calendar.service.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.viewmodel.dart';
+import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
@@ -152,11 +153,14 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                           colors: blueGradient)),
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.calendar_today,
-                  color: Colors.blue,
+              Container(
+                margin: EdgeInsets.only(right: 4.0),
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    FeatherIcons.calendar,
+                    color: Colors.blue,
+                  ),
                 ),
               ),
               Expanded(
@@ -202,61 +206,6 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
             ],
           ),
         ),
-//                    child: ListTile(
-//                      leading: Container(
-//                        decoration: BoxDecoration(
-//                            gradient: LinearGradient(
-//                                begin: Alignment.topRight,
-//                                end: Alignment.bottomLeft,
-//                                colors: [Colors.blue, Colors.red])),
-//                      ),
-//                      title: Column(
-//                        children: <Widget>[
-//                          Text(
-//                            elem.title,
-//                            style: Theme.of(context).textTheme.bodyText2,
-//                          ),
-//                          Column(
-//                            mainAxisAlignment: MainAxisAlignment.center,
-//                            children: <Widget>[
-//                              Text(formatterTime.format(elem.start),
-//                                  style: Theme.of(context)
-//                                      .textTheme
-//                                      .bodyText2),
-//                              Text(formatterTime.format(elem.end),
-//                                  style: Theme.of(context)
-//                                      .textTheme
-//                                      .bodyText2),
-//                            ],
-//                          ),
-//                        ],
-//                      ),
-//                      trailing: PopupMenuButton<Option>(
-//                        onSelected: selectOption,
-//                        color: primaryWhite,
-//                        icon: Icon(
-//                          Icons.more_vert,
-//                          color: primaryWhite,
-//                        ),
-//                        itemBuilder: (BuildContext context) {
-//                          return options.map((Option option) {
-//                            return PopupMenuItem<Option>(
-//                              value: option.setEvent(elem),
-//                              child: Theme(
-//                                  data: Theme.of(context).copyWith(
-//                                      cardColor: primaryWhite),
-//                                  child: Text(
-//                                    AppLocalizations.of(context).translate(option.title),
-//                                    style: Theme.of(context)
-//                                        .textTheme
-//                                        .bodyText1
-//                                        .copyWith(color: primaryBlack),
-//                                  )),
-//                            );
-//                          }).toList();
-//                        },
-//                      ),
-//                    ),
       ),
     );
   }

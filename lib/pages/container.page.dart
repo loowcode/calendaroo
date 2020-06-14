@@ -2,6 +2,7 @@ import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/pages/today/today.page.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:calendaroo/widgets/fab-button.widget.dart';
+import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'calendar/calendar.page.dart';
@@ -48,7 +49,7 @@ class _ContainerPageState extends State<ContainerPage>
                     },
                     iconSize: 27.0,
                     icon: Icon(
-                      Icons.home,
+                      FeatherIcons.home,
                       //darken the icon if it is selected or else give it a different color
                       color: _index == 0 ? blue : grey,
                     ),
@@ -61,7 +62,7 @@ class _ContainerPageState extends State<ContainerPage>
                     },
                     iconSize: 27.0,
                     icon: Icon(
-                      Icons.calendar_today,
+                      FeatherIcons.calendar,
                       color: _index == 1 ? blue : grey,
                     ),
                   ),
@@ -69,7 +70,7 @@ class _ContainerPageState extends State<ContainerPage>
                     onPressed: () {},
                     iconSize: 27.0,
                     icon: Icon(
-                      Icons.pie_chart,
+                      FeatherIcons.pieChart,
                       color: _index == 2 ? blue : grey,
                     ),
                   ),
