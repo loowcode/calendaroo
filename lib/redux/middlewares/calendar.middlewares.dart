@@ -1,11 +1,10 @@
-import 'package:calendaroo/model/event.model.dart';
+import 'package:calendaroo/dao/events.repository.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
-import 'package:calendaroo/services/events.repository.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
-import 'package:calendaroo/services/notification.utils.dart';
+import 'package:calendaroo/utils/notification.utils.dart';
 import 'package:redux/redux.dart';
 
 class CalendarMiddleware extends MiddlewareClass<AppState> {

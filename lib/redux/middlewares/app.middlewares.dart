@@ -1,7 +1,7 @@
+import 'package:calendaroo/dao/events.repository.dart';
 import 'package:calendaroo/redux/actions/app-status.actions.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
-import 'package:calendaroo/services/events.repository.dart';
 import 'package:redux/redux.dart';
 
 class AppMiddleware extends MiddlewareClass<AppState> {

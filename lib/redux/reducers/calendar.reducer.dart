@@ -1,7 +1,7 @@
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/calendar.state.dart';
-import 'package:calendaroo/services/calendar.utils.dart';
+import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:redux/redux.dart';
 
 final calendarReducer = combineReducers<CalendarState>([
