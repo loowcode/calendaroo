@@ -18,7 +18,6 @@ class RemoveEvent {
   RemoveEvent(this.event);
 }
 
-class FetchEventsList {}
 
 class OpenEvent {
   final Event event;
