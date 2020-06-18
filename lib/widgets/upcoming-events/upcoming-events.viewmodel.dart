@@ -19,7 +19,7 @@ class UpcomingEventsViewModel {
       selectedDay: store.state.calendarState.selectedDay,
       events: store.state.calendarState.events,
       eventMapped: store.state.calendarState.eventMapped,
-      openEvent: (event) => store.dispatch(new OpenEvent(event)),
+      openEvent: (event) => store.dispatch(OpenEvent(event)),
     );
   }
 }

@@ -23,59 +23,59 @@ class WeatherService {
         return resultCached;
       }
       timestamp = DateTime.now();
-      Position position = await Geolocator()
+      var position = await Geolocator()
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-      String apiKey =
+      var apiKey =
           await rootBundle.loadString('assets/secret/openweather-key.txt');
-      WeatherStation weatherStation = new WeatherStation(apiKey);
+      var weatherStation = WeatherStation(apiKey);
 
-      Weather weather = await weatherStation.currentWeather(
+      var weather = await weatherStation.currentWeather(
           position.latitude, position.longitude);
 
       switch (weather.weatherIcon) {
-        case "01d":
-        case "01n":
-          this.resultCached = WeatherDescription.CLEAR;
+        case '01d':
+        case '01n':
+          resultCached = WeatherDescription.CLEAR;
           return WeatherDescription.CLEAR;
-        case "02d":
-        case "02n":
-          this.resultCached = WeatherDescription.CLOUD;
+        case '02d':
+        case '02n':
+          resultCached = WeatherDescription.CLOUD;
           return WeatherDescription.CLOUD;
-        case "03d":
-        case "03n":
-          this.resultCached = WeatherDescription.CLOUD_SUN;
+        case '03d':
+        case '03n':
+          resultCached = WeatherDescription.CLOUD_SUN;
           return WeatherDescription.CLOUD_SUN;
-        case "04d":
-        case "04n":
-          this.resultCached = WeatherDescription.CLOUD;
+        case '04d':
+        case '04n':
+          resultCached = WeatherDescription.CLOUD;
           return WeatherDescription.CLOUD;
-        case "09d":
-        case "09n":
-          this.resultCached = WeatherDescription.CLOUD;
+        case '09d':
+        case '09n':
+          resultCached = WeatherDescription.CLOUD;
           return WeatherDescription.CLOUD;
-        case "10d":
-        case "10n":
-          this.resultCached = WeatherDescription.RAIN;
+        case '10d':
+        case '10n':
+          resultCached = WeatherDescription.RAIN;
           return WeatherDescription.RAIN;
-        case "11d":
-        case "11n":
-          this.resultCached = WeatherDescription.STORM;
+        case '11d':
+        case '11n':
+          resultCached = WeatherDescription.STORM;
           return WeatherDescription.STORM;
-        case "13d":
-        case "13n":
-          this.resultCached = WeatherDescription.SNOW;
+        case '13d':
+        case '13n':
+          resultCached = WeatherDescription.SNOW;
           return WeatherDescription.SNOW;
-        case "50d":
-        case "50n":
-          this.resultCached = WeatherDescription.MIST;
+        case '50d':
+        case '50n':
+          resultCached = WeatherDescription.MIST;
           return WeatherDescription.MIST;
         default:
-          this.resultCached = WeatherDescription.OFFLINE;
+          resultCached = WeatherDescription.OFFLINE;
           return WeatherDescription.OFFLINE;
       }
-    } catch (e) {
-      debugPrint(e);
+    } catch (exception) {
+      debugPrint(exception.toString());
       return WeatherDescription.OFFLINE;
     }
   }

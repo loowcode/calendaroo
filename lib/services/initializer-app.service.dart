@@ -6,10 +6,9 @@ import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:sqflite/sqflite.dart';
 
-import 'local-storage.service.dart';
 import '../utils/notification.utils.dart';
+import 'local-storage.service.dart';
 
 class InitializerAppService {
   static final InitializerAppService _instance = InitializerAppService._();
@@ -26,8 +25,8 @@ class InitializerAppService {
     SharedPreferenceService().getSharedPreferencesInstance();
 
     // Environment init
-    Environment().environment = environment;
-    Environment().version = version;
+    Environment().environment = environment as String;
+    Environment().version = version as String;
 
     // loadData init
     await _preLoadingDataFromDB();
@@ -39,16 +38,16 @@ class InitializerAppService {
     initNotification();
   }
 
-  _preLoadingDataFromDB() async {
+  void _preLoadingDataFromDB() async {
     try {
       var env = Environment().environment;
       if (env == DEVELOP) {
-        final Database clientDB = await LocalStorageService().db;
+        final clientDB = await LocalStorageService().db;
         await LocalStorageService().dropTable(clientDB);
         debugPrint('DB deleted');
       }
     } catch (e) {
-      debugPrint("error during drop db: ${e.toString()}");
+      debugPrint('error during drop db: ${e.toString()}');
     }
     var eventsList = await EventsRepository().events();
     calendarooState.dispatch(LoadedEventsList(eventsList));

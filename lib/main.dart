@@ -12,7 +12,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'dao/events.repository.dart';
-import 'model/event.model.dart';
 import 'model/received-notification.dart';
 
 class MyApp extends StatefulWidget {
@@ -74,7 +73,7 @@ class _MyAppState extends State<MyApp> {
 
   void _configureSelectNotificationSubject() {
     selectNotificationSubject.stream.listen((String payload) async {
-      Event event = await EventsRepository().event(int.parse(payload));
+      var event = await EventsRepository().event(int.parse(payload));
       calendarooState.dispatch(OpenEvent(event));
     });
   }

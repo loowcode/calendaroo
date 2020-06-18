@@ -35,8 +35,8 @@ class _AddEventPageState extends State<AddEventPage> {
   void initState() {
     super.initState();
     showEvent = calendarooState.state.calendarState.showEvent;
-    _title = showEvent?.title ?? "";
-    _description = showEvent?.description ?? "";
+    _title = showEvent?.title ?? '';
+    _description = showEvent?.description ?? '';
     final now = DateTime.now();
     var defaultTime = now;
     if (calendarooState.state.calendarState.selectedDay.isAfter(now)) {
@@ -52,9 +52,9 @@ class _AddEventPageState extends State<AddEventPage> {
   @override
   Widget build(BuildContext context) {
     var _formatterDate =
-        new DateFormat.yMMMMd(Localizations.localeOf(context).toString());
+        DateFormat.yMMMMd(Localizations.localeOf(context).toString());
     var _formatterTime =
-        new DateFormat.Hm(Localizations.localeOf(context).toString());
+        DateFormat.Hm(Localizations.localeOf(context).toString());
     return StoreConnector<AppState, AddEventViewModel>(
         converter: (store) => AddEventViewModel.fromStore(store),
         builder: (context, store) {
@@ -110,7 +110,7 @@ class _AddEventPageState extends State<AddEventPage> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     initialValue: _title,
-                    decoration: new InputDecoration(
+                    decoration: InputDecoration(
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: darkBlue),
                       ),
@@ -134,7 +134,7 @@ class _AddEventPageState extends State<AddEventPage> {
                         .bodyText2
                         .copyWith(fontSize: 20),
                     validator: (value) {
-                      if (value != null && value.length > 0) {
+                      if (value != null && value.isNotEmpty) {
                         return null;
                       }
                       return AppLocalizations.of(context).insertATitle;
@@ -172,7 +172,7 @@ class _AddEventPageState extends State<AddEventPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       initialValue: _description,
-                      decoration: new InputDecoration(
+                      decoration: InputDecoration(
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: darkBlue),
                         ),
@@ -270,7 +270,7 @@ class _AddEventPageState extends State<AddEventPage> {
   }
 
   Widget _buildDatePicker(BuildContext context, bool start) {
-    DateTime _current = start ? _startDate : _endDate;
+    var _current = start ? _startDate : _endDate;
 
     return Container(
       decoration: BoxDecoration(
@@ -358,7 +358,7 @@ class _AddEventPageState extends State<AddEventPage> {
   }
 
   Widget _buildTimePicker(BuildContext context, bool start) {
-    DateTime _current = start ? _startTime : _endTime;
+    var _current = start ? _startTime : _endTime;
 
     return Container(
       decoration: BoxDecoration(
@@ -482,7 +482,7 @@ class _AddEventPageState extends State<AddEventPage> {
     );
   }
 
-  Event _createNewEvent(id) {
+  Event _createNewEvent(int id) {
     var uuid = Uuid();
     return Event(
         id: id,

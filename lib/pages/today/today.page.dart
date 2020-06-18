@@ -52,7 +52,7 @@ class _TodayPageState extends State<TodayPage> with TickerProviderStateMixin {
 
   Widget _buildTitle(BuildContext context) {
     var _formatterDate =
-        new DateFormat.yMMMMEEEEd(Localizations.localeOf(context).toString());
+        DateFormat.yMMMMEEEEd(Localizations.localeOf(context).toString());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -87,13 +87,15 @@ class _TodayPageState extends State<TodayPage> with TickerProviderStateMixin {
           case ConnectionState.waiting:
             return SizedBox();
           default:
-            if (snapshot.hasError)
+            if (snapshot.hasError) {
               return Icon(
                 Icons.cloud_off,
                 color: lightGrey,
               );
-            else
+            }
+            else{
               return iconWeather(snapshot.data);
+            }
         }
       },
     );

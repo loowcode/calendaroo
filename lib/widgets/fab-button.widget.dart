@@ -43,9 +43,9 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
         } else {
           _controller.reverse();
         }
-        if (this._overlayEntry == null) {
-          this._overlayEntry = this._createOverlayEntry();
-          Overlay.of(context).insert(this._overlayEntry);
+        if (_overlayEntry == null) {
+          _overlayEntry = _createOverlayEntry();
+          Overlay.of(context).insert(_overlayEntry);
         }
       },
       child: FloatingActionButton(
@@ -142,9 +142,9 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
   }
 
   void removeMiniButtons() {
-    if (this._overlayEntry != null) {
-      this._overlayEntry.remove();
-      this._overlayEntry = null;
+    if (_overlayEntry != null) {
+      _overlayEntry.remove();
+      _overlayEntry = null;
     }
   }
 }

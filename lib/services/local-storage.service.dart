@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -29,8 +27,8 @@ class LocalStorageService {
   }
 
   Future<Database> _init() async {
-    Directory directory = await getApplicationDocumentsDirectory();
-    String dbPath = join(directory.path, 'database.db');
+    var directory = await getApplicationDocumentsDirectory();
+    var dbPath = join(directory.path, 'database.db');
     var database = openDatabase(dbPath,
         version: DB_VERSION,
         onConfigure: _onConfigure,
@@ -41,25 +39,23 @@ class LocalStorageService {
 
   FutureOr<void> _onCreate(Database db, int version) async {
     try {
-      String sql =
-          await rootBundle.loadString('assets/resources/create-db.sql');
       await createTable(db);
-      debugPrint("Database was created!");
+      debugPrint('Database was created!');
     } catch (e) {
-      debugPrint("error during creation db: ${e.toString()}");
+      debugPrint('error during creation db: ${e.toString()}');
     }
   }
 
   Future createTable(Database db) async {
-    await db.execute("""create TABLE events(
+    await db.execute('''create TABLE events(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           title TEXT,
           uuid TEXT,
           description TEXT,
           start TEXT,
           end TEXT
-      );""");
-    await db.execute("""create TABLE eventInstances(
+      );''');
+    await db.execute('''create TABLE eventInstances(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         uuid TEXT,
         eventId INTEGER NOT NULL,
@@ -67,7 +63,7 @@ class LocalStorageService {
         end TEXT,
         FOREIGN KEY (eventId) REFERENCES events (id)
           ON DELETE NO ACTION ON UPDATE NO ACTION
-    );""");
+    );''');
   }
 
   void _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -91,8 +87,8 @@ class LocalStorageService {
   }
 
   FutureOr<void> dropTable(Database db) async {
-    await db.execute("drop table if exists events;");
-    await db.execute("drop table if exists eventInstances;");
+    await db.execute('drop table if exists events;');
+    await db.execute('drop table if exists eventInstances;');
     await createTable(db);
   }
 }

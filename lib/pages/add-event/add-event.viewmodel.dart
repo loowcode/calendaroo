@@ -17,9 +17,9 @@ class AddEventViewModel {
     return AddEventViewModel(
       selectedDay: store.state.calendarState.selectedDay,
       showEvent: store.state.calendarState.showEvent,
-      createEvent: (newEvent) => store.dispatch(new AddEvent(newEvent)),
+      createEvent: (newEvent) => store.dispatch(AddEvent(newEvent)),
       editEvent: (oldEvent, newEvent) =>
-          store.dispatch(new EditEvent(oldEvent, newEvent)),
+          store.dispatch(EditEvent(oldEvent, newEvent)),
     );
   }
 }

@@ -30,30 +30,30 @@ class EventsRepository {
 
   Future<Event> event(int id) async {
     var client = await LocalStorageService().db;
-    final List<Map<String, dynamic>> maps =
+    final maps =
         await client.query('events', where: 'id = ?', whereArgs: [id]);
     return Event(
-      id: maps[0]['id'],
-      title: maps[0]['title'],
-      uuid: maps[0]['uuid'],
-      description: maps[0]['description'],
-      start: DateTime.parse(maps[0]['start']),
-      end: DateTime.parse(maps[0]['end']),
+      id: maps[0]['id'] as int,
+      title: maps[0]['title'] as String,
+      uuid: maps[0]['uuid'] as String,
+      description: maps[0]['description'] as String,
+      start: DateTime.parse(maps[0]['start'] as String),
+      end: DateTime.parse(maps[0]['end'] as String),
     );
   }
 
   Future<List<Event>> events() async {
-    final Database client = await LocalStorageService().db;
+    final client = await LocalStorageService().db;
 
-    final List<Map<String, dynamic>> maps = await client.query('events');
+    final maps = await client.query('events');
     return List.generate(maps.length, (i) {
       return Event(
-        id: maps[i]['id'],
-        title: maps[i]['title'],
-        uuid: maps[i]['uuid'],
-        description: maps[i]['description'],
-        start: DateTime.parse(maps[i]['start']),
-        end: DateTime.parse(maps[i]['end']),
+        id: maps[i]['id'] as int,
+        title: maps[i]['title'] as String,
+        uuid: maps[i]['uuid'] as String,
+        description: maps[i]['description'] as String,
+        start: DateTime.parse(maps[i]['start'] as String),
+        end: DateTime.parse(maps[i]['end'] as String),
       );
     });
   }

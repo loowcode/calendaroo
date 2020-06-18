@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static ThemeData get primaryTheme {
-    final ThemeData base = ThemeData.light();
+    final base = ThemeData.light();
     return base.copyWith(
       appBarTheme: _buildAppBarTheme(base),
       backgroundColor: white,
@@ -88,8 +88,8 @@ class AppTheme {
     );
   }
 
-  static get secondaryTheme {
-    final ThemeData base = ThemeData.light();
+  static ThemeData get secondaryTheme {
+    final base = ThemeData.light();
     return base.copyWith(
 //      backgroundColor: secondaryBlue,
       accentColor: yellow,
@@ -118,8 +118,8 @@ class AppTheme {
     );
   }
 
-  static get datePicker {
-    final ThemeData base = ThemeData.light();
+  static ThemeData get datePicker {
+    final base = ThemeData.light();
     return base.copyWith(
       primaryColor: blue,
       accentColor: blue,

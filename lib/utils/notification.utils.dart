@@ -29,7 +29,7 @@ Future<void> scheduleNotification(Event event) async {
   await flutterLocalNotificationsPlugin.schedule(
       event.id,
       event.title,
-      "${formatterTime.format(event.start)} - ${formatterTime.format(event.end)}",
+      '${formatterTime.format(event.start)} - ${formatterTime.format(event.end)}',
       event.start,
       platformChannelSpecifics,
       androidAllowWhileIdle: true,

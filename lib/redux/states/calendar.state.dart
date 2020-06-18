@@ -33,10 +33,10 @@ class CalendarState {
   // TODO: there is a better solution?
   CalendarState copyWithAdmitNull(Event showEvent) {
     return CalendarState(
-      events: this.events,
-      eventMapped: this.eventMapped,
+      events: events,
+      eventMapped: eventMapped,
       showEvent: showEvent,
-      selectedDay: this.selectedDay,
+      selectedDay: selectedDay,
     );
   }
 }

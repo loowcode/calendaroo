@@ -13,9 +13,9 @@ class DatabaseService {
     // Get a reference to the database.
     var id = await EventsRepository().insertEvent(event);
 
-    DateTime first = CalendarUtils.removeTime(event.start);
-    DateTime index = CalendarUtils.removeTime(event.start);
-    DateTime last = CalendarUtils.removeTime(event.end);
+    var first = CalendarUtils.removeTime(event.start);
+    var index = CalendarUtils.removeTime(event.start);
+    var last = CalendarUtils.removeTime(event.end);
 
     var daySpan = last.difference(first).inDays;
     for (var i = 0; i <= daySpan; i++) {

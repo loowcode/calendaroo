@@ -52,9 +52,9 @@ CalendarState _loadedEventsList(CalendarState state, LoadedEventsList action) {
 // utils
 
 void _saveIntoStore(CalendarState state, Event event) {
-  DateTime first = CalendarUtils.removeTime(event.start);
-  DateTime index = CalendarUtils.removeTime(event.start);
-  DateTime last = CalendarUtils.removeTime(event.end);
+  var first = CalendarUtils.removeTime(event.start);
+  var index = CalendarUtils.removeTime(event.start);
+  var last = CalendarUtils.removeTime(event.end);
   for (var i = 0; i <= last.difference(first).inDays; i++) {
     _saveOneEvent(state, index, event);
     index = index.add(Duration(days: 1));
@@ -73,9 +73,9 @@ void _editIntoStore(CalendarState state, Event oldEvent, Event newEvent) {
 }
 
 void _removeFromStore(CalendarState state, Event event) {
-  DateTime first = CalendarUtils.removeTime(event.start);
-  DateTime index = CalendarUtils.removeTime(event.start);
-  DateTime last = CalendarUtils.removeTime(event.end);
+  var first = CalendarUtils.removeTime(event.start);
+  var index = CalendarUtils.removeTime(event.start);
+  var last = CalendarUtils.removeTime(event.end);
   for (var i = 0; i <= last.difference(first).inDays; i++) {
     _removeOneEvent(state, index, event);
     index = index.add(Duration(days: 1));
@@ -86,7 +86,7 @@ void _removeOneEvent(CalendarState state, DateTime date, Event event) {
   var key = CalendarUtils.removeTime(date);
   if (state.eventMapped.containsKey(key)) {
     state.eventMapped[key].removeWhere((element) => event.id == element.id);
-    if (state.eventMapped[key].length == 0) {
+    if (state.eventMapped[key].isEmpty) {
       state.eventMapped.remove(key);
     }
   }

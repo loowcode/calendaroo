@@ -92,7 +92,7 @@ class _ShowEventPageState extends State<ShowEventPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           store.showEvent.description != null &&
-                  store.showEvent.description.length > 0
+                  store.showEvent.description.isNotEmpty
               ? _buildDescription(store.showEvent)
               : SizedBox(
                   height: 0,
@@ -131,9 +131,9 @@ class _ShowEventPageState extends State<ShowEventPage> {
 
   Widget _buildTime(Event event, {bool start}) {
     var _formatterDate =
-        new DateFormat.yMMMMEEEEd(Localizations.localeOf(context).toString());
+        DateFormat.yMMMMEEEEd(Localizations.localeOf(context).toString());
     var _formatterTime =
-        new DateFormat.Hm(Localizations.localeOf(context).toString());
+        DateFormat.Hm(Localizations.localeOf(context).toString());
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Row(

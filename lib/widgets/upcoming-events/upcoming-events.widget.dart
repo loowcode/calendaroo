@@ -80,7 +80,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
 
   List<Widget> _buildAgenda(UpcomingEventsViewModel store) {
     var mapEvent = store.eventMapped;
-    List<Widget> widgets = [];
+    var widgets = [] as List<Widget>;
     if (mapEvent == null || mapEvent.isEmpty) {
       return [_buildEmptyAgenda()];
     }
@@ -90,7 +90,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     var formatter =
         DateFormat.MMMMEEEEd(Localizations.localeOf(context).toString());
     for (var date in mapEvent.keys) {
-      List<Widget> row = [];
+      var row = [] as List<Widget>;
       var list = mapEvent[date];
       row
         ..add(Container(
@@ -109,7 +109,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         ..add(SizedBox(
           height: 16,
         ));
-      AutoScrollTag dayGroup = AutoScrollTag(
+      var dayGroup = AutoScrollTag(
         key: ValueKey(CalendarUtils.getIndex(mapEvent, date)),
         index: CalendarUtils.getIndex(mapEvent, date),
         controller: _listController,
@@ -173,7 +173,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
                     Text(
-                        "${formatterTime.format(elem.start)} - ${formatterTime.format(elem.end)}",
+                        '${formatterTime.format(elem.start)} - ${formatterTime.format(elem.end)}',
                         style: Theme.of(context).textTheme.bodyText2),
                   ],
                 ),

@@ -194,7 +194,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  _enableNotifications(bool enableNotifications) {
+  void _enableNotifications(bool enableNotifications) {
     if (enableNotifications) {
       SharedPreferenceService().setBool('enableNotifications', true);
       var now = DateTime.now();
@@ -213,7 +213,7 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  _launchEmailUrl() async {
+  void _launchEmailUrl() async {
     var url = 'mailto:loowcode@gmail.com?subject=Feedback';
     if (await canLaunch(url)) {
       await launch(url);
