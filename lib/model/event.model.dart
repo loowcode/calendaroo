@@ -1,4 +1,3 @@
-import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:flutter/cupertino.dart';
 
 class Event {

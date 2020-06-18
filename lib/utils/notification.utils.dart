@@ -1,4 +1,3 @@
-import 'package:calendaroo/constants.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/model/received-notification.dart';
 import 'package:flutter/cupertino.dart';

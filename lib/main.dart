@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
               isDefaultAction: true,
               child: Text('Ok'),
               onPressed: () async {
-                Event event = await EventsRepository()
+                var event = await EventsRepository()
                     .event(int.parse(receivedNotification.payload));
                 calendarooState.dispatch(OpenEvent(event));
                 await NavigationService()

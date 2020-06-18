@@ -5,7 +5,7 @@ import 'package:calendaroo/model/event.model.dart';
 class CalendarUtils {
 
   static Map<DateTime, List<Event>> toMap(List<Event> events) {
-    SplayTreeMap<DateTime, List<Event>> result = new SplayTreeMap();
+    SplayTreeMap<DateTime, List<Event>> result = SplayTreeMap();
     events.forEach((Event elem) {
       DateTime first = CalendarUtils.removeTime(elem.start);
       DateTime index = CalendarUtils.removeTime(elem.start);
