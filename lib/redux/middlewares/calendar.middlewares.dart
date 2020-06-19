@@ -16,18 +16,18 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
       action.event.setId(id);
 
       if (SharedPreferenceService().enableNotifications) {
-        scheduleNotification(action.event);
+        await scheduleNotification(action.event);
       }
     }
 
     if (action is RemoveEvent) {
-      EventsRepository().deleteEvent(action.event.id);
-      cancelNotification(action.event.id);
+      await EventsRepository().deleteEvent(action.event.id);
+      await cancelNotification(action.event.id);
     }
 
     if (action is OpenEvent) {
       if (action.event != null) {
-        NavigationService().navigateTo(SHOW_EVENT, arguments: action.event);
+        await NavigationService().navigateTo(SHOW_EVENT, arguments: action.event);
       }
     }
 

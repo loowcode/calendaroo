@@ -15,7 +15,7 @@ class EventInstance {
       @required this.end});
 
   Map<String, dynamic> toMap() {
-    var map = Map<String, dynamic>();
+    var map = <String, dynamic>{};
     map['id'] = id;
     map['uuid'] = uuid;
     map['eventId'] = eventId;

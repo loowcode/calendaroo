@@ -63,18 +63,18 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
   }
 
   OverlayEntry _createOverlayEntry() {
-    RenderBox renderBox = context.findRenderObject();
+    var renderBox = context.findRenderObject() as RenderBox;
     var size = renderBox.size;
     var offset = renderBox.localToGlobal(Offset.zero);
     var nMiniButtons = 3;
-    var minibuttonHeight = (64 + 32) * nMiniButtons + 16;
+    var miniButtonHeight = (64 + 32) * nMiniButtons + 16;
     var padding = 16;
     return OverlayEntry(
         builder: (context) => Positioned(
               left: offset.dx - padding / 4.0,
               top: offset.dy -
                   (size.height / 2) -
-                  minibuttonHeight / 2 -
+                  miniButtonHeight / 2 -
                   padding,
               child: _floatingMiniButtons(),
             ));

@@ -22,7 +22,7 @@ class InitializerAppService {
   Future<void> setUp(environment, version) async {
     WidgetsFlutterBinding.ensureInitialized();
     // sharedPref init
-    SharedPreferenceService().getSharedPreferencesInstance();
+    await SharedPreferenceService().getSharedPreferencesInstance();
 
     // Environment init
     Environment().environment = environment as String;
@@ -32,10 +32,10 @@ class InitializerAppService {
     await _preLoadingDataFromDB();
 
     // setup orientation
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     // init Notification
-    initNotification();
+    await initNotification();
   }
 
   void _preLoadingDataFromDB() async {

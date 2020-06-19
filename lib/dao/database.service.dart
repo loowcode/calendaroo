@@ -19,7 +19,7 @@ class DatabaseService {
 
     var daySpan = last.difference(first).inDays;
     for (var i = 0; i <= daySpan; i++) {
-      EventInstanceRepository().insertInstance(EventInstance(
+      await EventInstanceRepository().insertInstance(EventInstance(
         id: null,
         uuid: _uuid.v4(),
         eventId: id,
