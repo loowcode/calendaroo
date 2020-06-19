@@ -14,6 +14,17 @@ class EventInstance {
       @required this.start,
       @required this.end});
 
+
+  factory EventInstance.fromMap(Map<String, dynamic> map) {
+    return EventInstance(
+      id: map['id'] as int,
+      uuid: map['uuid'] as String,
+      eventId: map['eventId'] as int,
+      start: DateTime.parse(map['start'] as String),
+      end: DateTime.parse(map['end'] as String),
+    );
+  }
+
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
     map['id'] = id;

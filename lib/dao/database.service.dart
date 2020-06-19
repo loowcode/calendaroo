@@ -43,4 +43,15 @@ class DatabaseService {
 
     return id;
   }
+
+  Future<void> deleteEvent(int id) async {
+    // Delete event
+    await EventsRepository().deleteEvent(id);
+
+    // Delete all related event instances
+    var maps = await EventInstanceRepository().findByEventId(id);
+    for (var map in maps) {
+      await EventInstanceRepository().deleteInstance(map.id);
+    }
+  }
 }

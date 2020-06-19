@@ -1,5 +1,4 @@
 import 'package:calendaroo/dao/database.service.dart';
-import 'package:calendaroo/dao/events.repository.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
@@ -21,7 +20,7 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
     }
 
     if (action is RemoveEvent) {
-      await EventsRepository().deleteEvent(action.event.id);
+      await DatabaseService().deleteEvent(action.event.id);
       await cancelNotification(action.event.id);
     }
 
