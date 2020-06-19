@@ -30,16 +30,8 @@ class EventsRepository {
 
   Future<Event> event(int id) async {
     var client = await LocalStorageService().db;
-    final maps =
-        await client.query('events', where: 'id = ?', whereArgs: [id]);
-    return Event(
-      id: maps[0]['id'] as int,
-      title: maps[0]['title'] as String,
-      uuid: maps[0]['uuid'] as String,
-      description: maps[0]['description'] as String,
-      start: DateTime.parse(maps[0]['start'] as String),
-      end: DateTime.parse(maps[0]['end'] as String),
-    );
+    final maps = await client.query('events', where: 'id = ?', whereArgs: [id]);
+    return Event.fromMap(maps[0]);
   }
 
   Future<List<Event>> events() async {
@@ -47,14 +39,7 @@ class EventsRepository {
 
     final maps = await client.query('events');
     return List.generate(maps.length, (i) {
-      return Event(
-        id: maps[i]['id'] as int,
-        title: maps[i]['title'] as String,
-        uuid: maps[i]['uuid'] as String,
-        description: maps[i]['description'] as String,
-        start: DateTime.parse(maps[i]['start'] as String),
-        end: DateTime.parse(maps[i]['end'] as String),
-      );
+      return Event.fromMap(maps[i]);
     });
   }
 }
