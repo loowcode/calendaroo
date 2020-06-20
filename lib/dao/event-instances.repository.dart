@@ -32,13 +32,7 @@ class EventInstanceRepository {
     var client = await LocalStorageService().db;
     final maps =
         await client.query('eventInstances', where: 'id = ?', whereArgs: [id]);
-    return EventInstance(
-      id: maps[0]['id'] as int,
-      uuid: maps[0]['uuid'] as String,
-      eventId: maps[0]['eventId'] as int,
-      start: DateTime.parse(maps[0]['start'] as String),
-      end: DateTime.parse(maps[0]['end'] as String),
-    );
+    return EventInstance.fromMap(maps[0]);
   }
 
   Future<List<EventInstance>> Instances() async {
@@ -46,13 +40,17 @@ class EventInstanceRepository {
 
     final maps = await client.query('eventInstances');
     return List.generate(maps.length, (i) {
-      return EventInstance(
-        id: maps[i]['id'] as int,
-        uuid: maps[i]['uuid'] as String,
-        eventId: maps[i]['eventId'] as int,
-        start: DateTime.parse(maps[i]['start'] as String),
-        end: DateTime.parse(maps[i]['end'] as String),
-      );
+      return EventInstance.fromMap(maps[i]);
+    });
+  }
+
+  Future<List<EventInstance>> findByEventId(int eventId) async {
+    final client = await LocalStorageService().db;
+
+    final maps = await client
+        .query('eventInstances', where: 'eventId = ?', whereArgs: [eventId]);
+    return List.generate(maps.length, (i) {
+      return EventInstance.fromMap(maps[i]);
     });
   }
 

@@ -14,7 +14,7 @@ class CalendarState {
       {this.events, this.eventMapped, this.showEvent, this.selectedDay});
 
   factory CalendarState.initial() {
-    return CalendarState(events: List<Event>(), eventMapped: SplayTreeMap());
+    return CalendarState(events: <Event>[], eventMapped: SplayTreeMap());
   }
 
   CalendarState copyWith(

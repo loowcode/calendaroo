@@ -10,7 +10,7 @@ create TABLE events(
 create TABLE eventInstances(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       uuid TEXT,
-      FOREIGN KEY (parentId) REFERENCES events (id)
+      FOREIGN KEY (eventId) REFERENCES events (id)
                 ON DELETE NO ACTION ON UPDATE NO ACTION
       start TEXT,
       end TEXT

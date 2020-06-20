@@ -1,5 +1,4 @@
 import 'package:calendaroo/dao/database.service.dart';
-import 'package:calendaroo/dao/events.repository.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
@@ -16,18 +15,18 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
       action.event.setId(id);
 
       if (SharedPreferenceService().enableNotifications) {
-        scheduleNotification(action.event);
+        await scheduleNotification(action.event);
       }
     }
 
     if (action is RemoveEvent) {
-      EventsRepository().deleteEvent(action.event.id);
-      cancelNotification(action.event.id);
+      await DatabaseService().deleteEvent(action.event.id);
+      await cancelNotification(action.event.id);
     }
 
     if (action is OpenEvent) {
       if (action.event != null) {
-        NavigationService().navigateTo(SHOW_EVENT, arguments: action.event);
+        await NavigationService().navigateTo(SHOW_EVENT, arguments: action.event);
       }
     }
 

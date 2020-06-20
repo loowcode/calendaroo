@@ -16,8 +16,19 @@ class Event {
       this.start,
       this.end});
 
+  factory Event.fromMap(Map<String, dynamic> map) {
+    return Event(
+      id: map['id'] as int,
+      title: map['title'] as String,
+      uuid: map['uuid'] as String,
+      description: map['description'] as String,
+      start: DateTime.parse(map['start'] as String),
+      end: DateTime.parse(map['end'] as String),
+    );
+  }
+
   Map<String, dynamic> toMap() {
-    var map = Map<String, dynamic>();
+    var map = <String, dynamic>{};
     map['id'] = id;
     map['uuid'] = uuid;
     map['title'] = title;

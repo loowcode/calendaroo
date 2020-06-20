@@ -20,7 +20,7 @@ class DatabaseService {
 
     var daySpan = last.difference(first).inDays;
     for (var i = 0; i <= daySpan; i++) {
-      EventInstanceRepository().insertInstance(EventInstance(
+      await EventInstanceRepository().insertInstance(EventInstance(
         id: null,
         uuid: _uuid.v4(),
         eventId: id,
@@ -45,8 +45,19 @@ class DatabaseService {
     return id;
   }
 
-  Future getEvents(Date date) async{
+  Future getEvents(Date date) async {
     final events = await EventsRepository().nearEvents(date);
     final instance = await EventInstanceRepository().nearEvents(date);
+  }
+
+  Future<void> deleteEvent(int id) async {
+    // Delete event
+    await EventsRepository().deleteEvent(id);
+
+    // Delete all related event instances
+    var maps = await EventInstanceRepository().findByEventId(id);
+    for (var map in maps) {
+      await EventInstanceRepository().deleteInstance(map.id);
+    }
   }
 }
