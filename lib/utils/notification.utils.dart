@@ -18,7 +18,7 @@ final BehaviorSubject<String> selectNotificationSubject =
 NotificationAppLaunchDetails notificationAppLaunchDetails;
 
 // TODO schedule notification for each event instance
-Future<void> scheduleNotification(EventInstance event) async {
+Future<void> scheduleNotification(EventInstance eventInstance) async {
   var formatterTime = DateFormat.Hm();
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'event_notification', 'Notifiche evento', 'Mostra le notifiche evento',
@@ -28,13 +28,13 @@ Future<void> scheduleNotification(EventInstance event) async {
       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
   await flutterLocalNotificationsPlugin.schedule(
-      event.id,
+      eventInstance.id,
       "title", //      TODO event.title,
-      '${formatterTime.format(event.start)} - ${formatterTime.format(event.end)}',
-      event.start,
+      '${formatterTime.format(eventInstance.start)} - ${formatterTime.format(eventInstance.end)}',
+      eventInstance.start,
       platformChannelSpecifics,
       androidAllowWhileIdle: true,
-      payload: event.id.toString());
+      payload: eventInstance.id.toString());
 }
 
 Future<void> cancelNotification(int id) async {
