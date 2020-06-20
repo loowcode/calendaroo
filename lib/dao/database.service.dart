@@ -48,6 +48,11 @@ class DatabaseService {
   Future getEvents(Date date) async {
     final events = await EventsRepository().nearEvents(date);
     final instance = await EventInstanceRepository().nearEvents(date);
+  // TODO
+  }
+
+  Future findEventById(int id){
+    return EventsRepository().event(id);
   }
 
   Future<void> deleteEvent(int id) async {

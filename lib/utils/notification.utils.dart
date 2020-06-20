@@ -1,4 +1,4 @@
-import 'package:calendaroo/model/event.model.dart';
+import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/model/received-notification.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -17,7 +17,8 @@ final BehaviorSubject<String> selectNotificationSubject =
 
 NotificationAppLaunchDetails notificationAppLaunchDetails;
 
-Future<void> scheduleNotification(Event event) async {
+// TODO schedule notification for each event instance
+Future<void> scheduleNotification(EventInstance event) async {
   var formatterTime = DateFormat.Hm();
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'event_notification', 'Notifiche evento', 'Mostra le notifiche evento',
@@ -28,7 +29,7 @@ Future<void> scheduleNotification(Event event) async {
 
   await flutterLocalNotificationsPlugin.schedule(
       event.id,
-      event.title,
+      "title", //      TODO event.title,
       '${formatterTime.format(event.start)} - ${formatterTime.format(event.end)}',
       event.start,
       platformChannelSpecifics,

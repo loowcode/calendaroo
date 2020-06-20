@@ -51,7 +51,7 @@ class InitializerAppService {
     } catch (e) {
       debugPrint('error during drop db: ${e.toString()}');
     }
-    var eventsList = await EventsRepository().events();
+    var eventsList = await DatabaseService().getEvents(Date.today());
     await DatabaseService().getEvents(Date.today());
     calendarooState.dispatch(LoadedEventsList(eventsList));
   }

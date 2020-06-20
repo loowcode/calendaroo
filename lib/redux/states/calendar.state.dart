@@ -1,12 +1,14 @@
 import 'dart:collection';
 
+import 'package:calendaroo/model/date.dart';
+import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:flutter/cupertino.dart';
 
 @immutable
 class CalendarState {
-  final List<Event> events; //TODO: remove this duplicated info
-  final SplayTreeMap<DateTime, List<Event>> eventMapped;
+  final List<Event> events;
+  final SplayTreeMap<Date, List<EventInstance>> eventMapped;
   final Event showEvent;
   final DateTime selectedDay;
 
@@ -19,7 +21,7 @@ class CalendarState {
 
   CalendarState copyWith(
       {List<Event> events,
-      SplayTreeMap<DateTime, List<Event>> eventMapped,
+      SplayTreeMap<Date, List<EventInstance>> eventMapped,
       DateTime selectedDay,
       Event showEvent}) {
     return CalendarState(
