@@ -1,3 +1,4 @@
+import 'package:calendaroo/model/date.dart';
 import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -44,6 +45,24 @@ class EventInstanceRepository {
     final client = await LocalStorageService().db;
 
     final maps = await client.query('eventInstances');
+    return List.generate(maps.length, (i) {
+      return EventInstance(
+        id: maps[i]['id'] as int,
+        uuid: maps[i]['uuid'] as String,
+        eventId: maps[i]['eventId'] as int,
+        start: DateTime.parse(maps[i]['start'] as String),
+        end: DateTime.parse(maps[i]['end'] as String),
+      );
+    });
+  }
+
+  Future<List<EventInstance>> nearEvents(Date date) async {
+    final client = await LocalStorageService().db;
+    final rangeStart = date.subtract(Duration(days: 60));
+    final rangeEnd = date.add(Duration(days: 60));
+    final maps = await client.query('events',
+        where: 'start > ? and end < ?',
+        whereArgs: [rangeStart.toIso8601String(), rangeEnd.toIso8601String()]);
     return List.generate(maps.length, (i) {
       return EventInstance(
         id: maps[i]['id'] as int,

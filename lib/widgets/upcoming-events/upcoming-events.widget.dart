@@ -80,7 +80,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
 
   List<Widget> _buildAgenda(UpcomingEventsViewModel store) {
     var mapEvent = store.eventMapped;
-    var widgets = [] as List<Widget>;
+    var widgets = [];
     if (mapEvent == null || mapEvent.isEmpty) {
       return [_buildEmptyAgenda()];
     }
@@ -90,7 +90,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     var formatter =
         DateFormat.MMMMEEEEd(Localizations.localeOf(context).toString());
     for (var date in mapEvent.keys) {
-      var row = [] as List<Widget>;
+      var row = [];
       var list = mapEvent[date];
       row
         ..add(Container(

@@ -1,3 +1,4 @@
+import 'package:calendaroo/model/date.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -30,8 +31,7 @@ class EventsRepository {
 
   Future<Event> event(int id) async {
     var client = await LocalStorageService().db;
-    final maps =
-        await client.query('events', where: 'id = ?', whereArgs: [id]);
+    final maps = await client.query('events', where: 'id = ?', whereArgs: [id]);
     return Event(
       id: maps[0]['id'] as int,
       title: maps[0]['title'] as String,
@@ -46,6 +46,25 @@ class EventsRepository {
     final client = await LocalStorageService().db;
 
     final maps = await client.query('events');
+    return List.generate(maps.length, (i) {
+      return Event(
+        id: maps[i]['id'] as int,
+        title: maps[i]['title'] as String,
+        uuid: maps[i]['uuid'] as String,
+        description: maps[i]['description'] as String,
+        start: DateTime.parse(maps[i]['start'] as String),
+        end: DateTime.parse(maps[i]['end'] as String),
+      );
+    });
+  }
+
+  Future<List<Event>> nearEvents(Date date) async {
+    final client = await LocalStorageService().db;
+    final rangeStart = date.subtract(Duration(days: 60));
+    final rangeEnd = date.add(Duration(days: 60));
+    final maps = await client.query('events',
+        where: 'start > ? and end < ?',
+        whereArgs: [rangeStart.toIso8601String(), rangeEnd.toIso8601String()]);
     return List.generate(maps.length, (i) {
       return Event(
         id: maps[i]['id'] as int,

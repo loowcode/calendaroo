@@ -34,5 +34,3 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
     next(action);
   }
 }
-
-

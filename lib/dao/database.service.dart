@@ -1,4 +1,5 @@
 import 'package:calendaroo/dao/event-instances.repository.dart';
+import 'package:calendaroo/model/date.dart';
 import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:uuid/uuid.dart';
@@ -42,5 +43,10 @@ class DatabaseService {
     }
 
     return id;
+  }
+
+  Future getEvents(Date date) async{
+    final events = await EventsRepository().nearEvents(date);
+    final instance = await EventInstanceRepository().nearEvents(date);
   }
 }
