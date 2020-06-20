@@ -52,8 +52,8 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         onDidChange: (viewModel) {
           try {
             _listController.scrollToIndex(
-                CalendarUtils
-                    .getIndex(viewModel.eventMapped, viewModel.selectedDay),
+                CalendarUtils.getIndex(
+                    viewModel.eventMapped, viewModel.selectedDay),
                 preferPosition: AutoScrollPosition.begin);
 
 //            _animationController.forward(from: 0);
@@ -80,7 +80,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
 
   List<Widget> _buildAgenda(UpcomingEventsViewModel store) {
     var mapEvent = store.eventMapped;
-    var widgets = [] as List<Widget>;
+    var widgets = <Widget>[];
     if (mapEvent == null || mapEvent.isEmpty) {
       return [_buildEmptyAgenda()];
     }
@@ -90,25 +90,32 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     var formatter =
         DateFormat.MMMMEEEEd(Localizations.localeOf(context).toString());
     for (var date in mapEvent.keys) {
-      var row = [] as List<Widget>;
+      var row = <Widget>[];
       var list = mapEvent[date];
       row
-        ..add(Container(
+        ..add(
+          Container(
             child: Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Text(
-            formatter.format(date),
-            style: Theme.of(context).textTheme.headline5,
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(
+                formatter.format(date),
+                style: Theme.of(context).textTheme.headline5,
+              ),
+            ),
           ),
-        )))
+        )
         ..addAll(list
-            .map((elem) => Container(
-                  child: _buildCardEvent(store, elem, formatterTime),
-                ))
+            .map(
+              (elem) => Container(
+                child: _buildCardEvent(store, elem, formatterTime),
+              ),
+            )
             .toList())
-        ..add(SizedBox(
-          height: 16,
-        ));
+        ..add(
+          SizedBox(
+            height: 16,
+          ),
+        );
       var dayGroup = AutoScrollTag(
         key: ValueKey(CalendarUtils.getIndex(mapEvent, date)),
         index: CalendarUtils.getIndex(mapEvent, date),
