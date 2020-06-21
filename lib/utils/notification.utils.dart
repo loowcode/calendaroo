@@ -1,8 +1,7 @@
-import 'package:calendaroo/model/event-instance.model.dart';
+import 'package:calendaroo/model/notification-channel.model.dart';
 import 'package:calendaroo/model/received-notification.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -18,23 +17,32 @@ final BehaviorSubject<String> selectNotificationSubject =
 NotificationAppLaunchDetails notificationAppLaunchDetails;
 
 // TODO schedule notification for each event instance
-Future<void> scheduleNotification(EventInstance eventInstance) async {
-  var formatterTime = DateFormat.Hm();
+Future<void> scheduleNotification(
+    int notificationId,
+    String notificationTitle,
+    String notificationBody,
+    DateTime notificationDate,
+    String notificationPayload,
+    NotificationChannel notificationChannel) async {
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'event_notification', 'Notifiche evento', 'Mostra le notifiche evento',
-      importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+      notificationChannel.id,
+      notificationChannel.name,
+      notificationChannel.description,
+      importance: Importance.Max,
+      priority: Priority.High,
+      ticker: 'ticker');
   var iOSPlatformChannelSpecifics = IOSNotificationDetails();
   var platformChannelSpecifics = NotificationDetails(
       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
   await flutterLocalNotificationsPlugin.schedule(
-      eventInstance.id,
-      "title", //      TODO event.title,
-      '${formatterTime.format(eventInstance.start)} - ${formatterTime.format(eventInstance.end)}',
-      eventInstance.start,
+      notificationId,
+      notificationTitle,
+      notificationBody,
+      notificationDate,
       platformChannelSpecifics,
       androidAllowWhileIdle: true,
-      payload: eventInstance.id.toString());
+      payload: notificationPayload);
 }
 
 Future<void> cancelNotification(int id) async {

@@ -1,19 +1,17 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/environments/environment.dart';
-import 'package:calendaroo/model/date.dart';
 import 'package:calendaroo/pages/settings/settings.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
+import 'package:calendaroo/services/notification.service.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:calendaroo/theme.dart';
-import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:calendaroo/utils/notification.utils.dart';
 import 'package:calendaroo/widgets/common/page-title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:rxdart/rxdart.dart';
 
 // TODO: Use Theme
 class SettingsPage extends StatefulWidget {
@@ -199,16 +197,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void _enableNotifications(bool enableNotifications) {
     if (enableNotifications) {
       SharedPreferenceService().setBool('enableNotifications', true);
-      var today = Date.today();
-      calendarooState.state.calendarState.eventMapped.forEach((key, value) {
-        if (today.compareTo(key) <= 0) {
-          value.forEach((element) {
-            if (today.isBefore(element.start)) {
-              scheduleNotification(element);
-            }
-          });
-        }
-      });
+      NotificationService().rescheduleForEvent();
     } else {
       SharedPreferenceService().setBool('enableNotifications', false);
       cancelAllNotifications();
