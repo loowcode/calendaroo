@@ -19,8 +19,7 @@ class CalendarViewModel {
   static CalendarViewModel fromStore(Store<AppState> store) {
     return CalendarViewModel(
       selectedDay: store.state.calendarState.selectedDay,
-      events: store.state.calendarState.events,
-      eventMapped: store.state.calendarState.eventMapped,
+      eventMapped: store.state.calendarState.eventsMapped,
       selectDay: (day) => store.dispatch(SelectDay(day)),
     );
   }

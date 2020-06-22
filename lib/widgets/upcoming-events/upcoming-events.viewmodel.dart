@@ -19,8 +19,7 @@ class UpcomingEventsViewModel {
   static UpcomingEventsViewModel fromStore(Store<AppState> store) {
     return UpcomingEventsViewModel(
       selectedDay: store.state.calendarState.selectedDay,
-      events: store.state.calendarState.events,
-      eventMapped: store.state.calendarState.eventMapped,
+      eventMapped: store.state.calendarState.eventsMapped,
       openEvent: (event) => store.dispatch(OpenEvent(event)),
     );
   }

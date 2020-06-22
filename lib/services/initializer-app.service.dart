@@ -1,6 +1,5 @@
 import 'package:calendaroo/constants.dart';
 import 'package:calendaroo/dao/database.service.dart';
-import 'package:calendaroo/dao/events.repository.dart';
 import 'package:calendaroo/environments/environment.dart';
 import 'package:calendaroo/model/date.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
