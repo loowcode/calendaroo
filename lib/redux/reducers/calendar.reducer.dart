@@ -71,7 +71,7 @@ CalendarState _removeEvent(CalendarState state, RemoveEvent action) {
 }
 
 CalendarState _loadedEventsList(CalendarState state, LoadedEventsList action) {
-  return state.copyWith(eventsMapped: CalendarUtils.toMap(action.events));
+  return state.copyWith(eventsMapped: CalendarUtils.toMappedInstances(action.events));
 }
 
 // utils
