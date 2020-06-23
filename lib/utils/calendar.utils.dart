@@ -31,11 +31,9 @@ class CalendarUtils {
         var first = Date.convertToDate(elem.start);
         var index = Date.convertToDate(elem.start);
         var last = Date.convertToDate(elem.end);
-        if (first.isAfter(rangeStart) && last.isBefore(rangeEnd)) {
-          for (var i = 0; i <= first.difference(last).inDays; i++) {
-            _insertIntoMap(map, index, elem);
-            index = Date.convertToDate(index.add(Duration(days: 1)));
-          }
+        for (var i = 0; i <= first.difference(last).inDays; i++) {
+          _insertIntoMap(map, index, elem);
+          index = Date.convertToDate(index.add(Duration(days: 1)));
         }
       });
     });
@@ -72,6 +70,43 @@ class CalendarUtils {
       );
       instances.add(instance);
       index = index.add(Duration(days: 1));
+    }
+    return instances;
+  }
+
+  static List<EventInstance> createNearInstances(
+      Event event, Date rangeStart, Date rangeEnd) {
+    var instances = <EventInstance>[];
+    var _uuid = Uuid();
+    var first = CalendarUtils.removeTime(event.start);
+    var index = CalendarUtils.removeTime(event.start);
+    var last = CalendarUtils.removeTime(event.end);
+
+    var daySpan = last.difference(first).inDays;
+    for (var i = 0; i <= daySpan; i++) {
+      if (index.isAfter(rangeStart) && index.isBefore(rangeEnd)) {
+        var instance = EventInstance(
+          id: null,
+          uuid: _uuid.v4(),
+          eventId: event.id,
+          start: DateTime(
+            index.year,
+            index.month,
+            index.day,
+            i == 0 ? event.start.hour : 0,
+            i == 0 ? event.start.minute : 0,
+          ),
+          end: DateTime(
+            index.year,
+            index.month,
+            index.day,
+            i == daySpan ? event.end.hour : 23,
+            i == daySpan ? event.end.minute : 59,
+          ),
+        );
+        instances.add(instance);
+        index = index.add(Duration(days: 1));
+      }
     }
     return instances;
   }

@@ -1,10 +1,9 @@
-import 'package:calendaroo/model/event-instance.model.dart';
+import 'package:calendaroo/model/date.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/calendar.state.dart';
 import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:redux/redux.dart';
-import 'package:uuid/uuid.dart';
 
 final calendarReducer = combineReducers<CalendarState>([
   TypedReducer<CalendarState, AddEvent>(_addEvent),
@@ -16,37 +15,19 @@ final calendarReducer = combineReducers<CalendarState>([
 ]);
 
 CalendarState _addEvent(CalendarState state, AddEvent action) {
-  final _uuid = Uuid();
-
   var event = action.event;
-  var first = CalendarUtils.removeTime(event.start);
-  var index = CalendarUtils.removeTime(event.start);
-  var last = CalendarUtils.removeTime(event.end);
+  var rangeStart = state.selectedDay.subtract(Duration(days: 60));
+  var rangeEnd = state.selectedDay.add(Duration(days: 60));
 
-  var daySpan = last.difference(first).inDays;
-  for (var i = 0; i <= daySpan; i++) {
-    var instance = EventInstance(
-      id: null,
-      uuid: _uuid.v4(),
-      eventId: event.id,
-      start: DateTime(
-        index.year,
-        index.month,
-        index.day,
-        i == 0 ? event.start.hour : 0,
-        i == 0 ? event.start.minute : 0,
-      ),
-      end: DateTime(
-        index.year,
-        index.month,
-        index.day,
-        i == daySpan ? event.end.hour : 23,
-        i == daySpan ? event.end.minute : 59,
-      ),
-    );
-    // TODO pick only near eventInstances and save them into eventsMapped
-    index = index.add(Duration(days: 1));
-  }
+  var newInstances = CalendarUtils.createNearInstances(
+      event, Date.convertToDate(rangeStart), Date.convertToDate(rangeEnd));
+
+  newInstances.forEach((elem) {
+    var start = Date.convertToDate(elem.start);
+    state.eventsMapped
+        .update(start, (value) => value..add(elem), ifAbsent: () => [elem]);
+  });
+
   return state;
 }
 
@@ -70,31 +51,11 @@ CalendarState _removeEvent(CalendarState state, RemoveEvent action) {
 }
 
 CalendarState _loadedEventsList(CalendarState state, LoadedEventsList action) {
-  return state.copyWith(eventsMapped: CalendarUtils.toMappedInstances(action.events));
+  return state.copyWith(
+      eventsMapped: CalendarUtils.toMappedInstances(action.events));
 }
 
 // utils
-
-//void _saveIntoStore(CalendarState state, Event event) {
-//  var first = CalendarUtils.removeTime(event.start);
-//  var index = CalendarUtils.removeTime(event.start);
-//  var last = CalendarUtils.removeTime(event.end);
-//  for (var i = 0; i <= last.difference(first).inDays; i++) {
-//    _saveOneEvent(state, index, event);
-//    index = index.add(Duration(days: 1));
-//  }
-//}
-//
-//void _saveOneInstance(CalendarState state, Date date, Event event) {
-//  var start = CalendarUtils.removeTime(date);
-//  state.eventsMapped
-//      .update(start, (value) => value..add(event), ifAbsent: () => [event]);
-//}
-
-//void _editIntoStore(CalendarState state, Event oldEvent, Event newEvent) {
-//  _removeFromStore(state, oldEvent);
-//  _saveIntoStore(state, newEvent);
-//}
 
 void _removeFromStore(CalendarState state, Event event) {
   var first = CalendarUtils.removeTime(event.start);
