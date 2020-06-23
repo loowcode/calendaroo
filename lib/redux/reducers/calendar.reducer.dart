@@ -1,4 +1,3 @@
-import 'package:calendaroo/model/date.dart';
 import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
@@ -62,7 +61,7 @@ CalendarState _openEvent(CalendarState state, OpenEvent action) {
 }
 
 CalendarState _selectDay(CalendarState state, SelectDay action) {
-  return state.copyWith(selectedDay: CalendarUtils.removeTime(action.day));
+  return state.copyWith(selectedDay: action.day);
 }
 
 CalendarState _removeEvent(CalendarState state, RemoveEvent action) {
@@ -86,11 +85,11 @@ CalendarState _loadedEventsList(CalendarState state, LoadedEventsList action) {
 //  }
 //}
 //
-void _saveOneInstance(CalendarState state, Date date, Event event) {
-  var start = CalendarUtils.removeTime(date);
-  state.eventsMapped
-      .update(start, (value) => value..add(event), ifAbsent: () => [event]);
-}
+//void _saveOneInstance(CalendarState state, Date date, Event event) {
+//  var start = CalendarUtils.removeTime(date);
+//  state.eventsMapped
+//      .update(start, (value) => value..add(event), ifAbsent: () => [event]);
+//}
 
 //void _editIntoStore(CalendarState state, Event oldEvent, Event newEvent) {
 //  _removeFromStore(state, oldEvent);

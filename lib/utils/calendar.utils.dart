@@ -11,12 +11,31 @@ class CalendarUtils {
     var map = SplayTreeMap<Date, List<EventInstance>>();
     events.forEach((Event event) {
       createInstance(event).forEach((elem) {
-        var first = CalendarUtils.removeTime(elem.start);
-        var index = CalendarUtils.removeTime(elem.start);
-        var last = CalendarUtils.removeTime(elem.end);
+        var first = Date.convertToDate(elem.start);
+        var index = Date.convertToDate(elem.start);
+        var last = Date.convertToDate(elem.end);
         for (var i = 0; i <= first.difference(last).inDays; i++) {
           _insertIntoMap(map, index, elem);
-          index = index.add(Duration(days: 1));
+          index = Date.convertToDate(index.add(Duration(days: 1)));
+        }
+      });
+    });
+    return map;
+  }
+
+  static SplayTreeMap<Date, List<EventInstance>> toNearMappedInstances(
+      List<Event> events, Date rangeStart, Date rangeEnd) {
+    var map = SplayTreeMap<Date, List<EventInstance>>();
+    events.forEach((Event event) {
+      createInstance(event).forEach((elem) {
+        var first = Date.convertToDate(elem.start);
+        var index = Date.convertToDate(elem.start);
+        var last = Date.convertToDate(elem.end);
+        if (first.isAfter(rangeStart) && last.isBefore(rangeEnd)) {
+          for (var i = 0; i <= first.difference(last).inDays; i++) {
+            _insertIntoMap(map, index, elem);
+            index = Date.convertToDate(index.add(Duration(days: 1)));
+          }
         }
       });
     });
@@ -24,7 +43,7 @@ class CalendarUtils {
   }
 
   static List<EventInstance> createInstance(Event event) {
-    var instances = [] as List<EventInstance>;
+    var instances = <EventInstance>[];
     var _uuid = Uuid();
     var first = CalendarUtils.removeTime(event.start);
     var index = CalendarUtils.removeTime(event.start);
@@ -61,19 +80,19 @@ class CalendarUtils {
       List<EventInstance> events) {
     var map = SplayTreeMap<Date, List<EventInstance>>();
     events.forEach((EventInstance elem) {
-      var first = CalendarUtils.removeTime(elem.start);
-      var index = CalendarUtils.removeTime(elem.start);
-      var last = CalendarUtils.removeTime(elem.end);
+      var first = Date.convertToDate(elem.start);
+      var index = Date.convertToDate(elem.start);
+      var last = Date.convertToDate(elem.end);
       for (var i = 0; i <= first.difference(last).inDays; i++) {
         _insertIntoMap(map, index, elem);
-        index = index.add(Duration(days: 1));
+        index = Date.convertToDate(index.add(Duration(days: 1)));
       }
     });
     return map;
   }
 
-  static void _insertIntoMap(SplayTreeMap<DateTime, List<EventInstance>> map,
-      DateTime date, EventInstance event) {
+  static void _insertIntoMap(SplayTreeMap<Date, List<EventInstance>> map,
+      Date date, EventInstance event) {
     if (map.containsKey(date)) {
       var list = map[date];
       list.add(event);
@@ -88,6 +107,12 @@ class CalendarUtils {
     if (days.keys.length == null || days.keys.isEmpty) return 0;
 
     return days.keys.toList().indexOf(day);
+  }
+
+  static int getIndex2(Map<Date, List<EventInstance>> map, Date day) {
+    if (map.keys.length == null || map.keys.isEmpty) return 0;
+
+    return map.keys.toList().indexOf(day);
   }
 
   static DateTime removeTime(DateTime input) {

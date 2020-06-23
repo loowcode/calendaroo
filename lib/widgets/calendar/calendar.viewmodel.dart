@@ -8,11 +8,11 @@ import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:redux/redux.dart';
 
 class CalendarViewModel {
-  final DateTime selectedDay;
+  final Date selectedDay;
   final List<Event> events;
   final SplayTreeMap<Date, List<EventInstance>> eventMapped;
 
-  final Function(DateTime) selectDay;
+  final Function(Date) selectDay;
 
   CalendarViewModel({this.selectedDay, this.events, this.eventMapped, this.selectDay});
 

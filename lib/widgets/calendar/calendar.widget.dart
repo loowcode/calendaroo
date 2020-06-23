@@ -1,4 +1,5 @@
 import 'package:calendaroo/colors.dart';
+import 'package:calendaroo/model/date.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
@@ -51,7 +52,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
   }
 
   void _onDaySelected(CalendarViewModel store, DateTime day, List events) {
-    store.selectDay(day);
+    store.selectDay(Date.convertToDate(day));
   }
 
   void _onVisibleDaysChanged(
@@ -65,7 +66,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
 
   void _onCalendarCreated(CalendarViewModel store, DateTime first,
       DateTime last, CalendarFormat format) {
-    store.selectDay(DateTime.now());
+    store.selectDay(Date.today());
   }
 
   @override

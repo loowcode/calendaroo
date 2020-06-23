@@ -9,7 +9,7 @@ import 'package:flutter/cupertino.dart';
 class CalendarState {
   final SplayTreeMap<Date, List<EventInstance>> eventsMapped;
   final Event showEvent;
-  final DateTime selectedDay;
+  final Date selectedDay;
 
   CalendarState(
       {this.eventsMapped, this.showEvent, this.selectedDay});
@@ -20,7 +20,7 @@ class CalendarState {
 
   CalendarState copyWith(
       {SplayTreeMap<Date, List<EventInstance>> eventsMapped,
-      DateTime selectedDay,
+      Date selectedDay,
       Event showEvent}) {
     return CalendarState(
       eventsMapped: eventsMapped ?? this.eventsMapped,

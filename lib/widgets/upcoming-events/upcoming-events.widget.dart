@@ -1,4 +1,6 @@
 import 'package:calendaroo/colors.dart';
+import 'package:calendaroo/model/date.dart';
+import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
@@ -31,7 +33,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         axis: Axis.vertical);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      calendarooState.dispatch(SelectDay(DateTime.now()));
+      calendarooState.dispatch(SelectDay(Date.today()));
     });
   }
 
@@ -52,7 +54,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         onDidChange: (viewModel) {
           try {
             _listController.scrollToIndex(
-                CalendarUtils.getIndex(
+                CalendarUtils.getIndex2(
                     viewModel.eventMapped, viewModel.selectedDay),
                 preferPosition: AutoScrollPosition.begin);
 
@@ -117,8 +119,8 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
           ),
         );
       var dayGroup = AutoScrollTag(
-        key: ValueKey(CalendarUtils.getIndex(mapEvent, date)),
-        index: CalendarUtils.getIndex(mapEvent, date),
+        key: ValueKey(CalendarUtils.getIndex2(mapEvent, date)),
+        index: CalendarUtils.getIndex2(mapEvent, date),
         controller: _listController,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,10 +133,10 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
   }
 
   GestureDetector _buildCardEvent(
-      UpcomingEventsViewModel store, Event elem, DateFormat formatterTime) {
+      UpcomingEventsViewModel store, EventInstance elem, DateFormat formatterTime) {
     return GestureDetector(
       onTap: () {
-        store.openEvent(elem);
+//        store.openEvent(elem); TODO
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -176,7 +178,8 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      elem.title,
+                      "",
+//                      elem.title, TODO
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
                     Text(
@@ -185,31 +188,31 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                   ],
                 ),
               ),
-              PopupMenuButton<Option>(
-                onSelected: selectOption,
-                color: white,
-                icon: Icon(
-                  Icons.more_vert,
-                  color: grey,
-                ),
-                itemBuilder: (BuildContext context) {
-                  return options.map((Option option) {
-                    return PopupMenuItem<Option>(
-                      value: option.setEvent(elem),
-                      child: Theme(
-                          data: Theme.of(context).copyWith(cardColor: white),
-                          child: Text(
-                            AppLocalizations.of(context)
-                                .translate(option.title),
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(color: black),
-                          )),
-                    );
-                  }).toList();
-                },
-              ),
+//              PopupMenuButton<Option>(  TODO
+//                onSelected: selectOption,
+//                color: white,
+//                icon: Icon(
+//                  Icons.more_vert,
+//                  color: grey,
+//                ),
+//                itemBuilder: (BuildContext context) {
+//                  return options.map((Option option) {
+//                    return PopupMenuItem<Option>(
+//                      value: option.setEvent(elem),
+//                      child: Theme(
+//                          data: Theme.of(context).copyWith(cardColor: white),
+//                          child: Text(
+//                            AppLocalizations.of(context)
+//                                .translate(option.title),
+//                            style: Theme.of(context)
+//                                .textTheme
+//                                .bodyText1
+//                                .copyWith(color: black),
+//                          )),
+//                    );
+//                  }).toList();
+//                },
+//              ),
             ],
           ),
         ),

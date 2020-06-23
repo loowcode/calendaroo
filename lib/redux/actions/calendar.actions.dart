@@ -1,3 +1,4 @@
+import 'package:calendaroo/model/date.dart';
 import 'package:calendaroo/model/event.model.dart';
 
 class LoadedEventsList {
@@ -33,7 +34,7 @@ class EditEvent {
 }
 
 class SelectDay {
-  final DateTime day;
+  final Date day;
 
   SelectDay(this.day);
 }

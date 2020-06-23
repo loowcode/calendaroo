@@ -8,7 +8,7 @@ import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:redux/redux.dart';
 
 class UpcomingEventsViewModel {
-  final DateTime selectedDay;
+  final Date selectedDay;
   final List<Event> events;
   final SplayTreeMap<Date, List<EventInstance>> eventMapped;
 
