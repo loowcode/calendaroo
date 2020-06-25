@@ -9,12 +9,11 @@ import 'package:redux/redux.dart';
 
 class CalendarViewModel {
   final Date selectedDay;
-  final List<Event> events;
   final SplayTreeMap<Date, List<EventInstance>> eventMapped;
 
   final Function(Date) selectDay;
 
-  CalendarViewModel({this.selectedDay, this.events, this.eventMapped, this.selectDay});
+  CalendarViewModel({this.selectedDay, this.eventMapped, this.selectDay});
 
   static CalendarViewModel fromStore(Store<AppState> store) {
     return CalendarViewModel(

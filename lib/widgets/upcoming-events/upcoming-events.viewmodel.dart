@@ -9,12 +9,11 @@ import 'package:redux/redux.dart';
 
 class UpcomingEventsViewModel {
   final Date selectedDay;
-  final List<Event> events;
   final SplayTreeMap<Date, List<EventInstance>> eventMapped;
 
   final Function(int) openEvent;
 
-  UpcomingEventsViewModel({this.selectedDay, this.events,this.eventMapped, this.openEvent});
+  UpcomingEventsViewModel({this.selectedDay, this.eventMapped, this.openEvent});
 
   static UpcomingEventsViewModel fromStore(Store<AppState> store) {
     return UpcomingEventsViewModel(
