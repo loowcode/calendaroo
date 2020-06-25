@@ -4,14 +4,14 @@ import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 
 class Option {
-  Option({this.title, this.type, this.event});
+  Option({this.title, this.type, this.eventId});
 
   final String title;
   final OptionType type;
-  Event event;
+  int eventId;
 
-  Option setEvent(Event event) {
-    this.event = event;
+  Option setEvent(int eventId) {
+    this.eventId = eventId;
     return this;
   }
 }
@@ -22,7 +22,7 @@ List<Option> options = <Option>[
 
 void selectOption(Option option) {
   if (option.type == OptionType.REMOVE) {
-    calendarooState.dispatch(RemoveEvent(option.event));
+//    calendarooState.dispatch(RemoveEvent(option.eventId)); TODO
   }
 }
 

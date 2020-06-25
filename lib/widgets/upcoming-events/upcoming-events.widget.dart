@@ -12,6 +12,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
+import '../options.widget.dart';
+
 class UpcomingEventsWidget extends StatefulWidget {
   @override
   _UpcomingEventsWidgetState createState() => _UpcomingEventsWidgetState();
@@ -184,31 +186,31 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                   ],
                 ),
               ),
-//              PopupMenuButton<Option>(  TODO
-//                onSelected: selectOption,
-//                color: white,
-//                icon: Icon(
-//                  Icons.more_vert,
-//                  color: grey,
-//                ),
-//                itemBuilder: (BuildContext context) {
-//                  return options.map((Option option) {
-//                    return PopupMenuItem<Option>(
-//                      value: option.setEvent(elem),
-//                      child: Theme(
-//                          data: Theme.of(context).copyWith(cardColor: white),
-//                          child: Text(
-//                            AppLocalizations.of(context)
-//                                .translate(option.title),
-//                            style: Theme.of(context)
-//                                .textTheme
-//                                .bodyText1
-//                                .copyWith(color: black),
-//                          )),
-//                    );
-//                  }).toList();
-//                },
-//              ),
+              PopupMenuButton<Option>(
+                onSelected: selectOption,
+                color: white,
+                icon: Icon(
+                  Icons.more_vert,
+                  color: grey,
+                ),
+                itemBuilder: (BuildContext context) {
+                  return options.map((Option option) {
+                    return PopupMenuItem<Option>(
+                      value: option.setEvent(elem.eventId),
+                      child: Theme(
+                          data: Theme.of(context).copyWith(cardColor: white),
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate(option.title),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(color: black),
+                          )),
+                    );
+                  }).toList();
+                },
+              ),
             ],
           ),
         ),
