@@ -58,21 +58,8 @@ CalendarState _loadedEventsList(CalendarState state, LoadedEventsList action) {
 // utils
 
 void _removeFromStore(CalendarState state, Event event) {
-  var first = CalendarUtils.removeTime(event.start);
-  var index = CalendarUtils.removeTime(event.start);
-  var last = CalendarUtils.removeTime(event.end);
-  for (var i = 0; i <= last.difference(first).inDays; i++) {
-    _removeOneEvent(state, index, event);
-    index = index.add(Duration(days: 1));
-  }
-}
-
-void _removeOneEvent(CalendarState state, DateTime date, Event event) {
-  var key = CalendarUtils.removeTime(date);
-  if (state.eventsMapped.containsKey(key)) {
-    state.eventsMapped[key].removeWhere((element) => event.id == element.id);
-    if (state.eventsMapped[key].isEmpty) {
-      state.eventsMapped.remove(key);
-    }
-  }
+  state.eventsMapped.removeWhere((key, value) {
+    value.removeWhere((element) => element.eventId == event.id);
+    return value.isEmpty;
+  });
 }

@@ -40,7 +40,7 @@ class NotificationService {
   }
 
   Future<void> rescheduleForEvent() async {
-    // TODO
+    // TODO: "near" concept? used when the user reactivate notifications or periodically
     /*var today = Date.today();
     calendarooState.state.calendarState.eventMapped.forEach((key, value) {
       if (today.compareTo(key) <= 0) {
