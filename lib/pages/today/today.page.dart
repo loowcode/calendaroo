@@ -71,7 +71,8 @@ class _TodayPageState extends State<TodayPage> with TickerProviderStateMixin {
         Text(
           _formatterDate.format(DateTime.now()),
           style: Theme.of(context).textTheme.bodyText2,
-        )
+        ),
+
       ],
     );
   }

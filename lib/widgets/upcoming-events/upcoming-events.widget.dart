@@ -178,8 +178,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "",
-//                      elem.title, TODO
+                      elem.title,
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
                     Text(

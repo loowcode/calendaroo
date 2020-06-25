@@ -53,6 +53,7 @@ class CalendarUtils {
         id: null,
         uuid: _uuid.v4(),
         eventId: event.id,
+        title: event.title,
         start: DateTime(
           index.year,
           index.month,
@@ -145,8 +146,8 @@ class CalendarUtils {
   }
 
   static int getIndex2(Map<Date, List<EventInstance>> map, Date day) {
-    if (map.keys.length == null || map.keys.isEmpty) return 0;
-
+//    if (map.keys.length == null || map.keys.isEmpty) return 0;
+    // TODO if no event go to near day with events
     return map.keys.toList().indexOf(day);
   }
 

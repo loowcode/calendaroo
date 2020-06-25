@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 class EventInstance {
   int id;
   String uuid;
+  String title;
   int eventId;
   DateTime start;
   DateTime end;
@@ -11,6 +12,7 @@ class EventInstance {
       {@required this.id,
       @required this.uuid,
       @required this.eventId,
+      @required this.title,
       @required this.start,
       @required this.end});
 
