@@ -21,6 +21,7 @@ class EventInstance {
     return EventInstance(
       id: map['id'] as int,
       uuid: map['uuid'] as String,
+      title: map['title'] as String,
       eventId: map['eventId'] as int,
       start: DateTime.parse(map['start'] as String),
       end: DateTime.parse(map['end'] as String),

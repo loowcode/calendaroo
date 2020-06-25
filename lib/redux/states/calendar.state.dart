@@ -8,11 +8,11 @@ import 'package:flutter/cupertino.dart';
 @immutable
 class CalendarState {
   final SplayTreeMap<Date, List<EventInstance>> eventsMapped;
-  final Event showEvent;
+  final Event focusedEvent;
   final Date selectedDay;
 
   CalendarState(
-      {this.eventsMapped, this.showEvent, this.selectedDay});
+      {this.eventsMapped, this.focusedEvent, this.selectedDay});
 
   factory CalendarState.initial() {
     return CalendarState(eventsMapped: SplayTreeMap());
@@ -21,19 +21,19 @@ class CalendarState {
   CalendarState copyWith(
       {SplayTreeMap<Date, List<EventInstance>> eventsMapped,
       Date selectedDay,
-      Event showEvent}) {
+      Event focusedEvent}) {
     return CalendarState(
       eventsMapped: eventsMapped ?? this.eventsMapped,
-      showEvent: showEvent ?? this.showEvent,
+      focusedEvent: focusedEvent ?? this.focusedEvent,
       selectedDay: selectedDay ?? this.selectedDay,
     );
   }
 
   // TODO: there is a better solution?
-  CalendarState copyWithAdmitNull(Event showEvent) {
+  CalendarState copyWithAdmitNull(Event focusedEvent) {
     return CalendarState(
       eventsMapped: eventsMapped,
-      showEvent: showEvent,
+      focusedEvent: focusedEvent,
       selectedDay: selectedDay,
     );
   }

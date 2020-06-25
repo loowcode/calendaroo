@@ -90,6 +90,7 @@ class CalendarUtils {
           id: null,
           uuid: _uuid.v4(),
           eventId: event.id,
+          title: event.title,
           start: DateTime(
             index.year,
             index.month,

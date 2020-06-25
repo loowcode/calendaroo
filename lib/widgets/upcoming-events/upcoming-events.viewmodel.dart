@@ -12,7 +12,7 @@ class UpcomingEventsViewModel {
   final List<Event> events;
   final SplayTreeMap<Date, List<EventInstance>> eventMapped;
 
-  final Function(Event) openEvent;
+  final Function(int) openEvent;
 
   UpcomingEventsViewModel({this.selectedDay, this.events,this.eventMapped, this.openEvent});
 
@@ -20,7 +20,7 @@ class UpcomingEventsViewModel {
     return UpcomingEventsViewModel(
       selectedDay: store.state.calendarState.selectedDay,
       eventMapped: store.state.calendarState.eventsMapped,
-      openEvent: (event) => store.dispatch(OpenEvent(event)),
+      openEvent: (eventId) => store.dispatch(OpenEvent(eventId)),
     );
   }
 }

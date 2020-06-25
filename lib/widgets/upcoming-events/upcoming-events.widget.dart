@@ -1,7 +1,6 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/date.dart';
 import 'package:calendaroo/model/event-instance.model.dart';
-import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
@@ -12,8 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-
-import '../options.widget.dart';
 
 class UpcomingEventsWidget extends StatefulWidget {
   @override
@@ -136,13 +133,13 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
       UpcomingEventsViewModel store, EventInstance elem, DateFormat formatterTime) {
     return GestureDetector(
       onTap: () {
-//        store.openEvent(elem); TODO
+        store.openEvent(elem.eventId);
       },
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        elevation: 8,
+        elevation: 4,
         child: SizedBox(
           height: 68,
           width: MediaQuery.of(context).size.width,

@@ -65,6 +65,7 @@ class EventInstanceRepository {
       return EventInstance(
         id: maps[i]['id'] as int,
         uuid: maps[i]['uuid'] as String,
+        title: maps[i]['title'] as String,
         eventId: maps[i]['eventId'] as int,
         start: DateTime.parse(maps[i]['start'] as String),
         end: DateTime.parse(maps[i]['end'] as String),

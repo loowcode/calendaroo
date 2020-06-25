@@ -5,7 +5,6 @@ import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/services/notification.service.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
-import 'package:calendaroo/utils/notification.utils.dart';
 import 'package:redux/redux.dart';
 
 class CalendarMiddleware extends MiddlewareClass<AppState> {
@@ -26,8 +25,10 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
     }
 
     if (action is OpenEvent) {
-      if (action.event != null) {
-        await NavigationService().navigateTo(SHOW_EVENT, arguments: action.event);
+      if (action.eventId != null) {
+        var event = await DatabaseService().findEventById(action.eventId);
+        await NavigationService().navigateTo(SHOW_EVENT, arguments: event);
+        next(FocusEvent(event));
       }
     }
 

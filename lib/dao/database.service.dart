@@ -24,6 +24,7 @@ class DatabaseService {
         id: null,
         uuid: _uuid.v4(),
         eventId: id,
+        title: event.title,
         start: DateTime(
           index.year,
           index.month,
@@ -49,7 +50,7 @@ class DatabaseService {
     return await EventsRepository().nearEvents(date);
   }
 
-  Future findEventById(int id) {
+  Future<Event> findEventById(int id) {
     return EventsRepository().event(id);
   }
 

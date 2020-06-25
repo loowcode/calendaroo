@@ -21,9 +21,15 @@ class RemoveEvent {
 
 
 class OpenEvent {
+  final int eventId;
+
+  OpenEvent(this.eventId);
+}
+
+class FocusEvent {
   final Event event;
 
-  OpenEvent(this.event);
+  FocusEvent(this.event);
 }
 
 class EditEvent {

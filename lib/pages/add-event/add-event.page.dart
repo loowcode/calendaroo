@@ -34,7 +34,7 @@ class _AddEventPageState extends State<AddEventPage> {
   @override
   void initState() {
     super.initState();
-    showEvent = calendarooState.state.calendarState.showEvent;
+    showEvent = calendarooState.state.calendarState.focusedEvent;
     _title = showEvent?.title ?? '';
     _description = showEvent?.description ?? '';
     final now = DateTime.now();

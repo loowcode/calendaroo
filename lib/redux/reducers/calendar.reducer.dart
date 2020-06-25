@@ -7,7 +7,7 @@ import 'package:redux/redux.dart';
 
 final calendarReducer = combineReducers<CalendarState>([
   TypedReducer<CalendarState, AddEvent>(_addEvent),
-  TypedReducer<CalendarState, OpenEvent>(_openEvent),
+  TypedReducer<CalendarState, FocusEvent>(_focusEvent),
   TypedReducer<CalendarState, SelectDay>(_selectDay),
   TypedReducer<CalendarState, LoadedEventsList>(_loadedEventsList),
   TypedReducer<CalendarState, RemoveEvent>(_removeEvent),
@@ -34,10 +34,10 @@ CalendarState _addEvent(CalendarState state, AddEvent action) {
 CalendarState _editEvent(CalendarState state, EditEvent action) {
 //  _editIntoStore(state, action.oldEvent, action.newEvent);
 // TODO
-  return state.copyWith(showEvent: action.newEvent);
+  return state.copyWith(focusedEvent: action.newEvent);
 }
 
-CalendarState _openEvent(CalendarState state, OpenEvent action) {
+CalendarState _focusEvent(CalendarState state, FocusEvent action) {
   return state.copyWithAdmitNull(action.event);
 }
 

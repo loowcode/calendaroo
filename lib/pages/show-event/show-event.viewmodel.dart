@@ -10,7 +10,7 @@ class ShowEventViewModel {
 
   static ShowEventViewModel fromStore(Store<AppState> store) {
     return ShowEventViewModel(
-      showEvent: store.state.calendarState.showEvent,
+      showEvent: store.state.calendarState.focusedEvent,
       removeEvent: (event) => store.dispatch( RemoveEvent(event))
     );
   }
