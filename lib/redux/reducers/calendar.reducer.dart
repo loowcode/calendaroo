@@ -38,7 +38,7 @@ CalendarState _editEvent(CalendarState state, EditEvent action) {
 }
 
 CalendarState _focusEvent(CalendarState state, FocusEvent action) {
-  return state.copyWithAdmitNull(action.event);
+  return state.copyWith(focusedEvent: action.event);
 }
 
 CalendarState _selectDay(CalendarState state, SelectDay action) {

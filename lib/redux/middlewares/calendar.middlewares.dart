@@ -25,12 +25,11 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
     }
 
     if (action is OpenEvent) {
-      if (action.eventId != null) {
         var event = await DatabaseService().findEventById(action.eventId);
-        await NavigationService().navigateTo(SHOW_EVENT, arguments: event);
+        await NavigationService().navigateTo(DETAILS, arguments: event);
         next(FocusEvent(event));
-      }
     }
+
 
     next(action);
   }
