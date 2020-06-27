@@ -3,7 +3,6 @@ A Fancy Flutter Calendar
 
 ![Banner](https://github.com/jacopo1395/calendaroo/blob/master/android/app/src/main/res/drawable/banner_calendaroo.png?raw=true)
 
-<img src="https://github.com/jacopo1395/calendaroo/blob/develop/Screenshot_1590763281.png" alt="gitflow" height="400"/>
 
 # Install
 1. Install [Flutter](https://flutter.dev/docs/get-started/install)
@@ -35,8 +34,6 @@ A Fancy Flutter Calendar
 2. **Select the project**
 3. When the reviewer approves your PR, **merge it** *(I suggest you to use squash and delete branch to remove useless branch)*
 
-# Credits
-Thanks to [Vladimir Gubanov](https://dribbble.com/Vladimir_Gubanov) for inspirations
 
 # Contributors
 Made with ❤ by Jacopo Carlini, Pellegrino Durante, Giovanna Flore, Gianluca Galli

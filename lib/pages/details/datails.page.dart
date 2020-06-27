@@ -26,7 +26,7 @@ class _DetailsPageState extends State<DetailsPage> {
   DateTime _endDate;
   DateTime _startTime;
   DateTime _endTime;
-  bool _allDay;
+  bool _allDay = false;
   Event _showEvent;
 
   @override
@@ -130,7 +130,12 @@ class _DetailsPageState extends State<DetailsPage> {
                 _rowTile(
                     Icon(FeatherIcons.calendar, color: grey),
                     GestureDetector(
-                        onTap: () => _buildTimePicker(true),
+                        onTap: () => showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return _buildDatePicker(context, true);
+                              },
+                            ),
                         child: Text(
                           _formatterDate.format(_startDate),
                           style: Theme.of(context).textTheme.subtitle1,
@@ -191,6 +196,94 @@ class _DetailsPageState extends State<DetailsPage> {
         ),
         Expanded(child: title),
       ],
+    );
+  }
+
+  Widget _buildDatePicker(BuildContext context, bool start) {
+    var _current = start ? _startDate : _endDate;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.primaryTheme.backgroundColor,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16.0),
+          topRight: Radius.circular(16.0),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 250,
+              child: CupertinoDatePicker(
+                initialDateTime: start ? _startDate : _endDate,
+                minimumDate: start ? null : _startDate,
+                mode: CupertinoDatePickerMode.date,
+                onDateTimeChanged: (value) {
+                  _current = value;
+                },
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FlatButton(
+                      textColor: blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(AppLocalizations.of(context).cancel),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(AppLocalizations.of(context).save),
+                      ),
+                      color: AppTheme.primaryTheme.buttonColor,
+                      textColor: AppTheme.primaryTheme.textTheme.button.color,
+                      onPressed: () {
+                        setState(() {
+                          if (start) {
+                            _startDate = _current;
+
+                            if (_endDate.isBefore(_startDate)) {
+                              _endDate = _startDate;
+                            }
+                          } else {
+                            _endDate = _current;
+                          }
+                        });
+
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 
