@@ -85,7 +85,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
                     end: Alignment.bottomLeft,
                     colors: cyanGradient)),
             child: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.only(top: 16.0),
               child: _buildTableCalendarWithBuilders(store),
             ),
           );

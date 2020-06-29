@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
                     .event(int.parse(receivedNotification.payload));
                 calendarooState.dispatch(OpenEvent(event));
                 await NavigationService()
-                    .navigateTo(SHOW_EVENT, arguments: event);
+                    .navigateTo(DETAILS, arguments: event);
               },
             )
           ],
