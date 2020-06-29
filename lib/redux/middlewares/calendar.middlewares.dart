@@ -19,17 +19,34 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
       }
     }
 
+    if (action is EditEvent) {
+      await DatabaseService().editEvent(action.event);
+      await NotificationService().cancelForEvent(action.event);
+    }
+
     if (action is RemoveEvent) {
       await DatabaseService().deleteEvent(action.event.id);
       await NotificationService().cancelForEvent(action.event);
     }
 
-    if (action is OpenEvent) {
-        var event = await DatabaseService().findEventById(action.eventId);
-        await NavigationService().navigateTo(DETAILS, arguments: event);
-        next(FocusEvent(event));
+    if (action is DoToEvent) {
+      var event = await DatabaseService().findEventById(action.eventId);
+      switch (action.action) {
+        case AddEvent:
+          next(AddEvent(event));
+          break;
+        case RemoveEvent:
+          next(RemoveEvent(event));
+          break;
+        case EditEvent:
+          next(EditEvent(event));
+          break;
+        case OpenEvent:
+          await NavigationService().navigateTo(DETAILS, arguments: event);
+          next(OpenEvent(event));
+          break;
+      }
     }
-
 
     next(action);
   }

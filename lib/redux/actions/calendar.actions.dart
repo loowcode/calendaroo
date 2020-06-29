@@ -21,21 +21,23 @@ class RemoveEvent {
 
 
 class OpenEvent {
-  final int eventId;
-
-  OpenEvent(this.eventId);
-}
-
-class FocusEvent {
   final Event event;
 
-  FocusEvent(this.event);
+  OpenEvent(this.event);
+}
+
+
+class DoToEvent {
+  final Type action;
+  final int eventId;
+
+  DoToEvent(this.action, this.eventId);
 }
 
 class EditEvent {
-  final Event newEvent;
+  final Event event;
 
-  EditEvent(this.newEvent);
+  EditEvent(this.event);
 }
 
 class SelectDay {

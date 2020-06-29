@@ -74,35 +74,7 @@ class _DetailsPageState extends State<DetailsPage> {
         margin: EdgeInsets.only(top: 32),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
             Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  FeatherIcons.arrowLeft,
-                ),
-                onPressed: () {
-                  NavigationService().pop();
-                },
-              ),
-              _edited
-                  ? IconButton(
-                      icon: Icon(
-                        FeatherIcons.save,
-                        color: blue,
-                      ),
-                      onPressed: () {
-                        if (_isEdit()) {
-                          store.editEvent(_createNewEvent(_showEvent.id));
-                        } else {
-                          store.createEvent(_createNewEvent(_showEvent.id));
-                        }
-                        NavigationService().pop();
-                      },
-                    )
-                  : SizedBox(),
-            ],
-          ),
+          _buildAppBar(store),
           Expanded(
             child: ListView(
               padding: EdgeInsets.only(top: 0),
@@ -282,6 +254,38 @@ class _DetailsPageState extends State<DetailsPage> {
             ),
           )
         ]));
+  }
+
+  Row _buildAppBar(DetailsViewModel store) {
+    return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                FeatherIcons.arrowLeft,
+              ),
+              onPressed: () {
+                NavigationService().pop();
+              },
+            ),
+            _edited || !_isEdit()
+                ? IconButton(
+                    icon: Icon(
+                      FeatherIcons.save,
+                      color: blue,
+                    ),
+                    onPressed: () {
+                      if (_isEdit()) {
+                        store.editEvent(_createNewEvent(_showEvent.id));
+                      } else {
+                        store.createEvent(_createNewEvent(null));
+                      }
+                      NavigationService().pop();
+                    },
+                  )
+                : SizedBox(),
+          ],
+        );
   }
 
   Widget _rowTile(Widget leading, Widget title) {

@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
               onPressed: () async {
                 var event = await EventsRepository()
                     .event(int.parse(receivedNotification.payload));
-                calendarooState.dispatch(FocusEvent(event));
+                calendarooState.dispatch(OpenEvent(event));
                 await NavigationService()
                     .navigateTo(SHOW_EVENT, arguments: event);
               },
@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
   void _configureSelectNotificationSubject() {
     selectNotificationSubject.stream.listen((String payload) async {
       var event = await EventsRepository().event(int.parse(payload));
-      calendarooState.dispatch(FocusEvent(event));
+      calendarooState.dispatch(OpenEvent(event));
     });
   }
 
