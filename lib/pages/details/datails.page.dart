@@ -9,17 +9,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../theme.dart';
 
 class DetailsPage extends StatefulWidget {
+  final Event event;
+
+  DetailsPage(this.event);
+
   @override
   _DetailsPageState createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  final _formKey = GlobalKey<FormState>();
-
   String _title;
   String _description;
   DateTime _startDate;
@@ -29,15 +32,12 @@ class _DetailsPageState extends State<DetailsPage> {
   bool _allDay = false;
   Event _showEvent;
 
+  bool _edited;
+
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _showEvent = ModalRoute.of(context).settings.arguments as Event;
-//    _showEvent = calendarooState.state.calendarState.focusedEvent;
+    _showEvent = widget.event;
     _title = _showEvent?.title ?? '';
     _description = _showEvent?.description ?? '';
     final now = DateTime.now();
@@ -50,6 +50,12 @@ class _DetailsPageState extends State<DetailsPage> {
     _startTime = _showEvent?.start ?? defaultTime;
     _endDate = _showEvent?.end ?? _startDate;
     _endTime = _showEvent?.end ?? defaultTime.add(Duration(hours: 1));
+
+    _edited = false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: StoreConnector<AppState, DetailsViewModel>(
           converter: (store) => DetailsViewModel.fromStore(store),
@@ -68,119 +74,210 @@ class _DetailsPageState extends State<DetailsPage> {
         margin: EdgeInsets.only(top: 32),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
             Widget>[
-          IconButton(
-            icon: Icon(
-              FeatherIcons.arrowLeft,
-            ),
-            onPressed: () {
-              NavigationService().pop();
-            },
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 42),
-            child: ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                TextFormField(
-                  initialValue: _title,
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      focusedErrorBorder: InputBorder.none,
-                      hintText: '(aggiungi titolo)'),
-                  style: Theme.of(context).textTheme.headline4,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  FeatherIcons.arrowLeft,
                 ),
-                _rowTile(
-                  Icon(Icons.subject, color: grey),
-                  TextFormField(
-                    initialValue: _description,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        focusedErrorBorder: InputBorder.none,
-                        hintText: '(aggiungi descrizione)'),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ),
-                Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 32,
-                    ),
-                    Text(
-                      'Tutto il giorno',
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                    Switch(
-                      value: _allDay,
-                      onChanged: (value) {
-                        setState(() {
-                          _allDay = value;
-                        });
+                onPressed: () {
+                  NavigationService().pop();
+                },
+              ),
+              _edited
+                  ? IconButton(
+                      icon: Icon(
+                        FeatherIcons.save,
+                        color: blue,
+                      ),
+                      onPressed: () {
+                        if (_isEdit()) {
+                          store.editEvent(_createNewEvent(_showEvent.id));
+                        } else {
+                          store.createEvent(_createNewEvent(_showEvent.id));
+                        }
+                        NavigationService().pop();
                       },
                     )
-                  ],
-                ),
-                _rowTile(
-                    Icon(FeatherIcons.calendar, color: grey),
-                    GestureDetector(
-                        onTap: () => showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return _buildDatePicker(context, true);
-                              },
-                            ),
-                        child: Text(
-                          _formatterDate.format(_startDate),
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ))),
-                _rowTile(
-                    SizedBox(
-                      width: 24,
-                    ),
-                    Text(
-                      _formatterDate.format(_endDate),
-                      style: Theme.of(context).textTheme.subtitle1,
-                    )),
-                !_allDay
-                    ? Row(
-                        children: <Widget>[
-                          Row(
+                  : SizedBox(),
+            ],
+          ),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.only(top: 0),
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(left: 16, right: 16),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 32),
+                        child: TextFormField(
+                          initialValue: _title,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              focusedErrorBorder: InputBorder.none,
+                              hintText: '(aggiungi titolo)'),
+                          style: Theme.of(context).textTheme.headline4,
+                          maxLines: 1,
+                          onChanged: (value) {
+                            setState(() {
+                              _title = value;
+                              _edited = true;
+                            });
+                          },
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(left: 32),
+                          child: Row(
                             children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Icon(FeatherIcons.clock, color: grey),
-                              ),
-                              Text(
-                                _formatterTime.format(_startTime),
-                                style: Theme.of(context).textTheme.subtitle1,
-                              ),
+                              Icon(Icons.alarm, color: _allDay ? grey : blue),
+                              Container(
+                                  margin: EdgeInsets.only(left: 8),
+                                  child: Icon(Icons.refresh, color: grey))
                             ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 46.0),
-                            child: Row(
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: Icon(Icons.alarm_off, color: grey),
-                                ),
-                                Text(
-                                  _formatterTime.format(_endTime),
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                ),
-                              ],
+                          )),
+                      _rowTile(
+                        Icon(Icons.subject, color: grey),
+                        TextFormField(
+                          initialValue: _description,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              focusedErrorBorder: InputBorder.none,
+                              hintText: '(aggiungi descrizione)'),
+                          style: Theme.of(context).textTheme.bodyText1,
+                          onChanged: (value) {
+                            setState(() {
+                              _description = value;
+                              _edited = true;
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 52,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 40),
+                              child: Text(
+                                'Tutto il giorno',
+                                style: Theme.of(context).textTheme.bodyText2,
+                              ),
                             ),
+                            CupertinoSwitch(
+                              value: _allDay,
+                              activeColor: blue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _allDay = value;
+                                  _edited = true;
+                                });
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      _rowTile(
+                          Icon(FeatherIcons.calendar, color: grey),
+                          GestureDetector(
+                              onTap: () => showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return _buildDatePicker(true);
+                                    },
+                                  ),
+                              child: Text(
+                                _formatterDate.format(_startDate),
+                                style: Theme.of(context).textTheme.subtitle1,
+                              ))),
+                      _rowTile(
+                          SizedBox(
+                            width: 24,
                           ),
-                        ],
-                      )
-                    : SizedBox()
+                          GestureDetector(
+                              onTap: () => showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return _buildDatePicker(false);
+                                    },
+                                  ),
+                              child: Text(
+                                _formatterDate.format(_endDate),
+                                style: Theme.of(context).textTheme.subtitle1,
+                              ))),
+                      !_allDay
+                          ? SizedBox(
+                              height: 52,
+                              child: Row(
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 16.0),
+                                        child: Icon(FeatherIcons.clock,
+                                            color: grey),
+                                      ),
+                                      GestureDetector(
+                                          onTap: () => showModalBottomSheet(
+                                                context: context,
+                                                builder: (context) {
+                                                  return _buildTimePicker(true);
+                                                },
+                                              ),
+                                          child: Text(
+                                            _formatterTime.format(_startTime),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1,
+                                          )),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 52.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 16.0),
+                                          child: Icon(Icons.alarm_off,
+                                              color: grey),
+                                        ),
+                                        GestureDetector(
+                                            onTap: () => showModalBottomSheet(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return _buildDatePicker(
+                                                        false);
+                                                  },
+                                                ),
+                                            child: Text(
+                                              _formatterTime.format(_endTime),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle1,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ))
+                          : SizedBox(),
+                    ],
+                  ),
+                )
               ],
             ),
           )
@@ -188,18 +285,21 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   Widget _rowTile(Widget leading, Widget title) {
-    return Row(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(right: 8),
-          child: leading,
-        ),
-        Expanded(child: title),
-      ],
+    return SizedBox(
+      height: 52,
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: leading,
+          ),
+          Expanded(child: title),
+        ],
+      ),
     );
   }
 
-  Widget _buildDatePicker(BuildContext context, bool start) {
+  Widget _buildDatePicker(bool start) {
     var _current = start ? _startDate : _endDate;
 
     return Container(
@@ -272,6 +372,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           } else {
                             _endDate = _current;
                           }
+                          _edited = true;
                         });
 
                         Navigator.pop(context);
@@ -360,6 +461,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           } else {
                             _endTime = _current;
                           }
+                          _edited = true;
                         });
 
                         Navigator.pop(context);
@@ -377,5 +479,18 @@ class _DetailsPageState extends State<DetailsPage> {
 
   bool _isEdit() {
     return _showEvent != null;
+  }
+
+  Event _createNewEvent(int id) {
+    var uuid = Uuid();
+    return Event(
+        id: id,
+        title: _title,
+        uuid: uuid.v4(),
+        description: _description,
+        start: DateTime(_startDate.year, _startDate.month, _startDate.day,
+            _startTime.hour, _startTime.minute),
+        end: DateTime(_endDate.year, _endDate.month, _endDate.day,
+            _endTime.hour, _endTime.minute));
   }
 }

@@ -5,13 +5,16 @@ import 'package:redux/redux.dart';
 
 class DetailsViewModel {
   final Event focusedEvent;
-  final Function(Event) removeEvent;
 
-  DetailsViewModel({this.focusedEvent, this.removeEvent});
+  final Function(Event) createEvent;
+  final Function(Event) editEvent;
+
+  DetailsViewModel({this.focusedEvent, this.createEvent, this.editEvent});
 
   static DetailsViewModel fromStore(Store<AppState> store) {
     return DetailsViewModel(
         focusedEvent: store.state.calendarState.focusedEvent,
-        removeEvent: (event) => store.dispatch(RemoveEvent(event)));
+        createEvent: (newEvent) => store.dispatch(AddEvent(newEvent)),
+        editEvent: (newEvent) => store.dispatch(EditEvent(newEvent)));
   }
 }

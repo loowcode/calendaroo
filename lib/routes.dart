@@ -6,6 +6,8 @@ import 'package:calendaroo/pages/show-event/show-event.page.dart';
 import 'package:calendaroo/pages/today/today.page.dart';
 import 'package:flutter/material.dart';
 
+import 'model/event.model.dart';
+
 const HOMEPAGE = '/home';
 const ADD_EVENT = '/add_event';
 const SHOW_EVENT = '/show_event';
@@ -33,7 +35,9 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
           builder: (context) => TodayPage(), settings: settings);
     case DETAILS:
       return MaterialPageRoute(
-          builder: (context) => DetailsPage(), settings: settings);
+          builder: (context) =>
+              DetailsPage(ModalRoute.of(context).settings.arguments as Event),
+          settings: settings);
     default:
       return MaterialPageRoute(
           builder: (context) => ContainerPage(), settings: settings);

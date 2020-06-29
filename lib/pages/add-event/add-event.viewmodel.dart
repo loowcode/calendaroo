@@ -19,7 +19,7 @@ class AddEventViewModel {
       showEvent: store.state.calendarState.focusedEvent,
       createEvent: (newEvent) => store.dispatch(AddEvent(newEvent)),
       editEvent: (oldEvent, newEvent) =>
-          store.dispatch(EditEvent(oldEvent, newEvent)),
+          store.dispatch(EditEvent(newEvent)),
     );
   }
 }

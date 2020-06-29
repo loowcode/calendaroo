@@ -34,9 +34,8 @@ class FocusEvent {
 
 class EditEvent {
   final Event newEvent;
-  final Event oldEvent;
 
-  EditEvent(this.oldEvent, this.newEvent);
+  EditEvent(this.newEvent);
 }
 
 class SelectDay {
