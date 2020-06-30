@@ -5,6 +5,7 @@ import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/utils/calendar.utils.dart';
+import 'package:calendaroo/utils/string.utils.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.viewmodel.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +90,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     var formatterTime =
         DateFormat.Hm(Localizations.localeOf(context).toString());
     var formatter =
-        DateFormat.MMMMEEEEd(Localizations.localeOf(context).toString());
+        DateFormat('dd MMMM, EEEE', Localizations.localeOf(context).toString());
     for (var date in mapEvent.keys) {
       var row = <Widget>[];
       var list = mapEvent[date];
@@ -99,7 +100,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Text(
-                formatter.format(date),
+                StringUtils.titleCase(formatter.format(date)),
                 style: Theme.of(context).textTheme.headline5,
               ),
             ),

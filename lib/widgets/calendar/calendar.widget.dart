@@ -2,14 +2,13 @@ import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/date.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
+import 'package:calendaroo/utils/string.utils.dart';
 import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-
-import '../../constants.dart';
 
 class CalendarWidget extends StatefulWidget {
   @override
@@ -20,6 +19,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
     with TickerProviderStateMixin {
   AnimationController _animationController;
   CalendarController _calendarController;
+  CalendarSize _calendarSize;
 
   @override
   void initState() {
@@ -32,6 +32,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
     );
 
     _animationController.forward();
+
+    _calendarSize = SharedPreferenceService().calendarSize;
   }
 
   @override
@@ -59,13 +61,16 @@ class _CalendarWidgetState extends State<CalendarWidget>
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
     if (format == CalendarFormat.month) {
-      SharedPreferenceService().setCalendarFormat('month');
+      SharedPreferenceService().setCalendarSize('month');
+      _calendarSize = CalendarSize.MONTH;
     }
     if (format == CalendarFormat.twoWeeks) {
-      SharedPreferenceService().setCalendarFormat('twoWeeks');
+      SharedPreferenceService().setCalendarSize('twoWeeks');
+      _calendarSize = CalendarSize.TWO_WEEKS;
     }
     if (format == CalendarFormat.week) {
-      SharedPreferenceService().setCalendarFormat('week');
+      SharedPreferenceService().setCalendarSize('week');
+      _calendarSize = CalendarSize.WEEK;
     }
   }
 
@@ -96,44 +101,109 @@ class _CalendarWidgetState extends State<CalendarWidget>
                 SizedBox(
                   height: 24,
                 ),
-                _buildHeaderTable(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: _buildTableCalendarWithBuilders(store),
-                ),
+                _buildHeaderTable(store),
+                _calendarSize != CalendarSize.HIDE
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: _buildTableCalendarWithBuilders(store),
+                      )
+                    : SizedBox(),
               ],
             ),
           );
         });
   }
 
-  Widget _buildHeaderTable() {
+  Widget _buildHeaderTable(CalendarViewModel store) {
     var yearFormatter =
         DateFormat.yMMMM(Localizations.localeOf(context).toString());
-    return SizedBox(
-      height: 50,
-      child: Row(
-        children: <Widget>[
-          IconButton(
-              onPressed: () => _selectPrevious(),
-              icon: Icon(
-                Icons.chevron_left,
-                color: white,
-              )),
-          Text(
-            _calendarController == null ||
-                    _calendarController.focusedDay == null
-                ? ''
-                : yearFormatter.format(_calendarController.focusedDay),
-            style: Theme.of(context).textTheme.headline5.copyWith(color: white),
-          ),
-          IconButton(
-              onPressed: () => _selectNext(),
-              icon: Icon(
-                Icons.chevron_right,
-                color: white,
-              ))
-        ],
+    return Material(
+      child: SizedBox(
+        height: 50,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                _calendarSize != CalendarSize.HIDE
+                    ? IconButton(
+                        onPressed: () => _selectPrevious(),
+                        icon: Icon(
+                          Icons.chevron_left,
+                          color: white,
+                        ))
+                    : SizedBox(
+                        width: 48,
+                      ),
+                Text(
+                  _calendarController == null ||
+                          _calendarController.focusedDay == null
+                      ? ''
+                      : StringUtils.capitalize(
+                          yearFormatter.format(_calendarController.focusedDay)),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5
+                      .copyWith(color: white),
+                ),
+                _calendarSize != CalendarSize.HIDE
+                    ? IconButton(
+                        onPressed: () => _selectNext(),
+                        icon: Icon(
+                          Icons.chevron_right,
+                          color: white,
+                        ))
+                    : SizedBox(),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        switch (_calendarSize) {
+                          case CalendarSize.HIDE:
+                            _calendarSize = CalendarSize.MONTH;
+                            _calendarController
+                                .setCalendarFormat(CalendarFormat.month);
+                            break;
+                          case CalendarSize.WEEK:
+                            _calendarSize = CalendarSize.HIDE;
+                            break;
+                          case CalendarSize.TWO_WEEKS:
+                            _calendarSize = CalendarSize.WEEK;
+                            _calendarController
+                                .setCalendarFormat(CalendarFormat.week);
+                            break;
+                          case CalendarSize.MONTH:
+                            _calendarSize = CalendarSize.TWO_WEEKS;
+                            _calendarController
+                                .setCalendarFormat(CalendarFormat.twoWeeks);
+                            break;
+                          default:
+                            _calendarSize = CalendarSize.MONTH;
+                            _calendarController
+                                .setCalendarFormat(CalendarFormat.month);
+                        }
+                      });
+                    },
+                    icon: Icon(
+                      Icons.format_line_spacing,
+                      color: white,
+                    )),
+                IconButton(
+                    onPressed: () {
+                      store.selectDay(Date.today());
+                    },
+                    icon: Icon(
+                      Icons.today,
+                      color: white,
+                    )),
+
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -144,9 +214,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
     return TableCalendar(
       calendarController: _calendarController,
       events: store.eventMapped,
-      holidays: holidays,
       headerVisible: false,
-      initialCalendarFormat: SharedPreferenceService().calendarFormat,
+      initialCalendarFormat: _convertSizeToFormat(),
       formatAnimation: FormatAnimation.slide,
       startingDayOfWeek: StartingDayOfWeek.monday,
       availableGestures: AvailableGestures.all,
@@ -158,12 +227,18 @@ class _CalendarWidgetState extends State<CalendarWidget>
       locale: locale.toString(),
       calendarStyle: CalendarStyle(
           outsideDaysVisible: true,
-          outsideHolidayStyle: TextStyle().copyWith(color: transparentWhite),
-          outsideWeekendStyle: TextStyle().copyWith(color: transparentWhite),
-          outsideStyle: TextStyle().copyWith(color: transparentWhite),
-          weekendStyle: TextStyle().copyWith(color: white),
-          holidayStyle: TextStyle().copyWith(color: white),
-          weekdayStyle: TextStyle().copyWith(color: white)),
+          outsideHolidayStyle: TextStyle()
+              .copyWith(fontWeight: FontWeight.w600, color: transparentWhite),
+          outsideWeekendStyle: TextStyle()
+              .copyWith(fontWeight: FontWeight.w600, color: transparentWhite),
+          outsideStyle: TextStyle()
+              .copyWith(fontWeight: FontWeight.w600, color: transparentWhite),
+          weekendStyle:
+              TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+          holidayStyle:
+              TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+          weekdayStyle:
+              TextStyle().copyWith(fontWeight: FontWeight.w600, color: white)),
       daysOfWeekStyle: DaysOfWeekStyle(
           weekendStyle: TextStyle().copyWith(color: white),
           weekdayStyle: TextStyle().copyWith(color: white)),
@@ -209,16 +284,6 @@ class _CalendarWidgetState extends State<CalendarWidget>
             children.add(_buildEventsMarker(date, events));
           }
 
-          if (holidays.isNotEmpty) {
-            children.add(
-              Positioned(
-                right: -2,
-                top: -2,
-                child: _buildHolidaysMarker(),
-              ),
-            );
-          }
-
           return children;
         },
       ),
@@ -234,31 +299,23 @@ class _CalendarWidgetState extends State<CalendarWidget>
   }
 
   Widget _buildEventsMarker(DateTime date, List events) {
-    return Center(
-        child: Container(
-            margin: EdgeInsets.only(top: 28),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: events
-                    .map((e) => Padding(
-                        padding: EdgeInsets.only(left: 1, right: 1),
-                        child: Container(
-                          height: 8,
-                          width: 8,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: pink,
-                          ),
-                        )))
-                    .toList())));
-  }
-
-  Widget _buildHolidaysMarker() {
-    return Icon(
-      Icons.stars,
-      size: 20.0,
-      color: yellow,
-    );
+    events = events.sublist(0, events.length > 3 ? 3 : events.length);
+    return Positioned(
+        bottom: 10,
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: events
+                .map((e) => Padding(
+                    padding: EdgeInsets.only(left: 1, right: 1),
+                    child: Container(
+                      height: 8,
+                      width: 8,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: pink,
+                      ),
+                    )))
+                .toList()));
   }
 
   void _onHeaderTapped(DateTime focusedDay) {}
@@ -314,4 +371,22 @@ class _CalendarWidgetState extends State<CalendarWidget>
       _calendarController.setFocusedDay(newFocus);
     });
   }
+
+  CalendarFormat _convertSizeToFormat() {
+    var calendarSize = SharedPreferenceService().calendarSize;
+    switch (calendarSize) {
+      case CalendarSize.HIDE:
+        return CalendarFormat.month;
+      case CalendarSize.WEEK:
+        return CalendarFormat.week;
+      case CalendarSize.TWO_WEEKS:
+        return CalendarFormat.twoWeeks;
+      case CalendarSize.MONTH:
+        return CalendarFormat.month;
+      default:
+        return CalendarFormat.month;
+    }
+  }
 }
+
+enum CalendarSize { HIDE, WEEK, TWO_WEEKS, MONTH }

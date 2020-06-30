@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:calendaroo/widgets/calendar/calendar.widget.dart';
 
 class SharedPreferenceService {
   SharedPreferenceService._();
@@ -33,19 +33,22 @@ class SharedPreferenceService {
     await _prefs.clear();
   }
 
-  CalendarFormat get calendarFormat {
-    var format = _prefs.getString('calendarFormat');
+  CalendarSize get calendarSize{
+    var format = _prefs.getString('calendarSize');
     if (format == 'twoWeeks') {
-      return CalendarFormat.twoWeeks;
+      return CalendarSize.TWO_WEEKS;
     }
     if (format == 'week') {
-      return CalendarFormat.week;
+      return CalendarSize.WEEK;
     }
-    return CalendarFormat.month;
+    if (format == 'hide') {
+      return CalendarSize.HIDE;
+    }
+    return CalendarSize.MONTH;
   }
 
-  void setCalendarFormat(String value) {
-    _prefs.setString('calendarFormat', value);
+  void setCalendarSize(String value) {
+    _prefs.setString('calendarSize', value);
   }
 
   bool get enableNotifications {
