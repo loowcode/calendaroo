@@ -35,11 +35,13 @@ class SharedPreferenceService {
 
   CalendarFormat get calendarFormat {
     var format = _prefs.getString('calendarFormat');
-    if (format == null || format == 'month') {
-      return CalendarFormat.month;
-    } else {
+    if (format == 'twoWeeks') {
       return CalendarFormat.twoWeeks;
     }
+    if (format == 'week') {
+      return CalendarFormat.week;
+    }
+    return CalendarFormat.month;
   }
 
   void setCalendarFormat(String value) {

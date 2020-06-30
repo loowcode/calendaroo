@@ -12,4 +12,5 @@ final Map<DateTime, List<String>> holidays = {
   DateTime(2019, 2, 14): ['Valentine\'s Day'],
   DateTime(2019, 4, 21): ['Easter Sunday'],
   DateTime(2019, 4, 22): ['Easter Monday'],
+  DateTime(2020, 6, 2): ['Repubblica'],
 };
