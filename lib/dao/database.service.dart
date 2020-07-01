@@ -64,4 +64,8 @@ class DatabaseService {
       await EventInstanceRepository().deleteInstance(map.id);
     }
   }
+
+  Future<int> editEvent(Event event) async {
+    return await EventsRepository().updateEvent(event);
+  }
 }

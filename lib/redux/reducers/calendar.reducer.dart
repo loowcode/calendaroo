@@ -7,7 +7,7 @@ import 'package:redux/redux.dart';
 
 final calendarReducer = combineReducers<CalendarState>([
   TypedReducer<CalendarState, AddEvent>(_addEvent),
-  TypedReducer<CalendarState, FocusEvent>(_focusEvent),
+  TypedReducer<CalendarState, OpenEvent>(_openEvent),
   TypedReducer<CalendarState, SelectDay>(_selectDay),
   TypedReducer<CalendarState, LoadedEventsList>(_loadedEventsList),
   TypedReducer<CalendarState, RemoveEvent>(_removeEvent),
@@ -15,30 +15,18 @@ final calendarReducer = combineReducers<CalendarState>([
 ]);
 
 CalendarState _addEvent(CalendarState state, AddEvent action) {
-  var event = action.event;
-  var rangeStart = state.selectedDay.subtract(Duration(days: 60));
-  var rangeEnd = state.selectedDay.add(Duration(days: 60));
-
-  var newInstances = CalendarUtils.createNearInstances(
-      event, Date.convertToDate(rangeStart), Date.convertToDate(rangeEnd));
-
-  newInstances.forEach((elem) {
-    var start = Date.convertToDate(elem.start);
-    state.eventsMapped
-        .update(start, (value) => value..add(elem), ifAbsent: () => [elem]);
-  });
-
+  _addIntoStore(state, action.event);
   return state;
 }
 
 CalendarState _editEvent(CalendarState state, EditEvent action) {
-//  _editIntoStore(state, action.oldEvent, action.newEvent);
-// TODO
-  return state.copyWith(focusedEvent: action.newEvent);
+  _removeFromStore(state, action.event);
+  _addIntoStore(state, action.event);
+  return state;
 }
 
-CalendarState _focusEvent(CalendarState state, FocusEvent action) {
-  return state.copyWithAdmitNull(action.event);
+CalendarState _openEvent(CalendarState state, OpenEvent action) {
+  return state.copyWith(focusedEvent: action.event);
 }
 
 CalendarState _selectDay(CalendarState state, SelectDay action) {
@@ -57,6 +45,20 @@ CalendarState _loadedEventsList(CalendarState state, LoadedEventsList action) {
 
 // utils
 
+void _addIntoStore(CalendarState state, Event event) {
+  var rangeStart = state.selectedDay.subtract(Duration(days: 60));
+  var rangeEnd = state.selectedDay.add(Duration(days: 60));
+
+  var newInstances = CalendarUtils.createNearInstances(
+      event, Date.convertToDate(rangeStart), Date.convertToDate(rangeEnd));
+
+  newInstances.forEach((elem) {
+    var start = Date.convertToDate(elem.start);
+    state.eventsMapped
+        .update(start, (value) => value..add(elem), ifAbsent: () => [elem]);
+  });
+}
+
 void _removeFromStore(CalendarState state, Event event) {
   var first = CalendarUtils.removeTime(event.start);
   var index = CalendarUtils.removeTime(event.start);
@@ -68,9 +70,9 @@ void _removeFromStore(CalendarState state, Event event) {
 }
 
 void _removeOneEvent(CalendarState state, DateTime date, Event event) {
-  var key = CalendarUtils.removeTime(date);
+  var key = Date.convertToDate(date);
   if (state.eventsMapped.containsKey(key)) {
-    state.eventsMapped[key].removeWhere((element) => event.id == element.id);
+    state.eventsMapped[key].removeWhere((element) => event.id == element.eventId);
     if (state.eventsMapped[key].isEmpty) {
       state.eventsMapped.remove(key);
     }
