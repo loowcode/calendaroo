@@ -6,19 +6,14 @@ import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:redux/redux.dart';
 
-class UpcomingEventsViewModel {
-  final Date selectedDay;
+class TodayListViewModel {
   final SplayTreeMap<Date, List<EventInstance>> eventMapped;
 
-  final Function(int) openEvent;
+  TodayListViewModel({this.eventMapped});
 
-  UpcomingEventsViewModel({this.selectedDay, this.eventMapped, this.openEvent});
-
-  static UpcomingEventsViewModel fromStore(Store<AppState> store) {
-    return UpcomingEventsViewModel(
-      selectedDay: store.state.calendarState.selectedDay,
+  static TodayListViewModel fromStore(Store<AppState> store) {
+    return TodayListViewModel(
       eventMapped: store.state.calendarState.eventsMapped,
-      openEvent: (eventId) => store.dispatch(DoToEvent(OpenEvent, eventId)),
     );
   }
 }

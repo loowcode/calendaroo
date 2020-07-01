@@ -1,5 +1,8 @@
 {
+  "add_description": "(aggiungi descrizione)",
   "add_event": "Aggiungi",
+  "add_title": "(aggiungi titolo)",
+  "all_day": "Tutto il giorno",
   "app_name": "Calendaroo",
   "cancel": "Cancella",
   "compact": "Compatto",
@@ -7,6 +10,7 @@
   "description": "Descrizione",
   "edit_event": "Modifica Evento",
   "event": "Evento",
+  "events": "Eventi",
   "event_end": "Fine Evento",
   "event_start": "Inizio Evento",
   "expanded": "Espanso",

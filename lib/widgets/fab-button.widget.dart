@@ -54,7 +54,7 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
             _controller.reverse();
           }
           removeMiniButtons();
-          NavigationService().navigateTo(ADD_EVENT);
+          NavigationService().navigateTo(DETAILS);
         },
         child: Icon(Icons.add),
         elevation: 4.0,

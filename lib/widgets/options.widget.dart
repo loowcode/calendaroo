@@ -1,4 +1,3 @@
-import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
@@ -22,7 +21,7 @@ List<Option> options = <Option>[
 
 void selectOption(Option option) {
   if (option.type == OptionType.REMOVE) {
-//    calendarooState.dispatch(RemoveEvent(option.eventId)); TODO
+    calendarooState.dispatch(DoToEvent(RemoveEvent, option.eventId));
   }
 }
 
