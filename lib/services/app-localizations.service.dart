@@ -10,8 +10,6 @@ class AppLocalizations {
 
   AppLocalizations(this.locale);
 
-
-
   // Helper method to keep the code in the widgets concise
   // Localizations are accessed using an InheritedWidget "of" syntax
   static AppLocalizations of(BuildContext context) {
@@ -42,42 +40,42 @@ class AppLocalizations {
   }
 
   static const String DELETE = 'delete';
-  String get addEvent=> _localizedStrings['add_event'];
-  String get appName=> _localizedStrings['app_name'];
+
+  String get addEvent => _localizedStrings['add_event'];
+  String get appName => _localizedStrings['app_name'];
   String get cancel => _localizedStrings['cancel'];
-  String get compact=> _localizedStrings['compact'];
-  String get delete=> _localizedStrings[DELETE];
-  String get description=> _localizedStrings['description'];
+  String get compact => _localizedStrings['compact'];
+  String get delete => _localizedStrings[DELETE];
+  String get description => _localizedStrings['description'];
   String get editEvent => _localizedStrings['edit_event'];
-  String get event=> _localizedStrings['event'];
-  String get eventEnd=> _localizedStrings['event_end'];
-  String get eventStart=> _localizedStrings['event_start'];
-  String get expanded=> _localizedStrings['expanded'];
-  String get feedback=> _localizedStrings['feedback'];
-  String get feedbackInfo=> _localizedStrings['feedback_info'];
-  String get home=> _localizedStrings['home'];
-  String get insertATitle=> _localizedStrings['insert_a_title'];
-  String get madeWithLove=> _localizedStrings['made_with_love'];
+  String get event => _localizedStrings['event'];
+  String get events => _localizedStrings['events'];
+  String get eventEnd => _localizedStrings['event_end'];
+  String get eventStart => _localizedStrings['event_start'];
+  String get expanded => _localizedStrings['expanded'];
+  String get feedback => _localizedStrings['feedback'];
+  String get feedbackInfo => _localizedStrings['feedback_info'];
+  String get home => _localizedStrings['home'];
+  String get insertATitle => _localizedStrings['insert_a_title'];
+  String get madeWithLove => _localizedStrings['made_with_love'];
   String get newEvent => _localizedStrings['new_event'];
   String get newEventTitle => _localizedStrings['new_event_title'];
-  String get no=> _localizedStrings['no'];
-  String get noEvents=> _localizedStrings['no_events'];
-  String get notifications=> _localizedStrings['notifications'];
-  String get ok=> _localizedStrings['Ok'];
-  String get profile=> _localizedStrings['profile'];
-  String get save=> _localizedStrings['save'];
-  String get sendFeedback=> _localizedStrings['send_feedback'];
-  String get settings=> _localizedStrings['settings'];
-  String get start=> _localizedStrings['start'];
-  String get title=> _localizedStrings['title'];
-  String get today=> _localizedStrings['today'];
-  String get todo=> _localizedStrings['todo'];
-  String get version=> _localizedStrings['version'];
-  String get warning=> _localizedStrings['warning'];
-  String get warningNoEmailApp=> _localizedStrings['warning_no_email_app'];
-  String get yes=> _localizedStrings['yes'];
-
-
+  String get no => _localizedStrings['no'];
+  String get noEvents => _localizedStrings['no_events'];
+  String get notifications => _localizedStrings['notifications'];
+  String get ok => _localizedStrings['Ok'];
+  String get profile => _localizedStrings['profile'];
+  String get save => _localizedStrings['save'];
+  String get sendFeedback => _localizedStrings['send_feedback'];
+  String get settings => _localizedStrings['settings'];
+  String get start => _localizedStrings['start'];
+  String get title => _localizedStrings['title'];
+  String get today => _localizedStrings['today'];
+  String get todo => _localizedStrings['todo'];
+  String get version => _localizedStrings['version'];
+  String get warning => _localizedStrings['warning'];
+  String get warningNoEmailApp => _localizedStrings['warning_no_email_app'];
+  String get yes => _localizedStrings['yes'];
 }
 
 class _AppLocalizationsDelegate
