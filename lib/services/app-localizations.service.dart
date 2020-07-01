@@ -42,7 +42,10 @@ class AppLocalizations {
   }
 
   static const String DELETE = 'delete';
+  String get addDescription=> _localizedStrings['add_description'];
   String get addEvent=> _localizedStrings['add_event'];
+  String get addTitle=> _localizedStrings['add_title'];
+  String get allDay=> _localizedStrings['all_day'];
   String get appName=> _localizedStrings['app_name'];
   String get cancel => _localizedStrings['cancel'];
   String get compact=> _localizedStrings['compact'];

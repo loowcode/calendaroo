@@ -94,7 +94,7 @@ class _DetailsPageState extends State<DetailsPage> {
                               disabledBorder: InputBorder.none,
                               errorBorder: InputBorder.none,
                               focusedErrorBorder: InputBorder.none,
-                              hintText: '(aggiungi titolo)'),
+                              hintText: AppLocalizations.of(context).addTitle),
                           style: Theme.of(context).textTheme.headline4,
                           maxLines: 1,
                           onChanged: (value) {
@@ -126,7 +126,7 @@ class _DetailsPageState extends State<DetailsPage> {
                               disabledBorder: InputBorder.none,
                               errorBorder: InputBorder.none,
                               focusedErrorBorder: InputBorder.none,
-                              hintText: '(aggiungi descrizione)'),
+                              hintText: AppLocalizations.of(context).addDescription),
                           style: Theme.of(context).textTheme.bodyText1,
                           onChanged: (value) {
                             setState(() {
@@ -144,7 +144,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             Padding(
                               padding: const EdgeInsets.only(left: 40),
                               child: Text(
-                                'Tutto il giorno',
+                                AppLocalizations.of(context).allDay,
                                 style: Theme.of(context).textTheme.bodyText2,
                               ),
                             ),
