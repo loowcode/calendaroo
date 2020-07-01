@@ -6,6 +6,7 @@ import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:calendaroo/utils/string.utils.dart';
+import 'package:calendaroo/widgets/card/card.widget.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.viewmodel.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -108,9 +109,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         )
         ..addAll(list
             .map(
-              (elem) => Container(
-                child: _buildCardEvent(store, elem, formatterTime),
-              ),
+              (elem) => Container(child: CardWidget(elem)),
             )
             .toList())
         ..add(
@@ -132,8 +131,8 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     return widgets;
   }
 
-  GestureDetector _buildCardEvent(
-      UpcomingEventsViewModel store, EventInstance elem, DateFormat formatterTime) {
+  GestureDetector _buildCardEvent(UpcomingEventsViewModel store,
+      EventInstance elem, DateFormat formatterTime) {
     return GestureDetector(
       onTap: () {
         store.openEvent(elem.eventId);
