@@ -318,8 +318,6 @@ class _CalendarWidgetState extends State<CalendarWidget>
                 .toList()));
   }
 
-  void _onHeaderTapped(DateTime focusedDay) {}
-
   void _selectPrevious() {
     var calendarFormat = _calendarController.calendarFormat;
     var focusesDay = _calendarController.focusedDay;
