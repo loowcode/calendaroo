@@ -53,14 +53,7 @@ class EventsRepository {
         where: 'start > ? and end < ?',
         whereArgs: [rangeStart.toIso8601String(), rangeEnd.toIso8601String()]);
     return List.generate(maps.length, (i) {
-      return Event(
-        id: maps[i]['id'] as int,
-        title: maps[i]['title'] as String,
-        uuid: maps[i]['uuid'] as String,
-        description: maps[i]['description'] as String,
-        start: DateTime.parse(maps[i]['start'] as String),
-        end: DateTime.parse(maps[i]['end'] as String),
-      );
+      return Event.fromMap(maps[i]);
     });
   }
 }

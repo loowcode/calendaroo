@@ -7,6 +7,7 @@ class Event {
   String description;
   DateTime start;
   DateTime end;
+  Duration repeat;
 
   Event(
       {@required this.id,
@@ -14,7 +15,8 @@ class Event {
       this.title,
       this.description,
       this.start,
-      this.end});
+      this.end,
+      this.repeat});
 
   factory Event.fromMap(Map<String, dynamic> map) {
     return Event(
@@ -24,6 +26,7 @@ class Event {
       description: map['description'] as String,
       start: DateTime.parse(map['start'] as String),
       end: DateTime.parse(map['end'] as String),
+      repeat: Duration(minutes: map['repeat'] as int),
     );
   }
 
@@ -35,6 +38,7 @@ class Event {
     map['description'] = description;
     map['start'] = start.toIso8601String();
     map['end'] = end.toIso8601String();
+    map['repeat'] = repeat.inMinutes;
     return map;
   }
 
