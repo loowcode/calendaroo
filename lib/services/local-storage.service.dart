@@ -54,7 +54,10 @@ class LocalStorageService {
           description TEXT,
           start TEXT,
           end TEXT,
+          allDay BOOLEAN,
           repeat INTEGER,
+          until TEXT,
+          alarms TEXT
       );''');
     await db.execute('''create TABLE eventInstances(
         id INTEGER PRIMARY KEY AUTOINCREMENT,

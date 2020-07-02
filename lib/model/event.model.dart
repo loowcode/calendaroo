@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
+
+import 'alarm.model.dart';
 
 class Event {
   int id;
@@ -7,7 +11,10 @@ class Event {
   String description;
   DateTime start;
   DateTime end;
+  bool allDay;
   Duration repeat;
+  DateTime until;
+  List<Alarm> alarms;
 
   Event(
       {@required this.id,
@@ -16,7 +23,11 @@ class Event {
       this.description,
       this.start,
       this.end,
-      this.repeat});
+      this.allDay,
+      this.repeat,
+      this.until,
+      this.alarms
+      });
 
   factory Event.fromMap(Map<String, dynamic> map) {
     return Event(
@@ -26,7 +37,10 @@ class Event {
       description: map['description'] as String,
       start: DateTime.parse(map['start'] as String),
       end: DateTime.parse(map['end'] as String),
-      repeat: Duration(minutes: map['repeat'] as int),
+      allDay: map['repeat'] as bool,
+      repeat: Duration(minutes: map['repeat'] as int ?? 0),
+      until: DateTime.parse(map['until'] as String ?? map['start'] as String),
+      alarms: ((jsonDecode(map['alarms'] as String) as List)??[]).map((e) => Alarm.fromJson(e)).toList(),
     );
   }
 
@@ -38,7 +52,10 @@ class Event {
     map['description'] = description;
     map['start'] = start.toIso8601String();
     map['end'] = end.toIso8601String();
-    map['repeat'] = repeat.inMinutes;
+    map['allDay'] = allDay;
+    map['repeat'] = repeat?.inMinutes;
+    map['until'] = until?.toIso8601String();
+    map['alarms'] = jsonEncode(alarms);
     return map;
   }
 
@@ -46,4 +63,5 @@ class Event {
     this.id = id;
     return this;
   }
+
 }

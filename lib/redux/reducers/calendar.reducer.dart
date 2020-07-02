@@ -1,4 +1,4 @@
-import 'package:calendaroo/model/date.dart';
+import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/calendar.state.dart';

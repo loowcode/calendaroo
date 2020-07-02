@@ -4,12 +4,12 @@ import 'package:calendaroo/pages/details/details.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
+import 'package:calendaroo/utils/event.utils.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../theme.dart';
 
@@ -31,6 +31,7 @@ class _DetailsPageState extends State<DetailsPage> {
   DateTime _endTime;
   bool _allDay = false;
   Event _showEvent;
+  Repeat _repeat;
 
   bool _edited;
 
@@ -52,6 +53,7 @@ class _DetailsPageState extends State<DetailsPage> {
     _endTime = _showEvent?.end ?? defaultTime.add(Duration(hours: 1));
 
     _edited = false;
+    _repeat = Repeat.never;
   }
 
   @override
@@ -107,14 +109,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       ),
                       Container(
                           margin: EdgeInsets.only(left: 32),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.alarm, color: _allDay ? grey : blue),
-                              Container(
-                                  margin: EdgeInsets.only(left: 8),
-                                  child: Icon(Icons.refresh, color: grey))
-                            ],
-                          )),
+                          child: _buildBadges()),
                       _rowTile(
                         Icon(Icons.subject, color: grey),
                         TextFormField(
@@ -126,7 +121,8 @@ class _DetailsPageState extends State<DetailsPage> {
                               disabledBorder: InputBorder.none,
                               errorBorder: InputBorder.none,
                               focusedErrorBorder: InputBorder.none,
-                              hintText: AppLocalizations.of(context).addDescription),
+                              hintText:
+                                  AppLocalizations.of(context).addDescription),
                           style: Theme.of(context).textTheme.bodyText1,
                           onChanged: (value) {
                             setState(() {
@@ -247,6 +243,17 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ],
                               ))
                           : SizedBox(),
+                      _rowTile(
+                          Icon(FeatherIcons.repeat, color: grey),
+                          GestureDetector(
+                              onTap: () => showModalBottomSheet(
+                                    context: context,
+                                    builder: _buildRepeatModal,
+                                  ),
+                              child: Text(
+                                'Repeat ${repeatToString(_repeat)}',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ))),
                     ],
                   ),
                 )
@@ -256,36 +263,48 @@ class _DetailsPageState extends State<DetailsPage> {
         ]));
   }
 
+  Row _buildBadges() {
+    return Row(
+      children: <Widget>[
+        Icon(Icons.alarm, color: _allDay ? grey : blue),
+        Container(
+            margin: EdgeInsets.only(left: 8),
+            child: Icon(FeatherIcons.repeat,
+                color: _repeat == Repeat.never ? grey : blue))
+      ],
+    );
+  }
+
   Row _buildAppBar(DetailsViewModel store) {
     return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(
-                FeatherIcons.arrowLeft,
-              ),
-              onPressed: () {
-                NavigationService().pop();
-              },
-            ),
-            _edited || !_isEdit()
-                ? IconButton(
-                    icon: Icon(
-                      FeatherIcons.save,
-                      color: blue,
-                    ),
-                    onPressed: () {
-                      if (_isEdit()) {
-                        store.editEvent(_createNewEvent(_showEvent.id));
-                      } else {
-                        store.createEvent(_createNewEvent(null));
-                      }
-                      NavigationService().pop();
-                    },
-                  )
-                : SizedBox(),
-          ],
-        );
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(
+            FeatherIcons.arrowLeft,
+          ),
+          onPressed: () {
+            NavigationService().pop();
+          },
+        ),
+        _edited || !_isEdit()
+            ? IconButton(
+                icon: Icon(
+                  FeatherIcons.save,
+                  color: blue,
+                ),
+                onPressed: () {
+                  if (_isEdit()) {
+                    store.editEvent(_createNewEvent(_showEvent.id));
+                  } else {
+                    store.createEvent(_createNewEvent(null));
+                  }
+                  NavigationService().pop();
+                },
+              )
+            : SizedBox(),
+      ],
+    );
   }
 
   Widget _rowTile(Widget leading, Widget title) {
@@ -486,15 +505,129 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   Event _createNewEvent(int id) {
-    var uuid = Uuid();
-    return Event(
-        id: id,
-        title: _title,
-        uuid: uuid.v4(),
-        description: _description,
-        start: DateTime(_startDate.year, _startDate.month, _startDate.day,
-            _startTime.hour, _startTime.minute),
-        end: DateTime(_endDate.year, _endDate.month, _endDate.day,
-            _endTime.hour, _endTime.minute));
+    return EventUtils.createNewEvent(
+      id: id,
+      title: _title,
+      description: _description,
+      start: DateTime(_startDate.year, _startDate.month, _startDate.day,
+          _startTime.hour, _startTime.minute),
+      end: DateTime(_endDate.year, _endDate.month, _endDate.day, _endTime.hour,
+          _endTime.minute),
+      allDay: _allDay,
+    );
+  }
+
+  Widget _buildRepeatModal(BuildContext context) {
+    var selected = _repeat;
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setRadioState) {
+      return Container(
+          decoration: BoxDecoration(
+            color: AppTheme.primaryTheme.backgroundColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+          ),
+          child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Repeat.daily,
+                  Repeat.weekly,
+                  Repeat.monthly,
+                  Repeat.yearly,
+                  Repeat.never
+                ]
+                    .map((elem) => _rowTile(
+                        Radio(
+                          value: elem,
+                          groupValue: selected,
+                          onChanged: (Repeat value) {
+                            setRadioState(() => selected = value);
+                          },
+                        ),
+                        Text(
+                          '${repeatToString(elem)}',
+                          style: Theme.of(context).textTheme.bodyText1,
+                        )))
+                    .toList()
+                      ..addAll(<Widget>[
+                        Expanded(
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: FlatButton(
+                                      textColor: blue,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Text(AppLocalizations.of(context)
+                                            .cancel),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Text(
+                                            AppLocalizations.of(context).save),
+                                      ),
+                                      color: AppTheme.primaryTheme.buttonColor,
+                                      textColor: AppTheme
+                                          .primaryTheme.textTheme.button.color,
+                                      onPressed: () {
+                                        setState(() {
+                                          _repeat = selected;
+                                          _edited = true;
+                                        });
+
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ]),
+                        )
+                      ]),
+              )));
+    });
+  }
+}
+
+enum Repeat { daily, weekly, monthly, yearly, never }
+
+String repeatToString(Repeat en) {
+  switch (en) {
+    case Repeat.daily:
+      return 'Daily';
+    case Repeat.weekly:
+      return 'weekly';
+    case Repeat.monthly:
+      return 'monthly';
+    case Repeat.yearly:
+      return 'yearly';
+    case Repeat.never:
+      return 'never';
+    default:
+      return 'never';
   }
 }

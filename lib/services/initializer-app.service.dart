@@ -1,7 +1,7 @@
 import 'package:calendaroo/constants.dart';
 import 'package:calendaroo/dao/database.service.dart';
 import 'package:calendaroo/environments/environment.dart';
-import 'package:calendaroo/model/date.dart';
+import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';

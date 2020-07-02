@@ -1,8 +1,7 @@
 import 'dart:collection';
 
-import 'package:calendaroo/model/date.dart';
+import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/model/event-instance.model.dart';
-import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:redux/redux.dart';
 

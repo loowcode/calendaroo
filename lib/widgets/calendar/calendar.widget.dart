@@ -1,5 +1,5 @@
 import 'package:calendaroo/colors.dart';
-import 'package:calendaroo/model/date.dart';
+import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:calendaroo/utils/string.utils.dart';
