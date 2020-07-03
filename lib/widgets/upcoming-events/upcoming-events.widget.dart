@@ -55,7 +55,6 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                     viewModel.eventMapped, viewModel.selectedDay),
                 preferPosition: AutoScrollPosition.begin);
 
-//            _animationController.forward(from: 0);
           } catch (e) {
             print('no events for selected day');
           }

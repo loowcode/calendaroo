@@ -1,5 +1,6 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/event.model.dart';
+import 'package:calendaroo/model/repeat.model.dart';
 import 'package:calendaroo/pages/details/details.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
@@ -29,9 +30,10 @@ class _DetailsPageState extends State<DetailsPage> {
   DateTime _endDate;
   DateTime _startTime;
   DateTime _endTime;
-  bool _allDay = false;
+  bool _allDay;
   Event _showEvent;
   Repeat _repeat;
+  DateTime _until;
 
   bool _edited;
 
@@ -52,8 +54,11 @@ class _DetailsPageState extends State<DetailsPage> {
     _endDate = _showEvent?.end ?? _startDate;
     _endTime = _showEvent?.end ?? defaultTime.add(Duration(hours: 1));
 
+    _allDay = _showEvent?.allDay ?? false;
+    _repeat = _showEvent?.repeat ?? Repeat(type: RepeatType.never);
+    _until = _showEvent?.until ?? _endDate;
+
     _edited = false;
-    _repeat = Repeat.never;
   }
 
   @override
@@ -251,9 +256,30 @@ class _DetailsPageState extends State<DetailsPage> {
                                     builder: _buildRepeatModal,
                                   ),
                               child: Text(
-                                'Repeat ${repeatToString(_repeat)}',
+                                'Repeat ${Repeat.repeatToString(_repeat.type)}',
                                 style: Theme.of(context).textTheme.bodyText1,
                               ))),
+                      _repeat.type != RepeatType.never
+                          ? _rowTile(
+                              Icon(Icons.vertical_align_bottom, color: grey),
+                              GestureDetector(
+                                  onTap: () async {
+                                    var stop = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: _startDate,
+                                        lastDate: DateTime(3000));
+                                    setState(() {
+                                      _until = stop;
+                                      _edited = true;
+                                    });
+                                  },
+                                  child: Text(
+                                    'Fino a ${_formatterDate.format(_until)}',
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  )))
+                          : SizedBox(),
                     ],
                   ),
                 )
@@ -270,7 +296,7 @@ class _DetailsPageState extends State<DetailsPage> {
         Container(
             margin: EdgeInsets.only(left: 8),
             child: Icon(FeatherIcons.repeat,
-                color: _repeat == Repeat.never ? grey : blue))
+                color: _repeat.type == RepeatType.never ? grey : blue))
       ],
     );
   }
@@ -514,11 +540,13 @@ class _DetailsPageState extends State<DetailsPage> {
       end: DateTime(_endDate.year, _endDate.month, _endDate.day, _endTime.hour,
           _endTime.minute),
       allDay: _allDay,
+      repeat: _repeat,
+      until: _until,
     );
   }
 
   Widget _buildRepeatModal(BuildContext context) {
-    var selected = _repeat;
+    var selected = _repeat.type;
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setRadioState) {
       return Container(
@@ -533,22 +561,22 @@ class _DetailsPageState extends State<DetailsPage> {
               padding: EdgeInsets.all(16),
               child: Column(
                 children: [
-                  Repeat.daily,
-                  Repeat.weekly,
-                  Repeat.monthly,
-                  Repeat.yearly,
-                  Repeat.never
+                  RepeatType.daily,
+                  RepeatType.weekly,
+                  RepeatType.monthly,
+                  RepeatType.yearly,
+                  RepeatType.never
                 ]
                     .map((elem) => _rowTile(
                         Radio(
                           value: elem,
                           groupValue: selected,
-                          onChanged: (Repeat value) {
+                          onChanged: (RepeatType value) {
                             setRadioState(() => selected = value);
                           },
                         ),
                         Text(
-                          '${repeatToString(elem)}',
+                          '${Repeat.repeatToString(elem)}',
                           style: Theme.of(context).textTheme.bodyText1,
                         )))
                     .toList()
@@ -596,7 +624,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                           .primaryTheme.textTheme.button.color,
                                       onPressed: () {
                                         setState(() {
-                                          _repeat = selected;
+                                          _repeat.type = selected;
                                           _edited = true;
                                         });
 
@@ -610,24 +638,5 @@ class _DetailsPageState extends State<DetailsPage> {
                       ]),
               )));
     });
-  }
-}
-
-enum Repeat { daily, weekly, monthly, yearly, never }
-
-String repeatToString(Repeat en) {
-  switch (en) {
-    case Repeat.daily:
-      return 'Daily';
-    case Repeat.weekly:
-      return 'weekly';
-    case Repeat.monthly:
-      return 'monthly';
-    case Repeat.yearly:
-      return 'yearly';
-    case Repeat.never:
-      return 'never';
-    default:
-      return 'never';
   }
 }

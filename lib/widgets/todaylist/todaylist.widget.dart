@@ -29,7 +29,7 @@ class _TodayListWidgetState extends State<TodayListWidget>
     return StoreConnector<AppState, TodayListViewModel>(
         converter: (store) => TodayListViewModel.fromStore(store),
         builder: (context, store) {
-          var todayList = store.eventMapped[Date.today()];
+          var todayList = store.eventMapped[Date.today()] ?? [];
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 16),
             child: Column(

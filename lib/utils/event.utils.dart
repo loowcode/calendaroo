@@ -1,4 +1,5 @@
 import 'package:calendaroo/model/event.model.dart';
+import 'package:calendaroo/model/repeat.model.dart';
 import 'package:uuid/uuid.dart';
 
 class EventUtils {
@@ -9,7 +10,7 @@ class EventUtils {
       DateTime start,
       DateTime end,
       bool allDay,
-      Duration repeat,
+      Repeat repeat,
       DateTime until}) {
     var uuid = Uuid();
     return Event(

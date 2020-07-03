@@ -54,7 +54,7 @@ class LocalStorageService {
           description TEXT,
           start TEXT,
           end TEXT,
-          allDay BOOLEAN,
+          allDay INTEGER,
           repeat INTEGER,
           until TEXT,
           alarms TEXT

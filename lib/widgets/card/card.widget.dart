@@ -82,7 +82,9 @@ class _CardWidgetState extends State<CardWidget> with TickerProviderStateMixin {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            widget.event.title,
+                            widget.event.title.isNotEmpty
+                                ? widget.event.title
+                                : '(no title)',
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
                           Text(

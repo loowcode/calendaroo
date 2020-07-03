@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:calendaroo/model/repeat.model.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'alarm.model.dart';
@@ -12,7 +13,7 @@ class Event {
   DateTime start;
   DateTime end;
   bool allDay;
-  Duration repeat;
+  Repeat repeat;
   DateTime until;
   List<Alarm> alarms;
 
@@ -26,8 +27,7 @@ class Event {
       this.allDay,
       this.repeat,
       this.until,
-      this.alarms
-      });
+      this.alarms});
 
   factory Event.fromMap(Map<String, dynamic> map) {
     return Event(
@@ -37,10 +37,12 @@ class Event {
       description: map['description'] as String,
       start: DateTime.parse(map['start'] as String),
       end: DateTime.parse(map['end'] as String),
-      allDay: map['repeat'] as bool,
-      repeat: Duration(minutes: map['repeat'] as int ?? 0),
+      allDay: (map['allDay'] as int) == 1 ? true : false,
+      repeat: Repeat.fromJson(map['repeat'] as String),
       until: DateTime.parse(map['until'] as String ?? map['start'] as String),
-      alarms: ((jsonDecode(map['alarms'] as String) as List)??[]).map((e) => Alarm.fromJson(e)).toList(),
+      alarms: ((jsonDecode(map['alarms'] as String) as List) ?? [])
+          .map((e) => Alarm.fromJson(e))
+          .toList(),
     );
   }
 
@@ -52,8 +54,8 @@ class Event {
     map['description'] = description;
     map['start'] = start.toIso8601String();
     map['end'] = end.toIso8601String();
-    map['allDay'] = allDay;
-    map['repeat'] = repeat?.inMinutes;
+    map['allDay'] = allDay ? 1 : 0;
+    map['repeat'] = repeat.toJson();
     map['until'] = until?.toIso8601String();
     map['alarms'] = jsonEncode(alarms);
     return map;
@@ -63,5 +65,4 @@ class Event {
     this.id = id;
     return this;
   }
-
 }
