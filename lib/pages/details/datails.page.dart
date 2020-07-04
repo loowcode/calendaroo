@@ -40,14 +40,15 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   void initState() {
     super.initState();
-    _showEvent = widget.event;
-    _title = _showEvent?.title ?? '';
-    _description = _showEvent?.description ?? '';
     final now = DateTime.now();
     var defaultTime = now;
     if (calendarooState.state.calendarState.selectedDay.isAfter(now)) {
       defaultTime = DateTime(now.year, now.month, now.day, 8, 0, 0);
     }
+
+    _showEvent = widget.event;
+    _title = _showEvent?.title ?? '';
+    _description = _showEvent?.description ?? '';
     _startDate =
         _showEvent?.start ?? calendarooState.state.calendarState.selectedDay;
     _startTime = _showEvent?.start ?? defaultTime;
@@ -56,7 +57,6 @@ class _DetailsPageState extends State<DetailsPage> {
 
     _allDay = _showEvent?.allDay ?? false;
     _repeat = _showEvent?.repeat ?? Repeat(type: RepeatType.never);
-    _until = _showEvent?.until ?? _endDate;
 
     _edited = false;
   }
@@ -93,6 +93,8 @@ class _DetailsPageState extends State<DetailsPage> {
                       Container(
                         margin: EdgeInsets.only(left: 32),
                         child: TextFormField(
+                          maxLines: 3,
+                          minLines: 1,
                           initialValue: _title,
                           decoration: InputDecoration(
                               border: InputBorder.none,
@@ -103,7 +105,6 @@ class _DetailsPageState extends State<DetailsPage> {
                               focusedErrorBorder: InputBorder.none,
                               hintText: AppLocalizations.of(context).addTitle),
                           style: Theme.of(context).textTheme.headline4,
-                          maxLines: 1,
                           onChanged: (value) {
                             setState(() {
                               _title = value;
@@ -115,56 +116,39 @@ class _DetailsPageState extends State<DetailsPage> {
                       Container(
                           margin: EdgeInsets.only(left: 32),
                           child: _buildBadges()),
-                      _rowTile(
-                        Icon(Icons.subject, color: grey),
-                        TextFormField(
-                          initialValue: _description,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              focusedErrorBorder: InputBorder.none,
-                              hintText:
-                                  AppLocalizations.of(context).addDescription),
-                          style: Theme.of(context).textTheme.bodyText1,
-                          onChanged: (value) {
-                            setState(() {
-                              _description = value;
-                              _edited = true;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 52,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
+                      Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 40),
-                              child: Text(
-                                AppLocalizations.of(context).allDay,
-                                style: Theme.of(context).textTheme.bodyText2,
+                                padding: EdgeInsets.only(top: 16, right: 16),
+                                child: Icon(Icons.subject, color: grey)),
+                            Expanded(
+                              child: TextFormField(
+                                maxLines: 4,
+                                minLines: 1,
+                                initialValue: _description,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    focusedErrorBorder: InputBorder.none,
+                                    hintText: AppLocalizations.of(context)
+                                        .addDescription),
+                                style: Theme.of(context).textTheme.bodyText1,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _description = value;
+                                    _edited = true;
+                                  });
+                                },
                               ),
                             ),
-                            CupertinoSwitch(
-                              value: _allDay,
-                              activeColor: blue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _allDay = value;
-                                  _edited = true;
-                                });
-                              },
-                            )
-                          ],
-                        ),
-                      ),
+                          ]),
                       _rowTile(
-                          Icon(FeatherIcons.calendar, color: grey),
-                          GestureDetector(
+                          leading: Icon(FeatherIcons.calendar, color: grey),
+                          title: GestureDetector(
                               onTap: () => showModalBottomSheet(
                                     context: context,
                                     builder: (context) {
@@ -176,10 +160,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                 style: Theme.of(context).textTheme.subtitle1,
                               ))),
                       _rowTile(
-                          SizedBox(
+                          leading: SizedBox(
                             width: 24,
                           ),
-                          GestureDetector(
+                          title: GestureDetector(
                               onTap: () => showModalBottomSheet(
                                     context: context,
                                     builder: (context) {
@@ -190,9 +174,24 @@ class _DetailsPageState extends State<DetailsPage> {
                                 _formatterDate.format(_endDate),
                                 style: Theme.of(context).textTheme.subtitle1,
                               ))),
+                      _rowTile(
+                          title: Text(
+                            AppLocalizations.of(context).allDay,
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                          trailing: CupertinoSwitch(
+                            value: _allDay,
+                            activeColor: blue,
+                            onChanged: (value) {
+                              setState(() {
+                                _allDay = value;
+                                _edited = true;
+                              });
+                            },
+                          )),
                       !_allDay
                           ? SizedBox(
-                              height: 52,
+                              height: 42,
                               child: Row(
                                 children: <Widget>[
                                   Row(
@@ -249,8 +248,8 @@ class _DetailsPageState extends State<DetailsPage> {
                               ))
                           : SizedBox(),
                       _rowTile(
-                          Icon(FeatherIcons.repeat, color: grey),
-                          GestureDetector(
+                          leading: Icon(FeatherIcons.repeat, color: grey),
+                          title: GestureDetector(
                               onTap: () => showModalBottomSheet(
                                     context: context,
                                     builder: _buildRepeatModal,
@@ -261,25 +260,51 @@ class _DetailsPageState extends State<DetailsPage> {
                               ))),
                       _repeat.type != RepeatType.never
                           ? _rowTile(
-                              Icon(Icons.vertical_align_bottom, color: grey),
-                              GestureDetector(
+                              leading: Icon(Icons.vertical_align_bottom,
+                                  color: grey),
+                              title: GestureDetector(
                                   onTap: () async {
                                     var stop = await showDatePicker(
                                         context: context,
                                         initialDate: DateTime.now(),
                                         firstDate: _startDate,
                                         lastDate: DateTime(3000));
-                                    setState(() {
-                                      _until = stop;
-                                      _edited = true;
-                                    });
+                                    if (stop != null) {
+                                      setState(() {
+                                        _until = stop;
+                                        _edited = true;
+                                      });
+                                    }
                                   },
                                   child: Text(
-                                    'Fino a ${_formatterDate.format(_until)}',
+                                    _until != null
+                                        ? 'Fino a ${_formatterDate.format(_until)}'
+                                        : 'set stop date',
                                     style:
                                         Theme.of(context).textTheme.bodyText1,
-                                  )))
+                                  )),
+                              trailing: _until != null
+                                  ? IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _until = null;
+                                        });
+                                      },
+                                      icon: Icon(Icons.close, color: grey),
+                                    )
+                                  : SizedBox())
                           : SizedBox(),
+                      _rowTile(
+                          leading: Icon(
+                            FeatherIcons.bell,
+                            color: grey,
+                          ),
+                          title: GestureDetector(
+                              onTap: () async {},
+                              child: Text(
+                                'alarm',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              )))
                     ],
                   ),
                 )
@@ -289,15 +314,18 @@ class _DetailsPageState extends State<DetailsPage> {
         ]));
   }
 
-  Row _buildBadges() {
-    return Row(
-      children: <Widget>[
-        Icon(Icons.alarm, color: _allDay ? grey : blue),
-        Container(
-            margin: EdgeInsets.only(left: 8),
-            child: Icon(FeatherIcons.repeat,
-                color: _repeat.type == RepeatType.never ? grey : blue))
-      ],
+  Widget _buildBadges() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.alarm, color: _allDay ? grey : blue),
+          Container(
+              margin: EdgeInsets.only(left: 8),
+              child: Icon(FeatherIcons.repeat,
+                  color: _repeat.type == RepeatType.never ? grey : blue))
+        ],
+      ),
     );
   }
 
@@ -333,16 +361,25 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
-  Widget _rowTile(Widget leading, Widget title) {
+  Widget _rowTile({Widget leading, Widget title, Widget trailing}) {
     return SizedBox(
-      height: 52,
+      height: 42,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: leading,
+            child: leading != null
+                ? leading
+                : SizedBox(
+                    width: 24,
+                    height: 24,
+                  ),
           ),
-          Expanded(child: title),
+          Expanded(
+            child: title != null ? title : SizedBox(),
+          ),
+          trailing != null ? trailing : SizedBox()
         ],
       ),
     );
@@ -567,18 +604,19 @@ class _DetailsPageState extends State<DetailsPage> {
                   RepeatType.yearly,
                   RepeatType.never
                 ]
-                    .map((elem) => _rowTile(
-                        Radio(
-                          value: elem,
-                          groupValue: selected,
-                          onChanged: (RepeatType value) {
-                            setRadioState(() => selected = value);
-                          },
-                        ),
-                        Text(
-                          '${Repeat.repeatToString(elem)}',
-                          style: Theme.of(context).textTheme.bodyText1,
-                        )))
+                    .map((elem) => Row(children: <Widget>[
+                          Radio(
+                            value: elem,
+                            groupValue: selected,
+                            onChanged: (RepeatType value) {
+                              setRadioState(() => selected = value);
+                            },
+                          ),
+                          Text(
+                            '${Repeat.repeatToString(elem)}',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          )
+                        ]) as Widget)
                     .toList()
                       ..addAll(<Widget>[
                         Expanded(

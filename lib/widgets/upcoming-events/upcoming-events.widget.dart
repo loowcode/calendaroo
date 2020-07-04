@@ -51,7 +51,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         onDidChange: (viewModel) {
           try {
             _listController.scrollToIndex(
-                CalendarUtils.getIndex2(
+                CalendarUtils.getIndex(
                     viewModel.eventMapped, viewModel.selectedDay),
                 preferPosition: AutoScrollPosition.begin);
 
@@ -111,8 +111,8 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
           ),
         );
       var dayGroup = AutoScrollTag(
-        key: ValueKey(CalendarUtils.getIndex2(mapEvent, date)),
-        index: CalendarUtils.getIndex2(mapEvent, date),
+        key: ValueKey(CalendarUtils.getIndex(mapEvent, date)),
+        index: CalendarUtils.getIndex(mapEvent, date),
         controller: _listController,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

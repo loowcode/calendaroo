@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/model/event.model.dart';
+import 'package:calendaroo/model/repeat.model.dart';
 import 'package:uuid/uuid.dart';
 
 class CalendarUtils {
@@ -106,7 +107,37 @@ class CalendarUtils {
             i == daySpan ? event.end.minute : 59,
           ),
         );
+        if (event.allDay) {
+          instance.start = removeTime(instance.start);
+          instance.end = instance.start.add(Duration(hours: 23, minutes: 59));
+        }
         instances.add(instance);
+        if (event.repeat.type != RepeatType.never) {
+          var duplicator = instance.start;
+          var span = instance.end.difference(instance.start);
+          while (duplicator.isBefore(rangeEnd) &&
+              duplicator.isBefore(event.until ?? rangeEnd)) {
+            switch (event.repeat.type) {
+              case RepeatType.daily:
+                duplicator = duplicator.add(Duration(days: 1));
+                break;
+              case RepeatType.weekly:
+                duplicator = duplicator.add(Duration(days: 7));
+                break;
+              case RepeatType.monthly:
+              // TODO: Handle this case.
+                break;
+              case RepeatType.yearly:
+              // TODO: Handle this case.
+                break;
+              case RepeatType.never:
+                break;
+            }
+
+            instances.add(
+                instance.copyWith(start: duplicator, end: duplicator.add(span)));
+          }
+        }
         index = index.add(Duration(days: 1));
       }
     }
@@ -140,13 +171,7 @@ class CalendarUtils {
     }
   }
 
-  static int getIndex(Map<DateTime, List<Event>> days, DateTime day) {
-    if (days.keys.length == null || days.keys.isEmpty) return 0;
-
-    return days.keys.toList().indexOf(day);
-  }
-
-  static int getIndex2(Map<Date, List<EventInstance>> map, Date day) {
+  static int getIndex(Map<Date, List<EventInstance>> map, Date day) {
 //    if (map.keys.length == null || map.keys.isEmpty) return 0;
     // TODO if no event go to near day with events
     return map.keys.toList().indexOf(day);

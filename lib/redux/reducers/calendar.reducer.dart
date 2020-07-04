@@ -60,19 +60,24 @@ void _addIntoStore(CalendarState state, Event event) {
 }
 
 void _removeFromStore(CalendarState state, Event event) {
-  var first = CalendarUtils.removeTime(event.start);
-  var index = CalendarUtils.removeTime(event.start);
-  var last = CalendarUtils.removeTime(event.end);
-  for (var i = 0; i <= last.difference(first).inDays; i++) {
-    _removeOneEvent(state, index, event);
-    index = index.add(Duration(days: 1));
-  }
+//  var first = CalendarUtils.removeTime(event.start);
+//  var index = CalendarUtils.removeTime(event.start);
+//  var last = CalendarUtils.removeTime(event.end);
+//  for (var i = 0; i <= last.difference(first).inDays; i++) {
+//    _removeOneEvent(state, index, event);
+//    index = index.add(Duration(days: 1));
+//  }
+  var keys = state.eventsMapped.keys.toList();
+  keys.forEach((date) {
+    _removeOneEvent(state, date, event);
+  });
 }
 
 void _removeOneEvent(CalendarState state, DateTime date, Event event) {
   var key = Date.convertToDate(date);
   if (state.eventsMapped.containsKey(key)) {
-    state.eventsMapped[key].removeWhere((element) => event.id == element.eventId);
+    state.eventsMapped[key]
+        .removeWhere((element) => event.id == element.eventId);
     if (state.eventsMapped[key].isEmpty) {
       state.eventsMapped.remove(key);
     }

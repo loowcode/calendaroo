@@ -16,7 +16,6 @@ class EventInstance {
       @required this.start,
       @required this.end});
 
-
   factory EventInstance.fromMap(Map<String, dynamic> map) {
     return EventInstance(
       id: map['id'] as int,
@@ -36,5 +35,21 @@ class EventInstance {
     map['start'] = start.toIso8601String();
     map['end'] = end.toIso8601String();
     return map;
+  }
+
+  EventInstance copyWith(
+      {int id,
+      String uuid,
+      int eventId,
+      String title,
+      DateTime start,
+      DateTime end}) {
+    return EventInstance(
+        id: id ?? this.id,
+        uuid: uuid ?? this.uuid,
+        eventId: eventId ?? this.eventId,
+        title: title ?? this.title,
+        start: start ?? this.start,
+        end: end ?? this.end);
   }
 }
