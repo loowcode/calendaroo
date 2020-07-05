@@ -2,6 +2,7 @@ import 'package:calendaroo/model/date.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/widgets/card/card.widget.dart';
+import 'package:calendaroo/widgets/today-completion-circle/today-completion-circle.widget.dart';
 import 'package:calendaroo/widgets/todaylist/todaylist.viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +33,8 @@ class _TodayListWidgetState extends State<TodayListWidget>
           var todayList = store.eventMapped[Date.today()];
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-                children: <Widget>[
+            child: Column(children: <Widget>[
+              TodayCompletionCircle(),
               Row(
                 children: <Widget>[
                   Text(
@@ -42,10 +43,11 @@ class _TodayListWidgetState extends State<TodayListWidget>
                   ),
                   Padding(
                       padding: EdgeInsets.only(left: 8),
-                      child:Text('${todayList.length}')),
+                      child: Text('${todayList.length}')),
                 ],
               ),
-            ]..addAll(todayList.map((event) => CardWidget(event)))),
+              ...todayList.map((event) => CardWidget(event)),
+            ]),
           );
         });
   }
