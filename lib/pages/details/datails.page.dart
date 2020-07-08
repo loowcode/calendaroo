@@ -312,7 +312,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                     builder: _buildRepeatModal,
                                   ),
                               child: Text(
-                                'Repeat ${Repeat.repeatToString(_repeat.type)}',
+                                AppLocalizations.of(context).translate(
+                                    Repeat.repeatToString(_repeat.type)),
                                 style: Theme.of(context).textTheme.bodyText1,
                               ))),
                       _repeat.type != RepeatType.never
@@ -321,7 +322,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                   color: grey),
                               title: GestureDetector(
                                   onTap: () async {
-                                    FocusScope.of(context).requestFocus(FocusNode());
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
                                     var stop = await showDatePicker(
                                         context: context,
                                         initialDate: DateTime.now(),
@@ -336,10 +338,12 @@ class _DetailsPageState extends State<DetailsPage> {
                                   },
                                   child: Text(
                                     _until != null
-                                        ? 'Fino a ${_formatterDate.format(_until)}'
-                                        : 'set stop date',
+                                        ? '${AppLocalizations.of(context).until} ${_formatterDate.format(_until)}'
+                                        : AppLocalizations.of(context)
+                                            .setStopDate,
                                     style:
                                         Theme.of(context).textTheme.bodyText1,
+                                    maxLines: 2,
                                   )),
                               trailing: _until != null
                                   ? IconButton(
@@ -411,10 +415,11 @@ class _DetailsPageState extends State<DetailsPage> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: leading ?? SizedBox(
-                    width: 24,
-                    height: 24,
-                  ),
+            child: leading ??
+                SizedBox(
+                  width: 24,
+                  height: 24,
+                ),
           ),
           Expanded(
             child: title ?? SizedBox(),
@@ -657,7 +662,8 @@ class _DetailsPageState extends State<DetailsPage> {
                             },
                           ),
                           Text(
-                            '${Repeat.repeatToString(elem)}',
+                            AppLocalizations.of(context)
+                                .translate(Repeat.repeatToString(elem)),
                             style: Theme.of(context).textTheme.bodyText1,
                           )
                         ]) as Widget)

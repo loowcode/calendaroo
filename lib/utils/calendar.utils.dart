@@ -127,10 +127,12 @@ class CalendarUtils {
                 duplicator = duplicator.add(Duration(days: 7));
                 break;
               case RepeatType.monthly:
-                // TODO: Handle this case.
+                duplicator = DateTime(
+                    duplicator.year, duplicator.month + 1, duplicator.day);
                 break;
               case RepeatType.yearly:
-                // TODO: Handle this case.
+                duplicator = DateTime(
+                    duplicator.year + 1, duplicator.month, duplicator.day);
                 break;
               case RepeatType.never:
                 break;

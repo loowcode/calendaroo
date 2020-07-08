@@ -48,6 +48,7 @@ class AppLocalizations {
   String get appName => _localizedStrings['app_name'];
   String get cancel => _localizedStrings['cancel'];
   String get compact => _localizedStrings['compact'];
+  String get daily => _localizedStrings['daily'];
   String get delete => _localizedStrings[DELETE];
   String get description => _localizedStrings['description'];
   String get editEvent => _localizedStrings['edit_event'];
@@ -61,6 +62,8 @@ class AppLocalizations {
   String get home => _localizedStrings['home'];
   String get insertATitle => _localizedStrings['insert_a_title'];
   String get madeWithLove => _localizedStrings['made_with_love'];
+  String get monthly => _localizedStrings['monthly'];
+  String get never => _localizedStrings['never'];
   String get newEvent => _localizedStrings['new_event'];
   String get newEventTitle => _localizedStrings['new_event_title'];
   String get no => _localizedStrings['no'];
@@ -68,16 +71,21 @@ class AppLocalizations {
   String get notifications => _localizedStrings['notifications'];
   String get ok => _localizedStrings['Ok'];
   String get profile => _localizedStrings['profile'];
+  String get repeat => _localizedStrings['repeat'];
   String get save => _localizedStrings['save'];
   String get sendFeedback => _localizedStrings['send_feedback'];
+  String get setStopDate => _localizedStrings['set_stop_date'];
   String get settings => _localizedStrings['settings'];
   String get start => _localizedStrings['start'];
   String get title => _localizedStrings['title'];
   String get today => _localizedStrings['today'];
   String get todo => _localizedStrings['todo'];
+  String get until => _localizedStrings['until'];
   String get version => _localizedStrings['version'];
   String get warning => _localizedStrings['warning'];
   String get warningNoEmailApp => _localizedStrings['warning_no_email_app'];
+  String get weekly => _localizedStrings['weekly'];
+  String get yearly => _localizedStrings['yearly'];
   String get yes => _localizedStrings['yes'];
 }
 

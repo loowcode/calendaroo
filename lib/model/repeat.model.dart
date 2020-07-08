@@ -36,7 +36,7 @@ class Repeat {
   static String repeatToString(RepeatType en) {
     switch (en) {
       case RepeatType.daily:
-        return 'Daily';
+        return 'daily';
       case RepeatType.weekly:
         return 'weekly';
       case RepeatType.monthly:
