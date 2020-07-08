@@ -38,20 +38,20 @@ class AppTheme {
         .copyWith(
       // Title Page
       headline4: base.headline4.copyWith(
-        fontSize: 36,
+        fontSize: 34,
         color: black,
         fontWeight: FontWeight.w700,
       ),
       // Title heading
       headline5: base.headline5.copyWith(
-        fontSize: 24,
+        fontSize: 22,
         color: black,
         fontWeight: FontWeight.w700,
       ),
       // Text bold
       subtitle1: base.subtitle1.copyWith(
         fontWeight: FontWeight.w600,
-        fontSize: 20,
+        fontSize: 18,
         color: black,
       ),
       // Subtext bold
@@ -62,7 +62,7 @@ class AppTheme {
       ),
       // Text normal
       bodyText1: base.bodyText1.copyWith(
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: FontWeight.normal,
         color: black,
       ),

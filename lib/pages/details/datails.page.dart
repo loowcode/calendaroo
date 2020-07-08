@@ -1,4 +1,5 @@
 import 'package:calendaroo/colors.dart';
+import 'package:calendaroo/model/alarm.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/model/repeat.model.dart';
 import 'package:calendaroo/pages/details/details.viewmodel.dart';
@@ -34,6 +35,7 @@ class _DetailsPageState extends State<DetailsPage> {
   Event _showEvent;
   Repeat _repeat;
   DateTime _until;
+  List<Alarm> _alarms;
 
   bool _edited;
 
@@ -57,18 +59,70 @@ class _DetailsPageState extends State<DetailsPage> {
 
     _allDay = _showEvent?.allDay ?? false;
     _repeat = _showEvent?.repeat ?? Repeat(type: RepeatType.never);
+    _alarms = [Alarm(1, _startDate.subtract(Duration(minutes: 15)), false)];
 
     _edited = false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StoreConnector<AppState, DetailsViewModel>(
-          converter: (store) => DetailsViewModel.fromStore(store),
-          builder: (context, store) {
-            return _buildPage(store);
-          }),
+    return StoreConnector<AppState, DetailsViewModel>(
+        converter: (store) => DetailsViewModel.fromStore(store),
+        builder: (context, store) {
+          return Scaffold(
+              body: _buildPage(store),
+              bottomNavigationBar: BottomAppBar(
+                child: Container(
+                  child: _buildBottomBar(store),
+                ),
+                color: white,
+              ));
+        });
+  }
+
+  Row _buildBottomBar(DetailsViewModel store) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.attach_file,
+            color: grey,
+          ),
+          onPressed: () => null,
+        ),
+        IconButton(
+          icon: Icon(
+            FeatherIcons.trash,
+            color: grey,
+          ),
+          onPressed: () {
+            store.deleteEvent();
+            NavigationService().pop();
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            FeatherIcons.save,
+            color: _edited || !_isEdit() ? blue : grey,
+          ),
+          onPressed: () {
+            if (_isEdit()) {
+              store.editEvent(_createNewEvent(_showEvent.id));
+            } else {
+              store.createEvent(_createNewEvent(null));
+            }
+            NavigationService().pop();
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            FeatherIcons.moreVertical,
+            color: grey,
+          ),
+          onPressed: null,
+        ),
+      ],
     );
   }
 
@@ -95,6 +149,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         child: TextFormField(
                           maxLines: 3,
                           minLines: 1,
+                          scrollPadding: EdgeInsets.all(0),
                           initialValue: _title,
                           decoration: InputDecoration(
                               border: InputBorder.none,
@@ -117,15 +172,16 @@ class _DetailsPageState extends State<DetailsPage> {
                           margin: EdgeInsets.only(left: 32),
                           child: _buildBadges()),
                       Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Padding(
-                                padding: EdgeInsets.only(top: 16, right: 16),
+                                padding: EdgeInsets.only(top: 0, right: 16),
                                 child: Icon(Icons.subject, color: grey)),
                             Expanded(
                               child: TextFormField(
                                 maxLines: 4,
                                 minLines: 1,
+                                scrollPadding: EdgeInsets.all(0),
                                 initialValue: _description,
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
@@ -133,6 +189,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                     focusedBorder: InputBorder.none,
                                     disabledBorder: InputBorder.none,
                                     errorBorder: InputBorder.none,
+                                    contentPadding: EdgeInsets.all(0),
                                     focusedErrorBorder: InputBorder.none,
                                     hintText: AppLocalizations.of(context)
                                         .addDescription),
@@ -231,7 +288,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                             onTap: () => showModalBottomSheet(
                                                   context: context,
                                                   builder: (context) {
-                                                    return _buildDatePicker(
+                                                    return _buildTimePicker(
                                                         false);
                                                   },
                                                 ),
@@ -264,6 +321,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   color: grey),
                               title: GestureDetector(
                                   onTap: () async {
+                                    FocusScope.of(context).requestFocus(FocusNode());
                                     var stop = await showDatePicker(
                                         context: context,
                                         initialDate: DateTime.now(),
@@ -302,7 +360,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           title: GestureDetector(
                               onTap: () async {},
                               child: Text(
-                                'alarm',
+                                _alarms.isEmpty ? 'set alarm' : 'alarm',
                                 style: Theme.of(context).textTheme.bodyText1,
                               )))
                     ],
@@ -341,22 +399,6 @@ class _DetailsPageState extends State<DetailsPage> {
             NavigationService().pop();
           },
         ),
-        _edited || !_isEdit()
-            ? IconButton(
-                icon: Icon(
-                  FeatherIcons.save,
-                  color: blue,
-                ),
-                onPressed: () {
-                  if (_isEdit()) {
-                    store.editEvent(_createNewEvent(_showEvent.id));
-                  } else {
-                    store.createEvent(_createNewEvent(null));
-                  }
-                  NavigationService().pop();
-                },
-              )
-            : SizedBox(),
       ],
     );
   }
@@ -369,17 +411,15 @@ class _DetailsPageState extends State<DetailsPage> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: leading != null
-                ? leading
-                : SizedBox(
+            child: leading ?? SizedBox(
                     width: 24,
                     height: 24,
                   ),
           ),
           Expanded(
-            child: title != null ? title : SizedBox(),
+            child: title ?? SizedBox(),
           ),
-          trailing != null ? trailing : SizedBox()
+          trailing ?? SizedBox()
         ],
       ),
     );
@@ -387,6 +427,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Widget _buildDatePicker(bool start) {
     var _current = start ? _startDate : _endDate;
+    FocusScope.of(context).requestFocus(FocusNode());
 
     return Container(
       decoration: BoxDecoration(
@@ -476,6 +517,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Widget _buildTimePicker(bool start) {
     var _current = start ? _startTime : _endTime;
+    FocusScope.of(context).requestFocus(FocusNode());
 
     return Container(
       decoration: BoxDecoration(
@@ -584,6 +626,8 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Widget _buildRepeatModal(BuildContext context) {
     var selected = _repeat.type;
+    FocusScope.of(context).requestFocus(FocusNode());
+
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setRadioState) {
       return Container(

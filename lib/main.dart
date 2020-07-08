@@ -25,9 +25,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _requestIOSPermissions();
-    _configureDidReceiveLocalNotificationSubject();
-    _configureSelectNotificationSubject();
+    Future(() {
+      _requestIOSPermissions();
+      _configureDidReceiveLocalNotificationSubject();
+      _configureSelectNotificationSubject();
+    });
   }
 
   void _requestIOSPermissions() {
@@ -61,8 +63,7 @@ class _MyAppState extends State<MyApp> {
                 var event = await EventsRepository()
                     .event(int.parse(receivedNotification.payload));
                 calendarooState.dispatch(OpenEvent(event));
-                await NavigationService()
-                    .navigateTo(DETAILS, arguments: event);
+                await NavigationService().navigateTo(DETAILS, arguments: event);
               },
             )
           ],

@@ -91,7 +91,9 @@ class CalendarUtils {
           id: null,
           uuid: _uuid.v4(),
           eventId: event.id,
-          title: event.title,
+          title: daySpan > 0
+              ? '${event.title} (${i + 1}/${daySpan + 1})'
+              : '${event.title}',
           start: DateTime(
             index.year,
             index.month,
@@ -125,17 +127,17 @@ class CalendarUtils {
                 duplicator = duplicator.add(Duration(days: 7));
                 break;
               case RepeatType.monthly:
-              // TODO: Handle this case.
+                // TODO: Handle this case.
                 break;
               case RepeatType.yearly:
-              // TODO: Handle this case.
+                // TODO: Handle this case.
                 break;
               case RepeatType.never:
                 break;
             }
 
-            instances.add(
-                instance.copyWith(start: duplicator, end: duplicator.add(span)));
+            instances.add(instance.copyWith(
+                start: duplicator, end: duplicator.add(span)));
           }
         }
         index = index.add(Duration(days: 1));
