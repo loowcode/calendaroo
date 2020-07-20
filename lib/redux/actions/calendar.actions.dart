@@ -45,3 +45,11 @@ class SelectDay {
 
   SelectDay(this.day);
 }
+
+
+class ExpandRange{
+  final Date first;
+  final Date last;
+
+  ExpandRange(this.first, this.last);
+}

@@ -46,8 +46,8 @@ class DatabaseService {
     return id;
   }
 
-  Future<List<Event>> getEvents(Date date) async {
-    return await EventsRepository().nearEvents(date);
+  Future<List<Event>> getEvents(Date rangeStart, Date rangeEnd) async {
+    return await EventsRepository().nearEvents(rangeStart, rangeEnd);
   }
 
   Future<Event> findEventById(int id) {

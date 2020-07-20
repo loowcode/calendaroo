@@ -1,6 +1,5 @@
 import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/model/event.model.dart';
-import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../services/local-storage.service.dart';
@@ -46,10 +45,8 @@ class EventsRepository {
     });
   }
 
-  Future<List<Event>> nearEvents(Date date) async {
+  Future<List<Event>> nearEvents(Date rangeStart, Date rangeEnd) async {
     final client = await LocalStorageService().db;
-    final rangeStart = calendarooState.state.calendarState.startRange;
-    final rangeEnd = calendarooState.state.calendarState.endRange;
     final maps = await client.query('events',
         where: 'start > ? and end < ?',
         whereArgs: [rangeStart.toIso8601String(), rangeEnd.toIso8601String()]);

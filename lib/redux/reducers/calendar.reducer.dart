@@ -12,6 +12,7 @@ final calendarReducer = combineReducers<CalendarState>([
   TypedReducer<CalendarState, LoadedEventsList>(_loadedEventsList),
   TypedReducer<CalendarState, RemoveEvent>(_removeEvent),
   TypedReducer<CalendarState, EditEvent>(_editEvent),
+  TypedReducer<CalendarState, ExpandRange>(_expandRange),
 ]);
 
 CalendarState _addEvent(CalendarState state, AddEvent action) {
@@ -41,6 +42,10 @@ CalendarState _removeEvent(CalendarState state, RemoveEvent action) {
 CalendarState _loadedEventsList(CalendarState state, LoadedEventsList action) {
   return state.copyWith(
       eventsMapped: CalendarUtils.toMappedInstances(action.events));
+}
+
+CalendarState _expandRange(CalendarState state, ExpandRange action) {
+  return state.copyWith(startRange: action.first, endRange: action.last);
 }
 
 // utils

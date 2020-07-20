@@ -2,6 +2,7 @@ import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
+import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:calendaroo/utils/string.utils.dart';
 import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,7 +47,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
   void updateController(DateTime newSelectedDay) {
     if (_calendarController != null) {
       if (newSelectedDay != null &&
-          _calendarController.selectedDay != newSelectedDay) {
+          CalendarUtils.removeTime(_calendarController.selectedDay) != CalendarUtils.removeTime(newSelectedDay)) {
         setState(() {
           _calendarController.setSelectedDay(newSelectedDay);
         });
@@ -58,7 +59,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
     store.selectDay(Date.convertToDate(day));
   }
 
-  void _onVisibleDaysChanged(
+  void _onVisibleDaysChanged(CalendarViewModel state, 
       DateTime first, DateTime last, CalendarFormat format) {
     if (format == CalendarFormat.month) {
       SharedPreferenceService().setCalendarSize('month');
@@ -71,6 +72,13 @@ class _CalendarWidgetState extends State<CalendarWidget>
     if (format == CalendarFormat.week) {
       SharedPreferenceService().setCalendarSize('week');
       _calendarSize = CalendarSize.WEEK;
+    }
+    
+    if (first.isBefore(calendarooState.state.calendarState.startRange)){
+      state.expandRange(Date.convertToDate(calendarooState.state.calendarState.startRange.subtract(Duration(days: 60))), calendarooState.state.calendarState.endRange);
+    }    
+    if (last.isAfter(calendarooState.state.calendarState.endRange)){
+      state.expandRange(calendarooState.state.calendarState.startRange, Date.convertToDate(calendarooState.state.calendarState.endRange.add(Duration(days: 60))));
     }
   }
 
@@ -291,7 +299,9 @@ class _CalendarWidgetState extends State<CalendarWidget>
         _onDaySelected(store, date, events);
         _animationController.forward(from: 0.0);
       },
-      onVisibleDaysChanged: _onVisibleDaysChanged,
+      onVisibleDaysChanged: (first, last, format){
+        _onVisibleDaysChanged(store, first, last, format);
+      },
       onCalendarCreated:
           (DateTime first, DateTime last, CalendarFormat format) =>
               _onCalendarCreated(store, first, last, format),
