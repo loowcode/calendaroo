@@ -34,7 +34,7 @@ class _TodayListWidgetState extends State<TodayListWidget>
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 16),
             child: Column(children: <Widget>[
-              TodayCompletionCircle(),
+              TodayCompletionCircle(events: todayList),
               Row(
                 children: <Widget>[
                   Text(

@@ -4,6 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math.dart' show radians;
 
 class CircleIndicator extends StatefulWidget {
+  final double width;
+  final double height;
+  final List<CircleIndicatorItem> items;
+  final double strokeWidth;
+
+  CircleIndicator({
+    this.items,
+    this.width,
+    this.height,
+    this.strokeWidth = 10.0,
+  });
+
   @override
   _CircleIndicatorState createState() => _CircleIndicatorState();
 }
@@ -11,69 +23,142 @@ class CircleIndicator extends StatefulWidget {
 class _CircleIndicatorState extends State<CircleIndicator> {
   @override
   Widget build(BuildContext context) {
+    var segments = <CircleIndicatorSegment>[];
+
+    widget.items.forEach((element) {
+      segments.add(CircleIndicatorSegment(
+        width: widget.width,
+        height: widget.height,
+        startAngle: element.startAngle,
+        endAngle: element.endAngle,
+        startColor: element.startColor,
+        endColor: element.endColor,
+        strokeWidth: widget.strokeWidth,
+      ));
+    });
+
+    print(segments.length);
+
+    return RotatedBox(
+      quarterTurns: 3,
+      child: Stack(
+        children: segments,
+      ),
+    );
+  }
+}
+
+class CircleIndicatorItem {
+  final double startAngle;
+  final double endAngle;
+  final Color startColor;
+  final Color endColor;
+
+  CircleIndicatorItem({
+    this.startAngle,
+    this.endAngle,
+    this.startColor,
+    this.endColor,
+  });
+}
+
+class CircleIndicatorSegment extends StatefulWidget {
+  final double width;
+  final double height;
+  final double startAngle;
+  final double endAngle;
+  final Color startColor;
+  final Color endColor;
+  final double strokeWidth;
+
+  CircleIndicatorSegment(
+      {this.width,
+      this.height,
+      this.startAngle,
+      this.endAngle,
+      this.startColor,
+      this.endColor,
+      this.strokeWidth = 10.0});
+
+  @override
+  _CircleIndicatorSegmentState createState() => _CircleIndicatorSegmentState();
+}
+
+class _CircleIndicatorSegmentState extends State<CircleIndicatorSegment> {
+  @override
+  Widget build(BuildContext context) {
     return SizedBox(
-      width: 150,
-      height: 150,
+      width: widget.width,
+      height: widget.height,
       child: CustomPaint(
-        size: Size(150, 150),
-        painter: CircleIndicatorPainter(10),
+        size: Size(widget.width, widget.height),
+        painter: CircleIndicatorPainter(
+          startAngle: widget.startAngle,
+          endAngle: widget.endAngle,
+          startColor: widget.startColor,
+          endColor: widget.endColor,
+          strokeWidth: widget.strokeWidth,
+        ),
       ),
     );
   }
 }
 
 class CircleIndicatorPainter extends CustomPainter {
-  final double _strokeWidth;
+  final double strokeWidth;
+  final double startAngle;
+  final double endAngle;
+  final Color startColor;
+  final Color endColor;
 
-  CircleIndicatorPainter(this._strokeWidth);
+  CircleIndicatorPainter(
+      {double startAngle,
+      double endAngle,
+      this.startColor,
+      this.endColor,
+      this.strokeWidth})
+      : startAngle = radians(startAngle),
+        endAngle = radians(endAngle);
 
   @override
   void paint(Canvas canvas, Size size) {
+    final radius = min(size.width, size.height) / 2;
+
     final rect = Rect.fromCircle(
       center: Offset(size.width / 2, size.height / 2),
-      radius: min(size.width, size.height) - _strokeWidth,
+      radius: radius,
     );
 
-    var startAngle = _clampAngle(0.0 - _strokeWidth / 2);
-    var endAngle = _clampAngle(45.0 + _strokeWidth / 2);
-
-    // Swap angles if end angle is less than start angle
-    if (endAngle < startAngle) {
-        /*var tmp = startAngle;
-        startAngle = endAngle;
-        endAngle = tmp;*/
-        endAngle += 360;
-    }
-
-    print(startAngle);
-    print(endAngle);
-
     final gradient = SweepGradient(
-        colors: [
-          Colors.lime,
-          Colors.cyan,
-        ],
-        startAngle: radians(15), //radians(_clampAngle(startAngle)),
-        endAngle: radians(350), //radians(_clampAngle(endAngle)),
-        );
+      colors: [
+        startColor,
+        endColor,
+      ],
+      startAngle: startAngle,
+      endAngle: endAngle,
+      tileMode: TileMode.repeated,
+    );
+
+    var capAngle = (strokeWidth / 2) / radius;
+    var realStartAngle = startAngle + capAngle;
+    var sweepAngle = endAngle - startAngle - (2 * capAngle);
 
     final paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = _strokeWidth
+      ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round
       ..shader = gradient.createShader(rect);
 
-    canvas.drawArc(Rect.fromLTWH(0, 0, size.width, size.height), 0.0,
-        radians(45.0), false, paint);
+    canvas.drawArc(Rect.fromLTWH(0, 0, size.width, size.height), realStartAngle,
+        sweepAngle, false, paint);
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
-  }
-
-  double _clampAngle(double angle) {
-    var clampedAngle = angle % 360;
-    return clampedAngle < 0 ? (360 - clampedAngle) : clampedAngle;
+  bool shouldRepaint(CircleIndicatorPainter oldDelegate) {
+    return oldDelegate.strokeWidth != strokeWidth ||
+        oldDelegate.startAngle != startAngle ||
+        oldDelegate.endAngle != endAngle ||
+        oldDelegate.startColor != startColor ||
+        oldDelegate.endColor != endColor;
   }
 }
