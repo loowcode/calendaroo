@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/widgets/common/circle-indicator.dart';
 import 'package:flutter/material.dart';
@@ -14,20 +16,50 @@ class TodayCompletionCircle extends StatefulWidget {
 class _TodayCompletionCircleState extends State<TodayCompletionCircle> {
   @override
   Widget build(BuildContext context) {
+    var nowAngleNormalized = dateToAngle(DateTime.now()) / 360;
+
     return Padding(
       padding: const EdgeInsets.all(32.0),
-      child: CircleIndicator(
-        items: widget.events
-            .map((event) => CircleIndicatorItem(
-                  startAngle: dateToAngle(event.start),
-                  endAngle: dateToAngle(event.end),
-                  // TODO: colors?
-                  startColor: Colors.green,
-                  endColor: Colors.red,
-                ))
-            .toList(),
+      child: SizedBox(
         width: 150,
         height: 150,
+        child: ShaderMask(
+          shaderCallback: (bounds) {
+            return SweepGradient(
+              startAngle: -pi / 2,
+              endAngle: -pi / 2 + 2 * pi,
+              center: Alignment.center,
+              colors: <Color>[
+                Colors.grey,
+                Colors.grey,
+                Colors.black.withAlpha(0),
+                Colors.black.withAlpha(0),
+              ],
+              stops: [
+                0.0,
+                nowAngleNormalized,
+                nowAngleNormalized,
+                1,
+              ],
+              tileMode: TileMode.repeated,
+            ).createShader(bounds);
+          },
+          child: CircleIndicator(
+            items: widget.events
+                .map((event) => CircleIndicatorItem(
+                      startAngle: dateToAngle(event.start),
+                      endAngle: dateToAngle(event.end),
+                      // TODO: colors?
+                      startColor: Colors.green,
+                      endColor: Colors.red,
+                    ))
+                .toList(),
+            width: 150,
+            height: 150,
+            strokeWidth: 10,
+          ),
+          blendMode: BlendMode.srcATop,
+        ),
       ),
     );
   }

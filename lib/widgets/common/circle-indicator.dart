@@ -37,12 +37,12 @@ class _CircleIndicatorState extends State<CircleIndicator> {
       ));
     });
 
-    print(segments.length);
-
     return RotatedBox(
       quarterTurns: 3,
-      child: Stack(
-        children: segments,
+      child: Center(
+        child: Stack(
+          children: segments,
+        ),
       ),
     );
   }
@@ -87,18 +87,15 @@ class CircleIndicatorSegment extends StatefulWidget {
 class _CircleIndicatorSegmentState extends State<CircleIndicatorSegment> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: widget.width,
-      height: widget.height,
-      child: CustomPaint(
-        size: Size(widget.width, widget.height),
-        painter: CircleIndicatorPainter(
-          startAngle: widget.startAngle,
-          endAngle: widget.endAngle,
-          startColor: widget.startColor,
-          endColor: widget.endColor,
-          strokeWidth: widget.strokeWidth,
-        ),
+    return CustomPaint(
+      size: Size(widget.width - widget.strokeWidth,
+          widget.height - widget.strokeWidth),
+      painter: CircleIndicatorPainter(
+        startAngle: widget.startAngle,
+        endAngle: widget.endAngle,
+        startColor: widget.startColor,
+        endColor: widget.endColor,
+        strokeWidth: widget.strokeWidth,
       ),
     );
   }
