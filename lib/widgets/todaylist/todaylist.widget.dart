@@ -1,4 +1,4 @@
-import 'package:calendaroo/model/date.dart';
+import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/widgets/card/card.widget.dart';
@@ -30,7 +30,7 @@ class _TodayListWidgetState extends State<TodayListWidget>
     return StoreConnector<AppState, TodayListViewModel>(
         converter: (store) => TodayListViewModel.fromStore(store),
         builder: (context, store) {
-          var todayList = store.eventMapped[Date.today()];
+          var todayList = store.eventMapped[Date.today()] ?? [];
           return Container(
             margin: EdgeInsets.symmetric(horizontal: 16),
             child: Column(children: <Widget>[

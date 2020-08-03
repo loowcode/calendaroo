@@ -1,15 +1,17 @@
 import 'package:calendaroo/colors.dart';
+import 'package:calendaroo/model/alarm.model.dart';
 import 'package:calendaroo/model/event.model.dart';
+import 'package:calendaroo/model/repeat.model.dart';
 import 'package:calendaroo/pages/details/details.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
+import 'package:calendaroo/utils/event.utils.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../theme.dart';
 
@@ -29,39 +31,98 @@ class _DetailsPageState extends State<DetailsPage> {
   DateTime _endDate;
   DateTime _startTime;
   DateTime _endTime;
-  bool _allDay = false;
+  bool _allDay;
   Event _showEvent;
+  Repeat _repeat;
+  DateTime _until;
+  List<Alarm> _alarms;
 
   bool _edited;
 
   @override
   void initState() {
     super.initState();
-    _showEvent = widget.event;
-    _title = _showEvent?.title ?? '';
-    _description = _showEvent?.description ?? '';
     final now = DateTime.now();
     var defaultTime = now;
     if (calendarooState.state.calendarState.selectedDay.isAfter(now)) {
       defaultTime = DateTime(now.year, now.month, now.day, 8, 0, 0);
     }
+
+    _showEvent = widget.event;
+    _title = _showEvent?.title ?? '';
+    _description = _showEvent?.description ?? '';
     _startDate =
         _showEvent?.start ?? calendarooState.state.calendarState.selectedDay;
     _startTime = _showEvent?.start ?? defaultTime;
     _endDate = _showEvent?.end ?? _startDate;
     _endTime = _showEvent?.end ?? defaultTime.add(Duration(hours: 1));
 
+    _allDay = _showEvent?.allDay ?? false;
+    _repeat = _showEvent?.repeat ?? Repeat(type: RepeatType.never);
+    _alarms = [Alarm(1, _startDate.subtract(Duration(minutes: 15)), false)];
+
     _edited = false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StoreConnector<AppState, DetailsViewModel>(
-          converter: (store) => DetailsViewModel.fromStore(store),
-          builder: (context, store) {
-            return _buildPage(store);
-          }),
+    return StoreConnector<AppState, DetailsViewModel>(
+        converter: (store) => DetailsViewModel.fromStore(store),
+        builder: (context, store) {
+          return Scaffold(
+              body: _buildPage(store),
+              bottomNavigationBar: BottomAppBar(
+                child: Container(
+                  child: _buildBottomBar(store),
+                ),
+                color: white,
+              ));
+        });
+  }
+
+  Row _buildBottomBar(DetailsViewModel store) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.attach_file,
+            color: grey,
+          ),
+          onPressed: () => null,
+        ),
+        IconButton(
+          icon: Icon(
+            FeatherIcons.trash,
+            color: grey,
+          ),
+          onPressed: () {
+            store.deleteEvent();
+            NavigationService().pop();
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            FeatherIcons.save,
+            color: _edited || !_isEdit() ? blue : grey,
+          ),
+          onPressed: () {
+            if (_isEdit()) {
+              store.editEvent(_createNewEvent(_showEvent.id));
+            } else {
+              store.createEvent(_createNewEvent(null));
+            }
+            NavigationService().pop();
+          },
+        ),
+        IconButton(
+          icon: Icon(
+            FeatherIcons.moreVertical,
+            color: grey,
+          ),
+          onPressed: null,
+        ),
+      ],
     );
   }
 
@@ -86,6 +147,9 @@ class _DetailsPageState extends State<DetailsPage> {
                       Container(
                         margin: EdgeInsets.only(left: 32),
                         child: TextFormField(
+                          maxLines: 3,
+                          minLines: 1,
+                          scrollPadding: EdgeInsets.all(0),
                           initialValue: _title,
                           decoration: InputDecoration(
                               border: InputBorder.none,
@@ -96,7 +160,6 @@ class _DetailsPageState extends State<DetailsPage> {
                               focusedErrorBorder: InputBorder.none,
                               hintText: AppLocalizations.of(context).addTitle),
                           style: Theme.of(context).textTheme.headline4,
-                          maxLines: 1,
                           onChanged: (value) {
                             setState(() {
                               _title = value;
@@ -107,63 +170,42 @@ class _DetailsPageState extends State<DetailsPage> {
                       ),
                       Container(
                           margin: EdgeInsets.only(left: 32),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.alarm, color: _allDay ? grey : blue),
-                              Container(
-                                  margin: EdgeInsets.only(left: 8),
-                                  child: Icon(Icons.refresh, color: grey))
-                            ],
-                          )),
-                      _rowTile(
-                        Icon(Icons.subject, color: grey),
-                        TextFormField(
-                          initialValue: _description,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              focusedErrorBorder: InputBorder.none,
-                              hintText: AppLocalizations.of(context).addDescription),
-                          style: Theme.of(context).textTheme.bodyText1,
-                          onChanged: (value) {
-                            setState(() {
-                              _description = value;
-                              _edited = true;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 52,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
+                          child: _buildBadges()),
+                      Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 40),
-                              child: Text(
-                                AppLocalizations.of(context).allDay,
-                                style: Theme.of(context).textTheme.bodyText2,
+                                padding: EdgeInsets.only(top: 0, right: 16),
+                                child: Icon(Icons.subject, color: grey)),
+                            Expanded(
+                              child: TextFormField(
+                                maxLines: 4,
+                                minLines: 1,
+                                scrollPadding: EdgeInsets.all(0),
+                                initialValue: _description,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    disabledBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
+                                    contentPadding: EdgeInsets.all(0),
+                                    focusedErrorBorder: InputBorder.none,
+                                    hintText: AppLocalizations.of(context)
+                                        .addDescription),
+                                style: Theme.of(context).textTheme.bodyText1,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _description = value;
+                                    _edited = true;
+                                  });
+                                },
                               ),
                             ),
-                            CupertinoSwitch(
-                              value: _allDay,
-                              activeColor: blue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _allDay = value;
-                                  _edited = true;
-                                });
-                              },
-                            )
-                          ],
-                        ),
-                      ),
+                          ]),
                       _rowTile(
-                          Icon(FeatherIcons.calendar, color: grey),
-                          GestureDetector(
+                          leading: Icon(FeatherIcons.calendar, color: grey),
+                          title: GestureDetector(
                               onTap: () => showModalBottomSheet(
                                     context: context,
                                     builder: (context) {
@@ -175,10 +217,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                 style: Theme.of(context).textTheme.subtitle1,
                               ))),
                       _rowTile(
-                          SizedBox(
+                          leading: SizedBox(
                             width: 24,
                           ),
-                          GestureDetector(
+                          title: GestureDetector(
                               onTap: () => showModalBottomSheet(
                                     context: context,
                                     builder: (context) {
@@ -189,9 +231,24 @@ class _DetailsPageState extends State<DetailsPage> {
                                 _formatterDate.format(_endDate),
                                 style: Theme.of(context).textTheme.subtitle1,
                               ))),
+                      _rowTile(
+                          title: Text(
+                            AppLocalizations.of(context).allDay,
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                          trailing: CupertinoSwitch(
+                            value: _allDay,
+                            activeColor: blue,
+                            onChanged: (value) {
+                              setState(() {
+                                _allDay = value;
+                                _edited = true;
+                              });
+                            },
+                          )),
                       !_allDay
                           ? SizedBox(
-                              height: 52,
+                              height: 42,
                               child: Row(
                                 children: <Widget>[
                                   Row(
@@ -231,7 +288,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                             onTap: () => showModalBottomSheet(
                                                   context: context,
                                                   builder: (context) {
-                                                    return _buildDatePicker(
+                                                    return _buildTimePicker(
                                                         false);
                                                   },
                                                 ),
@@ -247,6 +304,69 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ],
                               ))
                           : SizedBox(),
+                      _rowTile(
+                          leading: Icon(FeatherIcons.repeat, color: grey),
+                          title: GestureDetector(
+                              onTap: () => showModalBottomSheet(
+                                    context: context,
+                                    builder: _buildRepeatModal,
+                                  ),
+                              child: Text(
+                                AppLocalizations.of(context).translate(
+                                    Repeat.repeatToString(_repeat.type)),
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ))),
+                      _repeat.type != RepeatType.never
+                          ? _rowTile(
+                              leading: Icon(Icons.vertical_align_bottom,
+                                  color: grey),
+                              title: GestureDetector(
+                                  onTap: () async {
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                    var stop = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: _startDate,
+                                        lastDate: DateTime(3000));
+                                    if (stop != null) {
+                                      setState(() {
+                                        _until = stop;
+                                        _edited = true;
+                                      });
+                                    }
+                                  },
+                                  child: Text(
+                                    _until != null
+                                        ? '${AppLocalizations.of(context).until} ${_formatterDate.format(_until)}'
+                                        : AppLocalizations.of(context)
+                                            .setStopDate,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                    maxLines: 2,
+                                  )),
+                              trailing: _until != null
+                                  ? IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _until = null;
+                                        });
+                                      },
+                                      icon: Icon(Icons.close, color: grey),
+                                    )
+                                  : SizedBox())
+                          : SizedBox(),
+                      _rowTile(
+                          leading: Icon(
+                            FeatherIcons.bell,
+                            color: grey,
+                          ),
+                          title: GestureDetector(
+                              onTap: () async {},
+                              child: Text(
+                                _alarms.isEmpty ? 'set alarm' : 'alarm',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              )))
                     ],
                   ),
                 )
@@ -256,48 +376,55 @@ class _DetailsPageState extends State<DetailsPage> {
         ]));
   }
 
-  Row _buildAppBar(DetailsViewModel store) {
-    return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(
-                FeatherIcons.arrowLeft,
-              ),
-              onPressed: () {
-                NavigationService().pop();
-              },
-            ),
-            _edited || !_isEdit()
-                ? IconButton(
-                    icon: Icon(
-                      FeatherIcons.save,
-                      color: blue,
-                    ),
-                    onPressed: () {
-                      if (_isEdit()) {
-                        store.editEvent(_createNewEvent(_showEvent.id));
-                      } else {
-                        store.createEvent(_createNewEvent(null));
-                      }
-                      NavigationService().pop();
-                    },
-                  )
-                : SizedBox(),
-          ],
-        );
+  Widget _buildBadges() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.alarm, color: _allDay ? grey : blue),
+          Container(
+              margin: EdgeInsets.only(left: 8),
+              child: Icon(FeatherIcons.repeat,
+                  color: _repeat.type == RepeatType.never ? grey : blue))
+        ],
+      ),
+    );
   }
 
-  Widget _rowTile(Widget leading, Widget title) {
+  Row _buildAppBar(DetailsViewModel store) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(
+            FeatherIcons.arrowLeft,
+          ),
+          onPressed: () {
+            NavigationService().pop();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _rowTile({Widget leading, Widget title, Widget trailing}) {
     return SizedBox(
-      height: 52,
+      height: 42,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: leading,
+            child: leading ??
+                SizedBox(
+                  width: 24,
+                  height: 24,
+                ),
           ),
-          Expanded(child: title),
+          Expanded(
+            child: title ?? SizedBox(),
+          ),
+          trailing ?? SizedBox()
         ],
       ),
     );
@@ -305,6 +432,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Widget _buildDatePicker(bool start) {
     var _current = start ? _startDate : _endDate;
+    FocusScope.of(context).requestFocus(FocusNode());
 
     return Container(
       decoration: BoxDecoration(
@@ -394,6 +522,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Widget _buildTimePicker(bool start) {
     var _current = start ? _startTime : _endTime;
+    FocusScope.of(context).requestFocus(FocusNode());
 
     return Container(
       decoration: BoxDecoration(
@@ -486,15 +615,116 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   Event _createNewEvent(int id) {
-    var uuid = Uuid();
-    return Event(
-        id: id,
-        title: _title,
-        uuid: uuid.v4(),
-        description: _description,
-        start: DateTime(_startDate.year, _startDate.month, _startDate.day,
-            _startTime.hour, _startTime.minute),
-        end: DateTime(_endDate.year, _endDate.month, _endDate.day,
-            _endTime.hour, _endTime.minute));
+    return EventUtils.createNewEvent(
+      id: id,
+      title: _title,
+      description: _description,
+      start: DateTime(_startDate.year, _startDate.month, _startDate.day,
+          _startTime.hour, _startTime.minute),
+      end: DateTime(_endDate.year, _endDate.month, _endDate.day, _endTime.hour,
+          _endTime.minute),
+      allDay: _allDay,
+      repeat: _repeat,
+      until: _until,
+    );
+  }
+
+  Widget _buildRepeatModal(BuildContext context) {
+    var selected = _repeat.type;
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setRadioState) {
+      return Container(
+          decoration: BoxDecoration(
+            color: AppTheme.primaryTheme.backgroundColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
+            ),
+          ),
+          child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  RepeatType.daily,
+                  RepeatType.weekly,
+                  RepeatType.monthly,
+                  RepeatType.yearly,
+                  RepeatType.never
+                ]
+                    .map((elem) => Row(children: <Widget>[
+                          Radio(
+                            value: elem,
+                            groupValue: selected,
+                            onChanged: (RepeatType value) {
+                              setRadioState(() => selected = value);
+                            },
+                          ),
+                          Text(
+                            AppLocalizations.of(context)
+                                .translate(Repeat.repeatToString(elem)),
+                            style: Theme.of(context).textTheme.bodyText1,
+                          )
+                        ]) as Widget)
+                    .toList()
+                      ..addAll(<Widget>[
+                        Expanded(
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: FlatButton(
+                                      textColor: blue,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Text(AppLocalizations.of(context)
+                                            .cancel),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Text(
+                                            AppLocalizations.of(context).save),
+                                      ),
+                                      color: AppTheme.primaryTheme.buttonColor,
+                                      textColor: AppTheme
+                                          .primaryTheme.textTheme.button.color,
+                                      onPressed: () {
+                                        setState(() {
+                                          _repeat.type = selected;
+                                          _edited = true;
+                                        });
+
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ]),
+                        )
+                      ]),
+              )));
+    });
   }
 }

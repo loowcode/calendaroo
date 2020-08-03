@@ -1,4 +1,4 @@
-import 'package:calendaroo/model/date.dart';
+import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 
 class LoadedEventsList {
@@ -44,4 +44,12 @@ class SelectDay {
   final Date day;
 
   SelectDay(this.day);
+}
+
+
+class ExpandRange{
+  final Date first;
+  final Date last;
+
+  ExpandRange(this.first, this.last);
 }

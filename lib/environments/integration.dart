@@ -4,7 +4,9 @@ import 'package:calendaroo/services/initializer-app.service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() async {
-  await InitializerAppService().setUp(INTEGRATION, VERSION);
+void main() {
+  Future(() {
+    InitializerAppService().setUp(INTEGRATION, VERSION);
+  });
   runApp(MyApp());
 }

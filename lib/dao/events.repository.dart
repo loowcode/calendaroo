@@ -1,4 +1,4 @@
-import 'package:calendaroo/model/date.dart';
+import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -45,22 +45,13 @@ class EventsRepository {
     });
   }
 
-  Future<List<Event>> nearEvents(Date date) async {
+  Future<List<Event>> nearEvents(Date rangeStart, Date rangeEnd) async {
     final client = await LocalStorageService().db;
-    final rangeStart = date.subtract(Duration(days: 60));
-    final rangeEnd = date.add(Duration(days: 60));
     final maps = await client.query('events',
         where: 'start > ? and end < ?',
         whereArgs: [rangeStart.toIso8601String(), rangeEnd.toIso8601String()]);
     return List.generate(maps.length, (i) {
-      return Event(
-        id: maps[i]['id'] as int,
-        title: maps[i]['title'] as String,
-        uuid: maps[i]['uuid'] as String,
-        description: maps[i]['description'] as String,
-        start: DateTime.parse(maps[i]['start'] as String),
-        end: DateTime.parse(maps[i]['end'] as String),
-      );
+      return Event.fromMap(maps[i]);
     });
   }
 }

@@ -29,6 +29,11 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
       await NotificationService().cancelForEvent(action.event);
     }
 
+    if (action is ExpandRange) {
+      var eventsList = await DatabaseService().getEvents(action.first, action.last);
+      next(LoadedEventsList(eventsList));
+    }
+
     if (action is DoToEvent) {
       var event = await DatabaseService().findEventById(action.eventId);
       switch (action.action) {
