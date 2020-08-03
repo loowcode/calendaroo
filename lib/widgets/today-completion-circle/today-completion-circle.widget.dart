@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/widgets/common/circle-indicator.dart';
 import 'package:flutter/material.dart';
@@ -49,9 +50,8 @@ class _TodayCompletionCircleState extends State<TodayCompletionCircle> {
                 .map((event) => CircleIndicatorItem(
                       startAngle: dateToAngle(event.start),
                       endAngle: dateToAngle(event.end),
-                      // TODO: colors?
-                      startColor: Colors.green,
-                      endColor: Colors.red,
+                      startColor: blueGradient[0],
+                      endColor: blueGradient[1],
                     ))
                 .toList(),
             width: 150,
