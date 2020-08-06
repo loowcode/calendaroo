@@ -44,8 +44,8 @@ class _TodayListWidgetState extends State<TodayListWidget>
                       padding: EdgeInsets.only(left: 8),
                       child:Text('${todayList.length}')),
                 ],
-              ),
-            ]..addAll(todayList.map((event) => CardWidget(event)))),
+              ), ...todayList.map((event) => CardWidget(event)),
+            ]),
           );
         });
   }
