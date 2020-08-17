@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:weather/weather_library.dart';
+import 'package:weather/weather.dart';
 
 class WeatherService {
   WeatherService._();
@@ -28,9 +28,9 @@ class WeatherService {
 
       var apiKey =
           await rootBundle.loadString('assets/secret/openweather-key.txt');
-      var weatherStation = WeatherStation(apiKey);
+      var weatherStation = WeatherFactory(apiKey);
 
-      var weather = await weatherStation.currentWeather(
+      var weather = await weatherStation.currentWeatherByLocation(
           position.latitude, position.longitude);
 
       switch (weather.weatherIcon) {

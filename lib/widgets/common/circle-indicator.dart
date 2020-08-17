@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:calendaroo/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math.dart' show radians;
 
@@ -23,19 +24,26 @@ class CircleIndicator extends StatefulWidget {
 class _CircleIndicatorState extends State<CircleIndicator> {
   @override
   Widget build(BuildContext context) {
-    var segments = <CircleIndicatorSegment>[];
-
-    widget.items.forEach((element) {
-      segments.add(CircleIndicatorSegment(
-        width: widget.width,
-        height: widget.height,
-        startAngle: element.startAngle,
-        endAngle: element.endAngle,
-        startColor: element.startColor,
-        endColor: element.endColor,
-        strokeWidth: widget.strokeWidth,
-      ));
-    });
+    var segments = [
+          CircleIndicatorSegment(
+              width: widget.width,
+              height: widget.height,
+              startAngle: 0,
+              endAngle: 380,
+              startColor: transparentGrey,
+              endColor: transparentGrey,
+              strokeWidth: widget.strokeWidth)
+        ] +
+        widget.items
+            .map((element) => CircleIndicatorSegment(
+                width: widget.width,
+                height: widget.height,
+                startAngle: element.startAngle,
+                endAngle: element.endAngle,
+                startColor: element.startColor,
+                endColor: element.endColor,
+                strokeWidth: widget.strokeWidth))
+            .toList();
 
     return RotatedBox(
       quarterTurns: 3,

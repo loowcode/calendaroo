@@ -33,7 +33,7 @@ dependencies:
   flutter_local_notifications: ^1.4.3
   url_launcher: ^5.4.11
   flutter_alert: ^0.4.0
-  weather: 1.1.1
+  weather: ^1.2.2
   geolocator: ^5.3.2+2
   feather_icons_flutter: ^4.7.4
   flutter_circular_chart: ^0.1.0
