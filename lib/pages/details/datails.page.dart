@@ -82,15 +82,15 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Row _buildBottomBar(DetailsViewModel store) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        IconButton(
-          icon: Icon(
-            Icons.attach_file,
-            color: grey,
-          ),
-          onPressed: () => null,
-        ),
+        // IconButton(
+        //   icon: Icon(
+        //     Icons.attach_file,
+        //     color: grey,
+        //   ),
+        //   onPressed: () => null,
+        // ),
         IconButton(
           icon: Icon(
             FeatherIcons.trash,
@@ -115,13 +115,13 @@ class _DetailsPageState extends State<DetailsPage> {
             NavigationService().pop();
           },
         ),
-        IconButton(
-          icon: Icon(
-            FeatherIcons.moreVertical,
-            color: grey,
-          ),
-          onPressed: null,
-        ),
+        // IconButton(
+        //   icon: Icon(
+        //     FeatherIcons.moreVertical,
+        //     color: grey,
+        //   ),
+        //   onPressed: null,
+        // ),
       ],
     );
   }
@@ -168,9 +168,9 @@ class _DetailsPageState extends State<DetailsPage> {
                           },
                         ),
                       ),
-                      Container(
-                          margin: EdgeInsets.only(left: 32),
-                          child: _buildBadges()),
+                      // Container(
+                      //     margin: EdgeInsets.only(left: 32),
+                      //     child: _buildBadges()),
                       Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -239,7 +239,7 @@ class _DetailsPageState extends State<DetailsPage> {
                           trailing: CupertinoSwitch(
                             value: _allDay,
                             activeColor: blue,
-                            onChanged: (value) {
+                            onChanged: (bool value) {
                               setState(() {
                                 _allDay = value;
                                 _edited = true;
@@ -304,69 +304,69 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ],
                               ))
                           : SizedBox(),
-                      _rowTile(
-                          leading: Icon(FeatherIcons.repeat, color: grey),
-                          title: GestureDetector(
-                              onTap: () => showModalBottomSheet(
-                                    context: context,
-                                    builder: _buildRepeatModal,
-                                  ),
-                              child: Text(
-                                AppLocalizations.of(context).translate(
-                                    Repeat.repeatToString(_repeat.type)),
-                                style: Theme.of(context).textTheme.bodyText1,
-                              ))),
-                      _repeat.type != RepeatType.never
-                          ? _rowTile(
-                              leading: Icon(Icons.vertical_align_bottom,
-                                  color: grey),
-                              title: GestureDetector(
-                                  onTap: () async {
-                                    FocusScope.of(context)
-                                        .requestFocus(FocusNode());
-                                    var stop = await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(),
-                                        firstDate: _startDate,
-                                        lastDate: DateTime(3000));
-                                    if (stop != null) {
-                                      setState(() {
-                                        _until = stop;
-                                        _edited = true;
-                                      });
-                                    }
-                                  },
-                                  child: Text(
-                                    _until != null
-                                        ? '${AppLocalizations.of(context).until} ${_formatterDate.format(_until)}'
-                                        : AppLocalizations.of(context)
-                                            .setStopDate,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
-                                    maxLines: 2,
-                                  )),
-                              trailing: _until != null
-                                  ? IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _until = null;
-                                        });
-                                      },
-                                      icon: Icon(Icons.close, color: grey),
-                                    )
-                                  : SizedBox())
-                          : SizedBox(),
-                      _rowTile(
-                          leading: Icon(
-                            FeatherIcons.bell,
-                            color: grey,
-                          ),
-                          title: GestureDetector(
-                              onTap: () async {},
-                              child: Text(
-                                _alarms.isEmpty ? 'set alarm' : 'alarm',
-                                style: Theme.of(context).textTheme.bodyText1,
-                              )))
+                      // _rowTile(
+                      //     leading: Icon(FeatherIcons.repeat, color: grey),
+                      //     title: GestureDetector(
+                      //         onTap: () => showModalBottomSheet(
+                      //               context: context,
+                      //               builder: _buildRepeatModal,
+                      //             ),
+                      //         child: Text(
+                      //           AppLocalizations.of(context).translate(
+                      //               Repeat.repeatToString(_repeat.type)),
+                      //           style: Theme.of(context).textTheme.bodyText1,
+                      //         ))),
+                      // _repeat.type != RepeatType.never
+                      //     ? _rowTile(
+                      //         leading: Icon(Icons.vertical_align_bottom,
+                      //             color: grey),
+                      //         title: GestureDetector(
+                      //             onTap: () async {
+                      //               FocusScope.of(context)
+                      //                   .requestFocus(FocusNode());
+                      //               var stop = await showDatePicker(
+                      //                   context: context,
+                      //                   initialDate: DateTime.now(),
+                      //                   firstDate: _startDate,
+                      //                   lastDate: DateTime(3000));
+                      //               if (stop != null) {
+                      //                 setState(() {
+                      //                   _until = stop;
+                      //                   _edited = true;
+                      //                 });
+                      //               }
+                      //             },
+                      //             child: Text(
+                      //               _until != null
+                      //                   ? '${AppLocalizations.of(context).until} ${_formatterDate.format(_until)}'
+                      //                   : AppLocalizations.of(context)
+                      //                       .setStopDate,
+                      //               style:
+                      //                   Theme.of(context).textTheme.bodyText1,
+                      //               maxLines: 2,
+                      //             )),
+                      //         trailing: _until != null
+                      //             ? IconButton(
+                      //                 onPressed: () {
+                      //                   setState(() {
+                      //                     _until = null;
+                      //                   });
+                      //                 },
+                      //                 icon: Icon(Icons.close, color: grey),
+                      //               )
+                      //             : SizedBox())
+                      //     : SizedBox(),
+                      // _rowTile(
+                      //     leading: Icon(
+                      //       FeatherIcons.bell,
+                      //       color: grey,
+                      //     ),
+                      //     title: GestureDetector(
+                      //         onTap: () async {},
+                      //         child: Text(
+                      //           _alarms.isEmpty ? 'set alarm' : 'alarm',
+                      //           style: Theme.of(context).textTheme.bodyText1,
+                      //         )))
                     ],
                   ),
                 )
@@ -454,7 +454,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 initialDateTime: start ? _startDate : _endDate,
                 minimumDate: start ? null : _startDate,
                 mode: CupertinoDatePickerMode.date,
-                onDateTimeChanged: (value) {
+                onDateTimeChanged: (DateTime value) {
                   _current = value;
                 },
               ),
@@ -544,7 +544,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 initialDateTime: start ? _startTime : _endTime,
                 minimumDate: start ? null : _startTime,
                 mode: CupertinoDatePickerMode.time,
-                onDateTimeChanged: (value) {
+                onDateTimeChanged: (DateTime value) {
                   _current = value;
                 },
               ),

@@ -23,7 +23,7 @@ class WeatherService {
         return resultCached;
       }
       timestamp = DateTime.now();
-      var position = await Geolocator()
+      var position = await Geolocator
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
       var apiKey =

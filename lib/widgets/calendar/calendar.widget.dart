@@ -2,7 +2,6 @@ import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
-import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:calendaroo/utils/string.utils.dart';
 import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,8 +45,9 @@ class _CalendarWidgetState extends State<CalendarWidget>
 
   void updateController(DateTime newSelectedDay) {
     if (_calendarController != null) {
-      if (newSelectedDay != null &&
-          CalendarUtils.removeTime(_calendarController.selectedDay) != CalendarUtils.removeTime(newSelectedDay)) {
+      if (newSelectedDay != null
+          // && CalendarUtils.removeTime(_calendarController.selectedDay) != CalendarUtils.removeTime(newSelectedDay)
+          ) {
         setState(() {
           _calendarController.setSelectedDay(newSelectedDay);
         });
@@ -59,8 +59,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
     store.selectDay(Date.convertToDate(day));
   }
 
-  void _onVisibleDaysChanged(CalendarViewModel state, 
-      DateTime first, DateTime last, CalendarFormat format) {
+  void _onVisibleDaysChanged(CalendarViewModel state, DateTime first,
+      DateTime last, CalendarFormat format) {
     if (format == CalendarFormat.month) {
       SharedPreferenceService().setCalendarSize('month');
       _calendarSize = CalendarSize.MONTH;
@@ -73,12 +73,18 @@ class _CalendarWidgetState extends State<CalendarWidget>
       SharedPreferenceService().setCalendarSize('week');
       _calendarSize = CalendarSize.WEEK;
     }
-    
-    if (first.isBefore(calendarooState.state.calendarState.startRange)){
-      state.expandRange(Date.convertToDate(calendarooState.state.calendarState.startRange.subtract(Duration(days: 60))), calendarooState.state.calendarState.endRange);
-    }    
-    if (last.isAfter(calendarooState.state.calendarState.endRange)){
-      state.expandRange(calendarooState.state.calendarState.startRange, Date.convertToDate(calendarooState.state.calendarState.endRange.add(Duration(days: 60))));
+
+    if (first.isBefore(calendarooState.state.calendarState.startRange)) {
+      state.expandRange(
+          Date.convertToDate(calendarooState.state.calendarState.startRange
+              .subtract(Duration(days: 60))),
+          calendarooState.state.calendarState.endRange);
+    }
+    if (last.isAfter(calendarooState.state.calendarState.endRange)) {
+      state.expandRange(
+          calendarooState.state.calendarState.startRange,
+          Date.convertToDate(calendarooState.state.calendarState.endRange
+              .add(Duration(days: 60))));
     }
   }
 
@@ -207,7 +213,6 @@ class _CalendarWidgetState extends State<CalendarWidget>
                       Icons.today,
                       color: white,
                     )),
-
               ],
             ),
           ],
@@ -234,19 +239,22 @@ class _CalendarWidgetState extends State<CalendarWidget>
       },
       locale: locale.toString(),
       calendarStyle: CalendarStyle(
-          outsideDaysVisible: true,
-          outsideHolidayStyle: TextStyle()
-              .copyWith(fontWeight: FontWeight.w600, color: transparentWhite),
-          outsideWeekendStyle: TextStyle()
-              .copyWith(fontWeight: FontWeight.w600, color: transparentWhite),
-          outsideStyle: TextStyle()
-              .copyWith(fontWeight: FontWeight.w600, color: transparentWhite),
-          weekendStyle:
-              TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
-          holidayStyle:
-              TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
-          weekdayStyle:
-              TextStyle().copyWith(fontWeight: FontWeight.w600, color: white)),
+        outsideDaysVisible: true,
+        outsideHolidayStyle: TextStyle()
+            .copyWith(fontWeight: FontWeight.w600, color: transparentWhite),
+        outsideWeekendStyle: TextStyle()
+            .copyWith(fontWeight: FontWeight.w600, color: transparentWhite),
+        outsideStyle: TextStyle()
+            .copyWith(fontWeight: FontWeight.w600, color: transparentWhite),
+        weekendStyle:
+            TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+        holidayStyle:
+            TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+        weekdayStyle:
+            TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+        eventDayStyle:
+            TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+      ),
       daysOfWeekStyle: DaysOfWeekStyle(
           weekendStyle: TextStyle().copyWith(color: white),
           weekdayStyle: TextStyle().copyWith(color: white)),
@@ -295,11 +303,11 @@ class _CalendarWidgetState extends State<CalendarWidget>
           return children;
         },
       ),
-      onDaySelected: (date, events) {
+      onDaySelected: (date, events, holidays) {
         _onDaySelected(store, date, events);
         _animationController.forward(from: 0.0);
       },
-      onVisibleDaysChanged: (first, last, format){
+      onVisibleDaysChanged: (first, last, format) {
         _onVisibleDaysChanged(store, first, last, format);
       },
       onCalendarCreated:

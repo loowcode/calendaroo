@@ -176,9 +176,17 @@ class CalendarUtils {
   }
 
   static int getIndex(Map<Date, List<EventInstance>> map, Date day) {
-//    if (map.keys.length == null || map.keys.isEmpty) return 0;
-    // TODO if no event go to near day with events
-    return map.keys.toList().indexOf(day);
+    var list = map.keys.toList();
+    var index = list.indexOf(day);
+    if (index < 0) {
+      for (var key in list) {
+        if (day.isBefore(key)) {
+          index = list.indexOf(key);
+          break;
+        }
+      }
+    }
+    return index;
   }
 
   static DateTime removeTime(DateTime input) {

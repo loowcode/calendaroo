@@ -66,14 +66,14 @@ class _ContainerPageState extends State<ContainerPage>
                       color: _index == 1 ? blue : grey,
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    iconSize: 27.0,
-                    icon: Icon(
-                      FeatherIcons.pieChart,
-                      color: _index == 2 ? blue : grey,
-                    ),
-                  ),
+                  // IconButton(
+                  //   onPressed: () {},
+                  //   iconSize: 27.0,
+                  //   icon: Icon(
+                  //     FeatherIcons.pieChart,
+                  //     color: _index == 2 ? blue : grey,
+                  //   ),
+                  // ),
                   //to leave space in between the bottom app bar items and below the FAB
                   SizedBox(
                     width: 50.0,

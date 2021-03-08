@@ -26,7 +26,7 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
     case DETAILS:
       return MaterialPageRoute(
           builder: (context) =>
-              DetailsPage(ModalRoute.of(context).settings.arguments as Event),
+              DetailsPage(settings.arguments as Event),
           settings: settings);
     default:
       return MaterialPageRoute(
