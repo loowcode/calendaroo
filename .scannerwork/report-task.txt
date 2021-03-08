@@ -1,6 +1,0 @@
-projectKey=calendaroo
-serverUrl=http://localhost:9000
-serverVersion=7.7.0.23042
-dashboardUrl=http://localhost:9000/dashboard?id=calendaroo
-ceTaskId=AXLGvjJfkiYUOLzn9ZUO
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AXLGvjJfkiYUOLzn9ZUO
