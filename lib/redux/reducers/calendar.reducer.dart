@@ -1,7 +1,8 @@
+import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/calendar.state.dart';
-import 'package:calendaroo/services/calendar.service.dart';
+import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:redux/redux.dart';
 
 final calendarReducer = combineReducers<CalendarState>([
@@ -11,83 +12,72 @@ final calendarReducer = combineReducers<CalendarState>([
   TypedReducer<CalendarState, LoadedEventsList>(_loadedEventsList),
   TypedReducer<CalendarState, RemoveEvent>(_removeEvent),
   TypedReducer<CalendarState, EditEvent>(_editEvent),
+  TypedReducer<CalendarState, ExpandRange>(_expandRange),
 ]);
 
 CalendarState _addEvent(CalendarState state, AddEvent action) {
-  _saveIntoStore(state, action.event);
-  final newEvents = state.events..add(action.event);
-  return state.copyWith(events: newEvents);
+  _addIntoStore(state, action.event);
+  return state;
 }
 
 CalendarState _editEvent(CalendarState state, EditEvent action) {
-  _editIntoStore(state, action.oldEvent, action.newEvent);
-
-  final indexList =
-      state.events.indexWhere((element) => element.id == action.oldEvent.id);
-  state.events[indexList] = action.newEvent;
-  return state.copyWith(showEvent: action.newEvent);
+  _removeFromStore(state, action.event);
+  _addIntoStore(state, action.event);
+  return state;
 }
 
 CalendarState _openEvent(CalendarState state, OpenEvent action) {
-  return state.copyWithAdmitNull(action.event);
+  return state.copyWith(focusedEvent: action.event);
 }
 
 CalendarState _selectDay(CalendarState state, SelectDay action) {
-  return state.copyWith(selectedDay: CalendarService().removeTime(action.day));
+  return state.copyWith(selectedDay: action.day);
 }
 
 CalendarState _removeEvent(CalendarState state, RemoveEvent action) {
   _removeFromStore(state, action.event);
-
-  final newEvents = state.events..removeWhere((el) => action.event.id == el.id);
-  return state.copyWith(events: newEvents);
+  return state;
 }
 
 CalendarState _loadedEventsList(CalendarState state, LoadedEventsList action) {
   return state.copyWith(
-      events: action.events,
-      eventMapped: CalendarService().toMap(action.events));
+      eventsMapped: CalendarUtils.toMappedInstances(action.events));
+}
+
+CalendarState _expandRange(CalendarState state, ExpandRange action) {
+  return state.copyWith(startRange: action.first, endRange: action.last);
 }
 
 // utils
 
-void _saveIntoStore(CalendarState state, Event event) {
-  DateTime first = CalendarService().removeTime(event.start);
-  DateTime index = CalendarService().removeTime(event.start);
-  DateTime last = CalendarService().removeTime(event.end);
-  for (var i = 0; i <= last.difference(first).inDays; i++) {
-    _saveOneEvent(state, index, event);
-    index = index.add(Duration(days: 1));
-  }
-}
+void _addIntoStore(CalendarState state, Event event) {
+  var rangeStart = state.selectedDay.subtract(Duration(days: 60));
+  var rangeEnd = state.selectedDay.add(Duration(days: 60));
 
-void _saveOneEvent(CalendarState state, DateTime date, Event event) {
-  var start = CalendarService().removeTime(date);
-  state.eventMapped
-      .update(start, (value) => value..add(event), ifAbsent: () => [event]);
-}
+  var newInstances = CalendarUtils.createNearInstances(
+      event, Date.convertToDate(rangeStart), Date.convertToDate(rangeEnd));
 
-void _editIntoStore(CalendarState state, Event oldEvent, Event newEvent) {
-  _removeFromStore(state, oldEvent);
-  _saveIntoStore(state, newEvent);
+  newInstances.forEach((elem) {
+    var start = Date.convertToDate(elem.start);
+    state.eventsMapped
+        .update(start, (value) => value..add(elem), ifAbsent: () => [elem]);
+  });
 }
 
 void _removeFromStore(CalendarState state, Event event) {
-  DateTime first = CalendarService().removeTime(event.start);
-  DateTime index = CalendarService().removeTime(event.start);
-  DateTime last = CalendarService().removeTime(event.end);
-  for (var i = 0; i <= last.difference(first).inDays; i++) {
-    _removeOneEvent(state, index, event);
-    index = index.add(Duration(days: 1));
-  }
+  var keys = state.eventsMapped.keys.toList();
+  keys.forEach((date) {
+    _removeOneEvent(state, date, event);
+  });
 }
 
 void _removeOneEvent(CalendarState state, DateTime date, Event event) {
-  var key = CalendarService().removeTime(date);
-  if (state.eventMapped.containsKey(key)) {
-    state.eventMapped[key].removeWhere((element) => event.id == element.id);
-    if (state.eventMapped[key].length == 0) {
-      state.eventMapped.remove(key);
+  var key = Date.convertToDate(date);
+  if (state.eventsMapped.containsKey(key)) {
+    state.eventsMapped[key]
+        .removeWhere((element) => event.id == element.eventId);
+    if (state.eventsMapped[key].isEmpty) {
+      state.eventsMapped.remove(key);
     }
   }
 }

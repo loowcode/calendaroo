@@ -2,17 +2,16 @@ import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
-import 'package:calendaroo/services/events.repository.dart';
 import 'package:calendaroo/services/navigation.service.dart';
-import 'package:calendaroo/services/notification.utils.dart';
 import 'package:calendaroo/theme.dart';
+import 'package:calendaroo/utils/notification.utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'model/event.model.dart';
+import 'dao/events.repository.dart';
 import 'model/received-notification.dart';
 
 class MyApp extends StatefulWidget {
@@ -26,9 +25,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _requestIOSPermissions();
-    _configureDidReceiveLocalNotificationSubject();
-    _configureSelectNotificationSubject();
+    Future(() {
+      _requestIOSPermissions();
+      _configureDidReceiveLocalNotificationSubject();
+      _configureSelectNotificationSubject();
+    });
   }
 
   void _requestIOSPermissions() {
@@ -59,11 +60,10 @@ class _MyAppState extends State<MyApp> {
               isDefaultAction: true,
               child: Text('Ok'),
               onPressed: () async {
-                Event event = await EventsRepository()
+                var event = await EventsRepository()
                     .event(int.parse(receivedNotification.payload));
                 calendarooState.dispatch(OpenEvent(event));
-                await NavigationService()
-                    .navigateTo(SHOW_EVENT, arguments: event);
+                await NavigationService().navigateTo(DETAILS, arguments: event);
               },
             )
           ],
@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
 
   void _configureSelectNotificationSubject() {
     selectNotificationSubject.stream.listen((String payload) async {
-      Event event = await EventsRepository().event(int.parse(payload));
+      var event = await EventsRepository().event(int.parse(payload));
       calendarooState.dispatch(OpenEvent(event));
     });
   }

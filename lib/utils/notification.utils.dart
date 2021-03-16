@@ -1,4 +1,4 @@
-import 'package:calendaroo/model/event.model.dart';
+import 'package:calendaroo/model/notification-channel.model.dart';
 import 'package:calendaroo/model/received-notification.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -16,21 +16,41 @@ final BehaviorSubject<String> selectNotificationSubject =
 
 NotificationAppLaunchDetails notificationAppLaunchDetails;
 
-Future<void> scheduleNotification(Event event) async {
+// TODO schedule notification for each event instance
+Future<void> scheduleNotification(
+    int notificationId,
+    String notificationTitle,
+    String notificationBody,
+    DateTime notificationDate,
+    String notificationPayload,
+    NotificationChannel notificationChannel) async {
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'event_notification', 'Notifiche evento', 'Mostra le notifiche evento',
-      importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+      notificationChannel.id,
+      notificationChannel.name,
+      notificationChannel.description,
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker');
   var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-  var platformChannelSpecifics = NotificationDetails(
-      androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+  var platformChannelSpecifics = NotificationDetails(android:
+      androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
 
   await flutterLocalNotificationsPlugin.schedule(
-      event.id, event.title, event.description, event.start, platformChannelSpecifics,
-      androidAllowWhileIdle: true, payload: event.id.toString());
+      notificationId,
+      notificationTitle,
+      notificationBody,
+      notificationDate,
+      platformChannelSpecifics,
+      androidAllowWhileIdle: true,
+      payload: notificationPayload);
 }
 
 Future<void> cancelNotification(int id) async {
   await flutterLocalNotificationsPlugin.cancel(id);
+}
+
+Future<void> cancelAllNotifications() async {
+  await flutterLocalNotificationsPlugin.cancelAll();
 }
 
 Future initNotification() async {
@@ -49,7 +69,7 @@ Future initNotification() async {
             id: id, title: title, body: body, payload: payload));
       });
   var initializationSettings = InitializationSettings(
-      initializationSettingsAndroid, initializationSettingsIOS);
+      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onSelectNotification: _onSelectNotification);
 }

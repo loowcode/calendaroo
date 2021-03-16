@@ -1,10 +1,10 @@
+import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'local-storage.service.dart';
+import '../services/local-storage.service.dart';
 
-class EventsRepository{
-
+class EventsRepository {
   Future<int> insertEvent(Event event) async {
     // Get a reference to the database.
     var client = await LocalStorageService().db;
@@ -31,31 +31,27 @@ class EventsRepository{
 
   Future<Event> event(int id) async {
     var client = await LocalStorageService().db;
-    final List<Map<String, dynamic>> maps = await client.query('events', where: 'id = ?', whereArgs: [id]);
-    return Event(
-      id: maps[0]['id'],
-      title: maps[0]['title'],
-      uuid: maps[0]['uuid'],
-      description: maps[0]['description'],
-      start: DateTime.parse(maps[0]['start']),
-      end: DateTime.parse(maps[0]['end']),
-    );
+    final maps = await client.query('events', where: 'id = ?', whereArgs: [id]);
+
+    return Event.fromMap(maps[0]);
   }
 
   Future<List<Event>> events() async {
-    final Database client = await LocalStorageService().db;
+    final client = await LocalStorageService().db;
 
-    final List<Map<String, dynamic>> maps = await client.query('events');
+    final maps = await client.query('events');
     return List.generate(maps.length, (i) {
-      return Event(
-        id: maps[i]['id'],
-        title: maps[i]['title'],
-        uuid: maps[i]['uuid'],
-        description: maps[i]['description'],
-        start: DateTime.parse(maps[i]['start']),
-        end: DateTime.parse(maps[i]['end']),
-      );
+      return Event.fromMap(maps[i]);
     });
   }
 
+  Future<List<Event>> nearEvents(Date rangeStart, Date rangeEnd) async {
+    final client = await LocalStorageService().db;
+    final maps = await client.query('events',
+        where: 'start > ? and end < ?',
+        whereArgs: [rangeStart.toIso8601String(), rangeEnd.toIso8601String()]);
+    return List.generate(maps.length, (i) {
+      return Event.fromMap(maps[i]);
+    });
+  }
 }

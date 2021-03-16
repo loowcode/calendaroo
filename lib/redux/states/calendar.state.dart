@@ -1,42 +1,48 @@
 import 'dart:collection';
 
+import 'package:calendaroo/model/date.model.dart';
+import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:flutter/cupertino.dart';
 
 @immutable
 class CalendarState {
-  final List<Event> events; //TODO: remove this duplicated info
-  final SplayTreeMap<DateTime, List<Event>> eventMapped;
-  final Event showEvent;
-  final DateTime selectedDay;
+  final SplayTreeMap<Date, List<EventInstance>> eventsMapped;
+  final Event focusedEvent;
+  final Date selectedDay;
+  final Date startRange;
+  final Date endRange;
 
   CalendarState(
-      {this.events, this.eventMapped, this.showEvent, this.selectedDay});
+      {this.eventsMapped,
+      this.focusedEvent,
+      this.selectedDay,
+      this.startRange,
+      this.endRange});
 
   factory CalendarState.initial() {
-    return CalendarState(events: List<Event>(), eventMapped: SplayTreeMap());
+    return CalendarState(
+      eventsMapped: SplayTreeMap(),
+      selectedDay: Date.today(),
+      startRange:
+          Date.convertToDate(DateTime.now().subtract(Duration(days: 60))),
+      endRange: Date.convertToDate(DateTime.now().add(Duration(days: 60))),
+    );
   }
 
   CalendarState copyWith(
-      {List<Event> events,
-      SplayTreeMap<DateTime, List<Event>> eventMapped,
-      DateTime selectedDay,
-      Event showEvent}) {
+      {SplayTreeMap<Date, List<EventInstance>> eventsMapped,
+      Date selectedDay,
+      Date startRange,
+      Date endRange,
+      Event focusedEvent}) {
     return CalendarState(
-      events: events ?? this.events,
-      eventMapped: eventMapped ?? this.eventMapped,
-      showEvent: showEvent ?? this.showEvent,
+      eventsMapped: eventsMapped ?? this.eventsMapped,
+      focusedEvent: focusedEvent ?? this.focusedEvent,
       selectedDay: selectedDay ?? this.selectedDay,
+      startRange: startRange ?? this.startRange,
+      endRange: endRange ?? this.endRange,
     );
   }
 
-  // TODO: there is a better solution?
-  CalendarState copyWithAdmitNull(Event showEvent) {
-    return CalendarState(
-      events: this.events,
-      eventMapped: this.eventMapped,
-      showEvent: showEvent,
-      selectedDay: this.selectedDay,
-    );
-  }
 }
