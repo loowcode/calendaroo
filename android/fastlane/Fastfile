@@ -28,7 +28,13 @@ platform :android do
       task: 'bundle',
       build_type: 'Release'
     )
-    upload_to_play_store(track: 'alpha', version_code: 2, version_name: '0.2.1')
+    upload_to_play_store(
+      track: 'alpha',
+      version_code: 2,
+      version_name: '0.2.1',
+      skip_upload_apk: true,
+      aab: '../build/app/outputs/bundle/release/app-release.aab'
+      )
     # slack(message: 'Successfully distributed a new beta build')
     # crashlytics
 

@@ -11,17 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-
-import 'constants.dart';
 import 'dao/events.repository.dart';
 import 'model/received-notification.dart';
+import 'environments/integration.dart' as env;
+
 
 
 void main() {
-  Future(() {
-    InitializerAppService().setUp(INTEGRATION, VERSION);
-  });
-  runApp(MyApp());
+  env.main();
 }
 
 
