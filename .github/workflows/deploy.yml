@@ -22,6 +22,6 @@ jobs:
         ruby-version: '2.7.2'
     - uses: maierj/fastlane-action@v2.0.1
       with:
-        lane: 'beta'
+        lane: 'deploy'
 
 
