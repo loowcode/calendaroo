@@ -2,6 +2,7 @@ import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
+import 'package:calendaroo/services/initializer-app.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:calendaroo/utils/notification.utils.dart';
@@ -11,8 +12,18 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'constants.dart';
 import 'dao/events.repository.dart';
 import 'model/received-notification.dart';
+
+
+void main() {
+  Future(() {
+    InitializerAppService().setUp(INTEGRATION, VERSION);
+  });
+  runApp(MyApp());
+}
+
 
 class MyApp extends StatefulWidget {
   MyApp({Key key}) : super(key: key);

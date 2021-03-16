@@ -21,18 +21,19 @@ platform :android do
     gradle(task: "test")
   end
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  
+  desc "Deploy a new Beta Build to the Google Play"
+  lane :deploy do
+    # Adjust the `build_type` and `flavor` params as needed to build the right APK for your setup
+    gradle(
+      task: 'bundle',
+      build_type: 'Release'
+    )
+    upload_to_play_store(track: 'alpha', version_code: 2, version_name: '0.2.1')
+    # slack(message: 'Successfully distributed a new beta build')
+    # crashlytics
+
     # sh "your_script.sh"
     # You can also use other beta testing services here
   end
 
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
-  end
 end

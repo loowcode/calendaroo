@@ -2,7 +2,7 @@
 const String CALENDAROO = 'calendaroo';
 const String DEVELOP = 'develop';
 const String INTEGRATION = 'integration';
-const String VERSION = 'v0.2-alpha';
+const String VERSION = 'v0.2.1-alpha';
 
 
 // Example holidays
