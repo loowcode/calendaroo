@@ -9,6 +9,7 @@ on:
 env:
   flutter_version: "2.0.1"
   java_version: "12.x"
+  ruby-version: "2.7.2"
 
 jobs:
   deploy:
@@ -19,7 +20,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-ruby@v1
       with:
-        ruby-version: '2.7.2'
+        ruby-version: ${{ env.ruby-version }}
     - uses: maierj/fastlane-action@v2.0.1
       with:
         lane: 'deploy'
