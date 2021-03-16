@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.1035775">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: bundleRelease" time="183.2306056">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: upload_to_play_store" time="69.3119344">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

@@ -1,2 +1,2 @@
-json_key_file("C:/Users/carlinija/Desktop/git/calendaroo/assets/secret/key.jks") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+json_key_file("../assets/secret/google-api-key.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
 package_name("com.jacopocarlini.calendaroo") # e.g. com.krausefx.app
