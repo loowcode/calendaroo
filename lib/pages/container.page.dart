@@ -34,11 +34,13 @@ class _ContainerPageState extends State<ContainerPage>
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FabButton(),
         bottomNavigationBar: BottomAppBar(
+          shape: CircularNotchedRectangle(),
+          color: white,
           child: Container(
               margin: EdgeInsets.only(left: 12.0, right: 12.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   IconButton(
                     //update the bottom app bar view each time an item is clicked
@@ -80,8 +82,6 @@ class _ContainerPageState extends State<ContainerPage>
                   ),
                 ],
               )),
-          shape: CircularNotchedRectangle(),
-          color: white,
         ),
       ),
     );

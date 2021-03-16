@@ -39,7 +39,7 @@ class _CircleIndicatorState extends State<CircleIndicator> {
                 width: widget.width,
                 height: widget.height,
                 startAngle: element.startAngle,
-                endAngle: element.endAngle,
+                endAngle: element.endAngle + 1,
                 startColor: element.startColor,
                 endColor: element.endColor,
                 strokeWidth: widget.strokeWidth))

@@ -194,6 +194,6 @@ class CalendarUtils {
   }
 
   static DateTime removeDate(DateTime input) {
-    return DateTime(input.hour, input.minute, input.second);
+    return DateTime(1000, 1, 1, input.hour, input.minute, input.second);
   }
 }

@@ -6,6 +6,7 @@ import 'package:calendaroo/pages/details/details.viewmodel.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
+import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:calendaroo/utils/event.utils.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,13 +56,21 @@ class _DetailsPageState extends State<DetailsPage> {
         _showEvent?.start ?? calendarooState.state.calendarState.selectedDay;
     _startTime = _showEvent?.start ?? defaultTime;
     _endDate = _showEvent?.end ?? _startDate;
-    _endTime = _showEvent?.end ?? defaultTime.add(Duration(hours: 1));
+    _endTime = setEndTime(defaultTime);
 
     _allDay = _showEvent?.allDay ?? false;
     _repeat = _showEvent?.repeat ?? Repeat(type: RepeatType.never);
     _alarms = [Alarm(1, _startDate.subtract(Duration(minutes: 15)), false)];
 
     _edited = false;
+  }
+
+  DateTime setEndTime(DateTime defaultTime) {
+    var toRet = _showEvent?.end ?? defaultTime.add(Duration(hours: 1));
+    if (toRet.isBefore(_startTime)) {
+      toRet = CalendarUtils.removeDate(DateTime(2000, 1, 1, 23, 59));
+    }
+    return toRet;
   }
 
   @override
@@ -587,9 +596,13 @@ class _DetailsPageState extends State<DetailsPage> {
                         setState(() {
                           if (start) {
                             _startTime = _current;
-
                             if (_endTime.isBefore(_startTime)) {
-                              _endTime = _startTime;
+                              var result = _startTime.add(Duration(hours: 1));
+                              if (result.isBefore(_startTime)) {
+                                result = CalendarUtils.removeDate(
+                                    DateTime(2000, 1, 1, 23, 59));
+                              }
+                              _endTime = result;
                             }
                           } else {
                             _endTime = _current;
