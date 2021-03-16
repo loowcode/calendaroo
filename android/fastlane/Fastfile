@@ -38,7 +38,10 @@ platform :android do
       skip_upload_apk: true,
       aab: '../build/app/outputs/bundle/release/app-release.aab'
       )
-    slack(message: 'Successfully distributed a new beta build')
+    slack(
+      message: 'Successfully distributed a new beta build',
+      slack_url: 'https://hooks.slack.com/services/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'
+    )
     # crashlytics
 
     # sh "your_script.sh"
