@@ -28,10 +28,13 @@ platform :android do
       task: 'bundle',
       build_type: 'Release'
     )
+    set_changelog(
+      app_identifier: "com.jacopocarlini.calendaroo",
+      version: "1.0",
+      changelog: "Changelog for all Languages"
+    )
     upload_to_play_store(
       track: 'alpha',
-      version_code: 2,
-      version_name: '0.2.1',
       skip_upload_apk: true,
       aab: '../build/app/outputs/bundle/release/app-release.aab'
       )
