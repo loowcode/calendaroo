@@ -308,6 +308,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
         _animationController.forward(from: 0.0);
       },
       onVisibleDaysChanged: (first, last, format) {
+        // This setState updates the month label because this callback is called also when swiping the calendar
+        setState(() {});
         _onVisibleDaysChanged(store, first, last, format);
       },
       onCalendarCreated:
