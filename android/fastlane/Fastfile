@@ -40,7 +40,7 @@ platform :android do
       )
     # slack(
     #  message: 'Successfully distributed a new beta build',
-    #  slack_url: 'https://hooks.slack.com/services/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'
+    #  slack_url: 'https://hooks.slack.com/services/xxxx'
     # )
     # crashlytics
 
