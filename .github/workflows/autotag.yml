@@ -1,0 +1,15 @@
+name: Create Tag
+
+on:
+  push:
+    branches: [ master, release, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: Klemensas/action-autotag@stable
+        with:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          version: "${{ steps.previous_step.outputs.version }}"
