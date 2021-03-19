@@ -110,19 +110,18 @@ class _CalendarWidgetState extends State<CalendarWidget>
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
                     colors: cyanGradient)),
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 24,
-                ),
-                _buildHeaderTable(store),
-                _calendarSize != CalendarSize.HIDE
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: _buildTableCalendarWithBuilders(store),
-                      )
-                    : SizedBox(),
-              ],
+            child: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  _buildHeaderTable(store),
+                  _calendarSize != CalendarSize.HIDE
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: _buildTableCalendarWithBuilders(store),
+                        )
+                      : SizedBox(),
+                ],
+              ),
             ),
           );
         });
@@ -308,6 +307,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
         _animationController.forward(from: 0.0);
       },
       onVisibleDaysChanged: (first, last, format) {
+        // This setState updates the month label because this callback is called also when swiping the calendar
+        setState(() {});
         _onVisibleDaysChanged(store, first, last, format);
       },
       onCalendarCreated:

@@ -47,9 +47,10 @@ class EventsRepository {
 
   Future<List<Event>> nearEvents(Date rangeStart, Date rangeEnd) async {
     final client = await LocalStorageService().db;
-    final maps = await client.query('events',
-        where: 'start > ? and end < ?',
-        whereArgs: [rangeStart.toIso8601String(), rangeEnd.toIso8601String()]);
+    // final maps = await client.query('events',
+    //     where: 'start > ? and end < ?',
+    //     whereArgs: [rangeStart.toIso8601String(), rangeEnd.toIso8601String()]);
+    final maps = await client.query('events');
     return List.generate(maps.length, (i) {
       return Event.fromMap(maps[i]);
     });

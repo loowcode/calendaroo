@@ -26,8 +26,7 @@ class _TodayPageState extends State<TodayPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Material(
       color: white,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
+      child: SafeArea(
         child: ListView(
           children: <Widget>[
             Padding(

@@ -53,7 +53,7 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
             _listController.scrollToIndex(
                 CalendarUtils.getIndex(
                     viewModel.eventMapped, viewModel.selectedDay),
-                preferPosition: AutoScrollPosition.middle);
+                preferPosition: AutoScrollPosition.begin);
           } catch (e) {
             print('no events for selected day');
           }

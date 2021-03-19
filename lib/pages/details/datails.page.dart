@@ -81,10 +81,10 @@ class _DetailsPageState extends State<DetailsPage> {
           return Scaffold(
               body: _buildPage(store),
               bottomNavigationBar: BottomAppBar(
+                color: white,
                 child: Container(
                   child: _buildBottomBar(store),
                 ),
-                color: white,
               ));
         });
   }
@@ -140,8 +140,7 @@ class _DetailsPageState extends State<DetailsPage> {
         DateFormat.yMMMMEEEEd(Localizations.localeOf(context).toString());
     var _formatterTime =
         DateFormat.Hm(Localizations.localeOf(context).toString());
-    return Container(
-        margin: EdgeInsets.only(top: 32),
+    return SafeArea(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
             Widget>[
           _buildAppBar(store),
