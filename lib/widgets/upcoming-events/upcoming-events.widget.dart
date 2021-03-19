@@ -1,14 +1,16 @@
 import 'package:calendaroo/colors.dart';
+import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
-import 'package:calendaroo/services/calendar.service.dart';
+import 'package:calendaroo/services/app-localizations.service.dart';
+import 'package:calendaroo/utils/calendar.utils.dart';
+import 'package:calendaroo/utils/string.utils.dart';
+import 'package:calendaroo/widgets/card/card.widget.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
-
-import '../options.widget.dart';
 
 class UpcomingEventsWidget extends StatefulWidget {
   @override
@@ -18,7 +20,6 @@ class UpcomingEventsWidget extends StatefulWidget {
 class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
     with TickerProviderStateMixin {
   AutoScrollController _listController;
-  AnimationController _animationController;
 
   @override
   void initState() {
@@ -28,18 +29,13 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
             Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
         axis: Axis.vertical);
 
-    _animationController = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    )..forward();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      calendarooState.dispatch(SelectDay(DateTime.now()));
+      calendarooState.dispatch(SelectDay(Date.today()));
     });
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
     _listController.dispose();
     super.dispose();
   }
@@ -54,9 +50,10 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         converter: (store) => UpcomingEventsViewModel.fromStore(store),
         onDidChange: (viewModel) {
           try {
-            _listController.scrollToIndex(CalendarService()
-                .getIndex(viewModel.eventMapped, viewModel.selectedDay));
-//            _animationController.forward(from: 0);
+            _listController.scrollToIndex(
+                CalendarUtils.getIndex(
+                    viewModel.eventMapped, viewModel.selectedDay),
+                preferPosition: AutoScrollPosition.begin);
           } catch (e) {
             print('no events for selected day');
           }
@@ -64,17 +61,13 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
         builder: (context, store) {
           return Expanded(
             child: Container(
-              decoration:
-                  BoxDecoration(color: primaryWhite, borderRadius: radius),
+              decoration: BoxDecoration(color: white, borderRadius: radius),
               child: Stack(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: ListView(
-                        controller: _listController,
-                        padding: EdgeInsets.all(16),
-                        children: _buildAgenda(store)),
-                  ),
+                  ListView(
+                      controller: _listController,
+                      padding: EdgeInsets.all(16),
+                      children: _buildAgenda(store)),
                 ],
               ),
             ),
@@ -84,106 +77,52 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
 
   List<Widget> _buildAgenda(UpcomingEventsViewModel store) {
     var mapEvent = store.eventMapped;
-    List<Widget> widgets = [];
+    var widgets = <Widget>[];
     if (mapEvent == null || mapEvent.isEmpty) {
       return [_buildEmptyAgenda()];
     }
 
-    var formatterTime =
-        DateFormat.Hm(Localizations.localeOf(context).toString());
     var formatter =
-        DateFormat.MMMMEEEEd(Localizations.localeOf(context).toString());
+        DateFormat('dd MMMM, EEEE', Localizations.localeOf(context).toString());
     for (var date in mapEvent.keys) {
-      List<Widget> row = [];
+      var row = <Widget>[];
       var list = mapEvent[date];
       row
-        ..add(Container(
-            child: Text(
-          formatter.format(date),
-          style: Theme.of(context).textTheme.headline5,
-        )))
-        ..addAll(list
-            .map((elem) => Container(
-                  child: GestureDetector(
-                    onTap: () {
-                      store.openEvent(elem);
-                    },
-                    child: Card(
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: ListTile(
-                              leading: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(formatterTime.format(elem.start),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2),
-                                  Text(formatterTime.format(elem.end),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText2),
-                                ],
-                              ),
-                              title: Text(
-                                elem.title,
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ),
-                              trailing: PopupMenuButton<Option>(
-                                onSelected: selectOption,
-                                color: primaryWhite,
-                                icon: Icon(
-                                  Icons.more_vert,
-                                  color: primaryWhite,
-                                ),
-                                itemBuilder: (BuildContext context) {
-                                  return options.map((Option option) {
-                                    return PopupMenuItem<Option>(
-                                      value: option.setEvent(elem),
-                                      child: Theme(
-                                          data: Theme.of(context).copyWith(
-                                              cardColor: primaryWhite),
-                                          child: Text(
-                                            option.title,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1
-                                                .copyWith(color: primaryBlack),
-                                          )),
-                                    );
-                                  }).toList();
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ))
-            .toList())
-        ..add(SizedBox(
-          height: 16,
-        ));
-      AutoScrollTag dayGroup = AutoScrollTag(
-        key: ValueKey(CalendarService().getIndex(mapEvent, date)),
-        index: CalendarService().getIndex(mapEvent, date),
-        controller: _listController,
-        child: AnimatedBuilder(
-          animation: _animationController,
-          builder: (context, child) => Container(
-            color: background
-                .evaluate(AlwaysStoppedAnimation(_animationController.value)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: row,
+        ..add(
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(
+                StringUtils.titleCase(formatter.format(date)),
+                style: Theme.of(context).textTheme.headline5,
+              ),
             ),
           ),
+        )
+        ..addAll(list
+            .map(
+              (elem) => Container(child: CardWidget(elem)),
+            )
+            .toList())
+        ..add(
+          SizedBox(
+            height: 16,
+          ),
+        );
+      var dayGroup = AutoScrollTag(
+        key: ValueKey(CalendarUtils.getIndex(mapEvent, date)),
+        index: CalendarUtils.getIndex(mapEvent, date),
+        controller: _listController,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: row,
         ),
       );
       widgets.add(dayGroup);
     }
+    widgets.add(SizedBox(
+      height: 800,
+    ));
     return widgets;
   }
 
@@ -193,34 +132,19 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
       child: Center(
           child: Column(
         children: <Widget>[
-          Text('Non ci sono eventi in programma',
-              style: Theme.of(context).textTheme.subtitle2),
+          Text(
+            AppLocalizations.of(context).noEvents,
+            style: Theme.of(context).textTheme.subtitle2,
+          ),
           Container(
               margin: EdgeInsets.only(top: 32),
               child: Icon(
                 Icons.event_available,
                 size: 64,
-                color: secondaryLightGrey,
+                color: lightGrey,
               ))
         ],
       )),
     );
   }
-
-  Animatable<Color> background = TweenSequence<Color>([
-    TweenSequenceItem(
-      weight: 1.0,
-      tween: ColorTween(
-        begin: primaryWhite,
-        end: accentYellow,
-      ),
-    ),
-    TweenSequenceItem(
-      weight: 1.0,
-      tween: ColorTween(
-        begin: accentYellow,
-        end: primaryWhite,
-      ),
-    ),
-  ]);
 }

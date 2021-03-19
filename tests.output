@@ -1,0 +1,11 @@
+{"protocolVersion":"0.1.1","runnerVersion":null,"pid":13036,"type":"start","time":0}
+{"suite":{"id":0,"platform":"vm","path":"C:\\Users\\carlinija\\Desktop\\git\\loowcode\\calendaroo\\test\\widgets\\fab-button_test.dart"},"type":"suite","time":1}
+{"test":{"id":1,"name":"loading C:\\Users\\carlinija\\Desktop\\git\\loowcode\\calendaroo\\test\\widgets\\fab-button_test.dart","suiteID":0,"groupIDs":[],"metadata":{"skip":false,"skipReason":null},"line":null,"column":null,"url":null},"type":"testStart","time":5}
+{"count":1,"type":"allSuites","time":11}
+{"testID":1,"result":"success","skipped":false,"hidden":true,"type":"testDone","time":44333}
+{"group":{"id":2,"suiteID":0,"parentID":null,"name":null,"metadata":{"skip":false,"skipReason":null},"testCount":2,"line":null,"column":null,"url":null},"type":"group","time":44344}
+{"test":{"id":3,"name":"fabButton exists","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":123,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":9,"root_column":3,"root_url":"file:///C:/Users/carlinija/Desktop/git/loowcode/calendaroo/test/widgets/fab-button_test.dart"},"type":"testStart","time":44346}
+{"testID":3,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":45515}
+{"test":{"id":4,"name":"LongPress on FabButton show mini buttons","suiteID":0,"groupIDs":[2],"metadata":{"skip":false,"skipReason":null},"line":123,"column":5,"url":"package:flutter_test/src/widget_tester.dart","root_line":16,"root_column":3,"root_url":"file:///C:/Users/carlinija/Desktop/git/loowcode/calendaroo/test/widgets/fab-button_test.dart"},"type":"testStart","time":45517}
+{"testID":4,"result":"success","skipped":false,"hidden":false,"type":"testDone","time":45869}
+{"success":true,"type":"done","time":46054}

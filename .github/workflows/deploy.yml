@@ -1,0 +1,29 @@
+name: Fastlane Action
+
+on:
+  push:
+    branches: [ master, release ]
+  pull_request:
+    branches: [ master, release ]
+
+env:
+  flutter_version: "2.0.1"
+  java_version: "12.x"
+  ruby-version: "2.7.2"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-ruby@v1
+      with:
+        ruby-version: ${{ env.ruby-version }}
+    - uses: maierj/fastlane-action@v2.0.1
+      with:
+        lane: 'deploy'
+        subdirectory: 'android'
+
+

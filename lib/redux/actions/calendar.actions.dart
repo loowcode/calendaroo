@@ -1,3 +1,4 @@
+import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 
 class LoadedEventsList {
@@ -18,7 +19,6 @@ class RemoveEvent {
   RemoveEvent(this.event);
 }
 
-class FetchEventsList {}
 
 class OpenEvent {
   final Event event;
@@ -26,15 +26,30 @@ class OpenEvent {
   OpenEvent(this.event);
 }
 
-class EditEvent {
-  final Event newEvent;
-  final Event oldEvent;
 
-  EditEvent(this.oldEvent, this.newEvent);
+class DoToEvent {
+  final Type action;
+  final int eventId;
+
+  DoToEvent(this.action, this.eventId);
+}
+
+class EditEvent {
+  final Event event;
+
+  EditEvent(this.event);
 }
 
 class SelectDay {
-  final DateTime day;
+  final Date day;
 
   SelectDay(this.day);
+}
+
+
+class ExpandRange{
+  final Date first;
+  final Date last;
+
+  ExpandRange(this.first, this.last);
 }

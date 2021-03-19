@@ -11,31 +11,37 @@ description: A Fancy Flutter Calendar
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 0.2.1+2
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.3.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   table_calendar: ^2.2.3
-  sliding_up_panel: ^1.0.2
-  flutter_redux: ^0.6.0
-  rxdart: ^0.24.0
-  shared_preferences: ^0.5.7
-  flutter_rounded_date_picker: ^1.0.4
-  uuid: 2.0.4
-  intl: ^0.16.0
-  flutter_launcher_icons: ^0.7.5
-  sqflite: ^1.3.0
-  path_provider: ^0.5.0+1
-  scroll_to_index: ^1.0.6
-
+  flutter_redux: ^0.7.0
+  rxdart: ^0.26.0
+  shared_preferences: ^2.0.3
+  uuid: ^3.0.1
+  intl: ^0.17.0
+  flutter_launcher_icons: ^0.9.0
+  sqflite: ^2.0.0+2
+  path_provider: ^2.0.1
+  scroll_to_index: ^2.0.0
+  flutter_local_notifications: ^5.0.0-nullsafety.1
+  url_launcher: ^6.0.2
+  flutter_alert: ^0.4.0
+  weather: ^1.2.2
+  geolocator: ^7.0.1
+  feather_icons_flutter: ^4.7.4
+  flutter_circular_chart: ^0.1.0
+  package_info: ^2.0.0
+  vector_math:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^1.0.2
 
   flutter_localizations:
     sdk: flutter
@@ -43,7 +49,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  mockito: ^5.0.0
+  pedantic: ^1.9.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -62,6 +69,7 @@ flutter:
     - assets/images/
     - assets/fonts/
     - assets/resources/
+    - assets/secret/
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 

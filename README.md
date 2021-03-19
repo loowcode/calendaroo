@@ -3,6 +3,7 @@ A Fancy Flutter Calendar
 
 ![Banner](https://github.com/jacopo1395/calendaroo/blob/master/android/app/src/main/res/drawable/banner_calendaroo.png?raw=true)
 
+
 # Install
 1. Install [Flutter](https://flutter.dev/docs/get-started/install)
 2. In a terminal run `git clone https://github.com/jacopo1395/calendaroo.git`
@@ -24,16 +25,15 @@ A Fancy Flutter Calendar
 3. In a terminal run `git fetch` to update the list of branch
 
 ### BranchName Convention
-- from develop (default branch): `feature/<branch-name>` `fix/<branch-name>`
-- from release: `bugfix/<branch-name>`
-- from master: `hotfix/<branch-name>`
+- from develop (default branch): `feature/<issue-number>-<issue-name>` `fix/<issue-number>-<issue-name>`
+- from release: `bugfix/<issue-number>-<issue-name>`
+- from master: `hotfix/<issue-number>-<issue-name>`
 
 ## Pull Request
 1. When you create a pull request **include in the message a [keyword](https://help.github.com/en/enterprise/2.16/user/github/managing-your-work-on-github/closing-issues-using-keywords#about-issue-references)** (ex: `Close #1` this comment automitally closes the issue when you merge the PR). Select a reviewer.
-2. When the reviewer approves your PR, merge it *(I suggest you to use **squash and delete branch** to remove useless branch)*
+2. **Select the project**
+3. When the reviewer approves your PR, **merge it** *(I suggest you to use squash and delete branch to remove useless branch)*
 
-# Credits
-Thanks to [Vladimir Gubanov](https://dribbble.com/Vladimir_Gubanov) fo inspirations
 
 # Contributors
-Made with ❤ by Jacopo Carlini, Durante Pellegrino, Giovanna Flore
+Made with ❤ by Jacopo Carlini, Pellegrino Durante, Giovanna Flore, Gianluca Galli
