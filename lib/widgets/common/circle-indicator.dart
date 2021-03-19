@@ -95,15 +95,21 @@ class CircleIndicatorSegment extends StatefulWidget {
 class _CircleIndicatorSegmentState extends State<CircleIndicatorSegment> {
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(widget.width - widget.strokeWidth,
-          widget.height - widget.strokeWidth),
-      painter: CircleIndicatorPainter(
-        startAngle: widget.startAngle,
-        endAngle: widget.endAngle,
-        startColor: widget.startColor,
-        endColor: widget.endColor,
-        strokeWidth: widget.strokeWidth,
+    return Center(
+      child: SizedBox(
+        height: 160,
+        width: 160,
+        child: CustomPaint(
+          size: Size(widget.width - widget.strokeWidth,
+              widget.height - widget.strokeWidth),
+          painter: CircleIndicatorPainter(
+            startAngle: widget.startAngle,
+            endAngle: widget.endAngle,
+            startColor: widget.startColor,
+            endColor: widget.endColor,
+            strokeWidth: widget.strokeWidth,
+          ),
+        ),
       ),
     );
   }

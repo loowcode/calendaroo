@@ -14,9 +14,9 @@ class PageTitle extends StatefulWidget {
 class _TitleState extends State<PageTitle> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
+    return SafeArea(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(widget.title,
               textAlign: TextAlign.left,
@@ -30,7 +30,6 @@ class _TitleState extends State<PageTitle> {
                 color: lightGrey,
               ))
         ],
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
       ),
     );
   }

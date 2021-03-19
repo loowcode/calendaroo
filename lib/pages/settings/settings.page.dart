@@ -29,7 +29,7 @@ class _SettingsPageState extends State<SettingsPage> {
         converter: (store) => SettingsViewModel.fromStore(store),
         builder: (context, store) {
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.only(left: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
