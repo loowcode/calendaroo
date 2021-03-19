@@ -2,7 +2,7 @@ name: Create Tag
 
 on:
   push:
-    branches: [ master, release, develop ]
+    branches: [ master, release ]
 
 jobs:
   tag:
@@ -14,8 +14,8 @@ jobs:
         uses: mathieudutour/github-tag-action@v5.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: master,hotfix.*
-          pre_release_branches: release,bugfix.*
+          release_branches: master
+          pre_release_branches: release
           tag_prefix: ""
       - name: Create a GitHub release
         uses: actions/create-release@v1
