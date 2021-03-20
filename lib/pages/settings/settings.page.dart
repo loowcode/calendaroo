@@ -1,16 +1,13 @@
+import 'package:calendaroo/blocs/settings_bloc.dart';
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/environments/environment.dart';
-import 'package:calendaroo/pages/settings/settings.viewmodel.dart';
-import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/models/settings.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
-import 'package:calendaroo/services/notification.service.dart';
-import 'package:calendaroo/services/shared-preferences.service.dart';
 import 'package:calendaroo/theme.dart';
-import 'package:calendaroo/utils/notification.utils.dart';
 import 'package:calendaroo/widgets/common/page-title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alert/flutter_alert.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // TODO: Use Theme
@@ -20,14 +17,13 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _notifications = SharedPreferenceService().enableNotifications;
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StoreConnector<AppState, SettingsViewModel>(
-        converter: (store) => SettingsViewModel.fromStore(store),
-        builder: (context, store) {
+      body: BlocBuilder<SettingsBloc, SettingsState>(
+        builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: Column(
@@ -38,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildNotificationSetting(),
+                      _buildNotificationSetting(state),
                       _buildFeedbackButton(),
                     ],
                   ),
@@ -52,7 +48,9 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _buildNotificationSetting() {
+  Widget _buildNotificationSetting(SettingsState state) {
+    var bloc = BlocProvider.of<SettingsBloc>(context);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -76,23 +74,20 @@ class _SettingsPageState extends State<SettingsPage> {
                   icon: Icons.done,
                   label: AppLocalizations.of(context).yes,
                   onTap: () {
-                    _enableNotifications(true);
-                    setState(() {
-                      _notifications = true;
-                    });
+                    bloc.add(SettingsChangedEvent(Settings(true)));
                   },
-                  selected: _notifications),
+                  selected: state is SettingsUpdated
+                      ? state.values.notificationsEnabled
+                      : false),
               _buildButton(
                   icon: Icons.close,
                   label: AppLocalizations.of(context).no,
                   onTap: () {
-                    _enableNotifications(false);
-
-                    setState(() {
-                      _notifications = false;
-                    });
+                    bloc.add(SettingsChangedEvent(Settings(false)));
                   },
-                  selected: !_notifications),
+                  selected: state is SettingsUpdated
+                      ? !state.values.notificationsEnabled
+                      : false),
             ],
           )
         ],
@@ -123,15 +118,15 @@ class _SettingsPageState extends State<SettingsPage> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(AppLocalizations.of(context).sendFeedback),
-            ),
             color: AppTheme.primaryTheme.buttonColor,
             textColor: AppTheme.primaryTheme.textTheme.button.color,
             onPressed: () {
               _launchEmailUrl();
             },
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(AppLocalizations.of(context).sendFeedback),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
@@ -152,7 +147,11 @@ class _SettingsPageState extends State<SettingsPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          AppLocalizations.of(context).version + ' ' + Environment().version + '\n' + AppLocalizations.of(context).madeWithLove,
+          AppLocalizations.of(context).version +
+              ' ' +
+              Environment().version +
+              '\n' +
+              AppLocalizations.of(context).madeWithLove,
           style: AppTheme.primaryTheme.textTheme.caption,
           textAlign: TextAlign.center,
         ),
@@ -194,16 +193,6 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void _enableNotifications(bool enableNotifications) {
-    if (enableNotifications) {
-      SharedPreferenceService().setBool('enableNotifications', true);
-      NotificationService().rescheduleForEvent();
-    } else {
-      SharedPreferenceService().setBool('enableNotifications', false);
-      cancelAllNotifications();
-    }
-  }
-
   void _launchEmailUrl() async {
     var url = 'mailto:loowcode@gmail.com?subject=Feedback';
     if (await canLaunch(url)) {
@@ -216,5 +205,11 @@ class _SettingsPageState extends State<SettingsPage> {
         barrierDismissible: true,
       );
     }
+  }
+
+  @override
+  void initState() {
+    super .initState();
+    BlocProvider.of<SettingsBloc>(context).add(SettingsLoadEvent());
   }
 }

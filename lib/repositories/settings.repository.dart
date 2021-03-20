@@ -1,0 +1,3 @@
+class SettingsRepository {
+  // TODO
+}
