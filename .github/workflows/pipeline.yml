@@ -65,7 +65,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: build
+    needs: tag
     if: !contains(github.ref, "develop")
     steps:
       - uses: actions/checkout@v2
