@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Create a new tag
-        uses: jacopo1395/action-autotag@2.0.1
+        uses: jacopo1395/action-autotag@2.0.2
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       - name: Create a GitHub release
