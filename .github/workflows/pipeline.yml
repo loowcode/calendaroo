@@ -63,9 +63,9 @@ jobs:
           body: ${{ steps.tag_version.outputs.tagmessage }}
 
   deploy:
+    if:  github.ref != 'refs/heads/develop'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    if: !contains(github.ref, "develop")
+    needs: build
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-ruby@v1
