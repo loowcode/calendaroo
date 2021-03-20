@@ -39,6 +39,6 @@ jobs:
       with:
         flutter-version: ${{ env.flutter_version }}
     - run: flutter pub get
-    - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64 -t lib/environments/integration.dart --debug
+    - run: flutter build appbundle -t lib/environments/integration.dart --debug
 
 
