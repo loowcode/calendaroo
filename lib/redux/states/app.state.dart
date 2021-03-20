@@ -1,11 +1,12 @@
+
 import 'package:calendaroo/redux/middlewares/app.middlewares.dart';
 import 'package:calendaroo/redux/middlewares/calendar.middlewares.dart';
 import 'package:calendaroo/redux/reducers/app.reducer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:redux/redux.dart';
 
-import 'calendar.state.dart';
 import 'app-status.state.dart';
+import 'calendar.state.dart';
 
 Store<AppState> calendarooState = Store<AppState>(appReducer,
     initialState: AppState.initial(),

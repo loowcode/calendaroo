@@ -2,8 +2,8 @@ name: calendaroo
 description: A Fancy Flutter Calendar
 
 # The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
+# A version number is three numbers separated by dots,
+# followed by an optional build number separated by a +. like 1.2.13+4
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # In Android, build-name is used as versionName while build-number used as versionCode.
@@ -11,7 +11,7 @@ description: A Fancy Flutter Calendar
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.2.1+2
+version: 0.2.4+2
 
 environment:
   sdk: ">=2.3.0 <3.0.0"

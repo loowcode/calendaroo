@@ -56,8 +56,8 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
           removeMiniButtons();
           NavigationService().navigateTo(DETAILS);
         },
-        child: Icon(Icons.add),
         elevation: 4.0,
+        child: Icon(Icons.add),
       ),
     );
   }
@@ -94,10 +94,10 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
               backgroundColor: white,
               foregroundColor: grey,
               mini: true,
-              child: Icon(Icons.close),
               onPressed: () {
                 removeMiniButtons();
               },
+              child: Icon(Icons.close),
             ),
           ),
         ),
@@ -112,10 +112,10 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
               backgroundColor: white,
               foregroundColor: yellow,
               mini: true,
-              child: Icon(Icons.calendar_today),
               onPressed: () {
                 removeMiniButtons();
               },
+              child: Icon(Icons.calendar_today),
             ),
           ),
         ),
@@ -130,10 +130,10 @@ class FabButtonState extends State<FabButton> with TickerProviderStateMixin {
               backgroundColor: white,
               foregroundColor: yellow,
               mini: true,
-              child: Icon(Icons.flag),
               onPressed: () {
                 removeMiniButtons();
               },
+              child: Icon(Icons.flag),
             ),
           ),
         ),

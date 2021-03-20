@@ -1,6 +1,6 @@
+import 'package:calendaroo/widgets/calendar/calendar.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:calendaroo/widgets/calendar/calendar.widget.dart';
 
 class SharedPreferenceService {
   SharedPreferenceService._();
@@ -33,7 +33,7 @@ class SharedPreferenceService {
     await _prefs.clear();
   }
 
-  CalendarSize get calendarSize{
+  CalendarSize get calendarSize {
     var format = _prefs.getString('calendarSize');
     if (format == 'twoWeeks') {
       return CalendarSize.TWO_WEEKS;

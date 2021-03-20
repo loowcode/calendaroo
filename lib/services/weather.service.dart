@@ -23,8 +23,8 @@ class WeatherService {
         return resultCached;
       }
       timestamp = DateTime.now();
-      var position = await Geolocator
-          .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      var position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
 
       var apiKey =
           await rootBundle.loadString('assets/secret/openweather-key.txt');

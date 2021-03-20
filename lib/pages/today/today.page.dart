@@ -26,8 +26,7 @@ class _TodayPageState extends State<TodayPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Material(
       color: white,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
+      child: SafeArea(
         child: ListView(
           children: <Widget>[
             Padding(
@@ -40,7 +39,10 @@ class _TodayPageState extends State<TodayPage> with TickerProviderStateMixin {
                     onPressed: () {
                       NavigationService().navigateTo(SETTINGS);
                     },
-                    icon: Icon(FeatherIcons.user, color: grey,),
+                    icon: Icon(
+                      FeatherIcons.user,
+                      color: grey,
+                    ),
                   )
                 ],
               ),
@@ -74,7 +76,6 @@ class _TodayPageState extends State<TodayPage> with TickerProviderStateMixin {
           _formatterDate.format(DateTime.now()),
           style: Theme.of(context).textTheme.bodyText2,
         ),
-
       ],
     );
   }
@@ -95,8 +96,7 @@ class _TodayPageState extends State<TodayPage> with TickerProviderStateMixin {
                 Icons.cloud_off,
                 color: lightGrey,
               );
-            }
-            else{
+            } else {
               return iconWeather(snapshot.data);
             }
         }
@@ -107,21 +107,42 @@ class _TodayPageState extends State<TodayPage> with TickerProviderStateMixin {
   Widget iconWeather(WeatherDescription weather) {
     switch (weather) {
       case WeatherDescription.CLEAR:
-        return Icon(FeatherIcons.sun, color: yellow,);
+        return Icon(
+          FeatherIcons.sun,
+          color: yellow,
+        );
       case WeatherDescription.CLOUD_SUN:
-        return Icon(FeatherIcons.sun, color: yellow,);
+        return Icon(
+          FeatherIcons.sun,
+          color: yellow,
+        );
       case WeatherDescription.CLOUD:
         return Icon(FeatherIcons.cloud, color: grey);
       case WeatherDescription.RAIN:
-        return Icon(FeatherIcons.cloudRain, color: lightBlue,);
+        return Icon(
+          FeatherIcons.cloudRain,
+          color: lightBlue,
+        );
       case WeatherDescription.STORM:
-        return Icon(FeatherIcons.cloudLightning, color: lightBlue,);
+        return Icon(
+          FeatherIcons.cloudLightning,
+          color: lightBlue,
+        );
       case WeatherDescription.SNOW:
-        return Icon(FeatherIcons.cloudSnow, color: lightBlue,);
+        return Icon(
+          FeatherIcons.cloudSnow,
+          color: lightBlue,
+        );
       case WeatherDescription.MIST:
-        return Icon(FeatherIcons.alignCenter, color: grey,);
+        return Icon(
+          FeatherIcons.alignCenter,
+          color: grey,
+        );
       default:
-        return Icon(FeatherIcons.cloudOff, color: lightGrey,);
+        return Icon(
+          FeatherIcons.cloudOff,
+          color: lightGrey,
+        );
     }
   }
 }

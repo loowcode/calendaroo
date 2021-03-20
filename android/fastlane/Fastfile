@@ -28,17 +28,20 @@ platform :android do
       task: 'bundle',
       build_type: 'Release'
     )
-    set_changelog(
-      app_identifier: "com.jacopocarlini.calendaroo",
-      version: "1.0",
-      changelog: "Changelog for all Languages"
-    )
+    # set_changelog(
+    #  app_identifier: "com.jacopocarlini.calendaroo",
+    #  version: "1.0",
+    #  changelog: "Changelog for all Languages"
+    # )
     upload_to_play_store(
       track: 'alpha',
       skip_upload_apk: true,
       aab: '../build/app/outputs/bundle/release/app-release.aab'
       )
-    # slack(message: 'Successfully distributed a new beta build')
+    # slack(
+    #  message: 'Successfully distributed a new beta build',
+    #  slack_url: 'https://hooks.slack.com/services/xxxx'
+    # )
     # crashlytics
 
     # sh "your_script.sh"

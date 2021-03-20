@@ -55,22 +55,22 @@ class _TodayCompletionCircleState extends State<TodayCompletionCircle> {
   Transform markerHour() {
     var nowAngle = dateToAngle(DateTime.now());
     return Transform.rotate(
-            angle: (nowAngle - 90) / 180 * pi,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 86.0),
-              child: Center(
-                child: Transform.rotate(
-                  angle: 0 / 180 * pi,
-                  child: Container(
-                      height: 5,
-                      width: 30,
-                      decoration: BoxDecoration(
-                          color: red,
-                          borderRadius: BorderRadius.all(Radius.circular(20)))),
-                ),
-              ),
-            ),
-          );
+      angle: (nowAngle - 90) / 180 * pi,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 86.0),
+        child: Center(
+          child: Transform.rotate(
+            angle: 0 / 180 * pi,
+            child: Container(
+                height: 5,
+                width: 30,
+                decoration: BoxDecoration(
+                    color: red,
+                    borderRadius: BorderRadius.all(Radius.circular(20)))),
+          ),
+        ),
+      ),
+    );
   }
 }
 

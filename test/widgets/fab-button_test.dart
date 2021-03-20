@@ -25,5 +25,4 @@ void main() {
     expect(find.byIcon(Icons.flag), findsOneWidget);
     expect(find.byIcon(Icons.calendar_today), findsOneWidget);
   });
-
 }

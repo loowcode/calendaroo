@@ -30,7 +30,8 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
     }
 
     if (action is ExpandRange) {
-      var eventsList = await DatabaseService().getEvents(action.first, action.last);
+      var eventsList =
+          await DatabaseService().getEvents(action.first, action.last);
       next(LoadedEventsList(eventsList));
     }
 
@@ -38,21 +39,20 @@ class CalendarMiddleware extends MiddlewareClass<AppState> {
       var event = await DatabaseService().findEventById(action.eventId);
       switch (action.action) {
         case AddEvent:
-          next(AddEvent(event));
+          call(store, AddEvent(event), next);
           break;
         case RemoveEvent:
-          next(RemoveEvent(event));
+          call(store, RemoveEvent(event), next);
           break;
         case EditEvent:
-          next(EditEvent(event));
+          call(store, EditEvent(event), next);
           break;
         case OpenEvent:
           await NavigationService().navigateTo(DETAILS, arguments: event);
-          next(OpenEvent(event));
+          call(store, OpenEvent(event), next);
           break;
       }
     }
-
     next(action);
   }
 }

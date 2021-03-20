@@ -1,6 +1,8 @@
 import 'package:calendaroo/constants.dart';
 import 'package:calendaroo/dao/database.service.dart';
 import 'package:calendaroo/environments/environment.dart';
+import 'package:calendaroo/model/date.model.dart';
+import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/shared-preferences.service.dart';
@@ -19,7 +21,7 @@ class InitializerAppService {
     return _instance;
   }
 
-  Future<void> setUp(environment, version) async {
+  Future<List<Event>> setUp(environment, version) async {
     WidgetsFlutterBinding.ensureInitialized();
     // sharedPref init
     await SharedPreferenceService().getSharedPreferencesInstance();
@@ -29,16 +31,18 @@ class InitializerAppService {
     Environment().version = version as String;
 
     // loadData init
-    await _preLoadingDataFromDB();
+    var eventsList = await preLoadingDataFromDB();
 
     // setup orientation
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
     // init Notification
     await initNotification();
+
+    return eventsList;
   }
 
-  void _preLoadingDataFromDB() async {
+  static Future<List<Event>> preLoadingDataFromDB() async {
     try {
       var env = Environment().environment;
       if (env == DEVELOP) {
@@ -49,7 +53,11 @@ class InitializerAppService {
     } catch (e) {
       debugPrint('error during drop db: ${e.toString()}');
     }
-    var eventsList = await DatabaseService().getEvents(calendarooState.state.calendarState.startRange, calendarooState.state.calendarState.endRange);
+    var rangeStart =
+        Date.convertToDate(DateTime.now().subtract(Duration(days: 60)));
+    var rangeEnd = Date.convertToDate(DateTime.now().add(Duration(days: 60)));
+    var eventsList = await DatabaseService().getEvents(rangeStart, rangeEnd);
     calendarooState.dispatch(LoadedEventsList(eventsList));
+    return eventsList;
   }
 }
