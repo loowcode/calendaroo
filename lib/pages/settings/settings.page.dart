@@ -17,8 +17,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -209,7 +207,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   void initState() {
-    super .initState();
+    super.initState();
     BlocProvider.of<SettingsBloc>(context).add(SettingsLoadEvent());
   }
 }

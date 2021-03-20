@@ -7,6 +7,6 @@ flutter_icons:
   adaptive_icon_background: "#313537"
   # adaptive_icon_foreground: "assets/images/logo-filled.png"
 
-#### Istruzioni per creare le icone ####
+  #### Istruzioni per creare le icone ####
   # flutter pub get
   # flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons.yml

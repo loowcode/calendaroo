@@ -19,13 +19,11 @@ class RemoveEvent {
   RemoveEvent(this.event);
 }
 
-
 class OpenEvent {
   final Event event;
 
   OpenEvent(this.event);
 }
-
 
 class DoToEvent {
   final Type action;
@@ -46,8 +44,7 @@ class SelectDay {
   SelectDay(this.day);
 }
 
-
-class ExpandRange{
+class ExpandRange {
   final Date first;
   final Date last;
 

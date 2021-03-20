@@ -53,7 +53,8 @@ class InitializerAppService {
     } catch (e) {
       debugPrint('error during drop db: ${e.toString()}');
     }
-    var rangeStart = Date.convertToDate(DateTime.now().subtract(Duration(days: 60)));
+    var rangeStart =
+        Date.convertToDate(DateTime.now().subtract(Duration(days: 60)));
     var rangeEnd = Date.convertToDate(DateTime.now().add(Duration(days: 60)));
     var eventsList = await DatabaseService().getEvents(rangeStart, rangeEnd);
     calendarooState.dispatch(LoadedEventsList(eventsList));

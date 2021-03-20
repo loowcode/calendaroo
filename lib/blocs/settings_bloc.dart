@@ -25,7 +25,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       // Other than this, here we have to add this:
       // NotificationService().rescheduleForEvent(); for rescheduling all event notifications when notificationEnabled is true
       // cancelAllNotifications(); for canceling all current event notifications when notificationEnabled is false
-      await SharedPreferenceService().setBool('enableNotifications', event.values.notificationsEnabled);
+      await SharedPreferenceService()
+          .setBool('enableNotifications', event.values.notificationsEnabled);
       yield SettingsUpdated(Settings(event.values.notificationsEnabled));
     }
   }

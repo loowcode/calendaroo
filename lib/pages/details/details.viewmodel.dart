@@ -18,6 +18,7 @@ class DetailsViewModel {
         focusedEvent: store.state.calendarState.focusedEvent,
         createEvent: (newEvent) => store.dispatch(AddEvent(newEvent)),
         editEvent: (newEvent) => store.dispatch(EditEvent(newEvent)),
-        deleteEvent: () => store.dispatch(RemoveEvent(store.state.calendarState.focusedEvent)));
+        deleteEvent: () => store
+            .dispatch(RemoveEvent(store.state.calendarState.focusedEvent)));
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 
-
 @immutable
 class AppStatusState {
   final AppStatus appStatus;

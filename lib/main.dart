@@ -2,7 +2,6 @@ import 'package:calendaroo/redux/actions/calendar.actions.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
-import 'package:calendaroo/services/initializer-app.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:calendaroo/utils/notification.utils.dart';
@@ -11,16 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+
 import 'dao/events.repository.dart';
-import 'model/received-notification.dart';
 import 'environments/integration.dart' as env;
-
-
+import 'model/received-notification.dart';
 
 void main() {
   env.main();
 }
-
 
 class MyApp extends StatefulWidget {
   MyApp({Key key}) : super(key: key);
@@ -66,13 +63,13 @@ class _MyAppState extends State<MyApp> {
           actions: [
             CupertinoDialogAction(
               isDefaultAction: true,
-              child: Text('Ok'),
               onPressed: () async {
                 var event = await EventsRepository()
                     .event(int.parse(receivedNotification.payload));
                 calendarooState.dispatch(OpenEvent(event));
                 await NavigationService().navigateTo(DETAILS, arguments: event);
               },
+              child: Text('Ok'),
             )
           ],
         ),

@@ -1,6 +1,5 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/pages/today/today.page.dart';
-import 'package:calendaroo/services/initializer-app.service.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:calendaroo/widgets/fab-button.widget.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';

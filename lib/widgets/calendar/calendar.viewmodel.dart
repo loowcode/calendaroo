@@ -15,7 +15,13 @@ class CalendarViewModel {
   final Function(Date) selectDay;
   final Function(Date, Date) expandRange;
 
-  CalendarViewModel({this.selectedDay, this.eventMapped, this.startRange, this.endRange, this.selectDay, this.expandRange});
+  CalendarViewModel(
+      {this.selectedDay,
+      this.eventMapped,
+      this.startRange,
+      this.endRange,
+      this.selectDay,
+      this.expandRange});
 
   static CalendarViewModel fromStore(Store<AppState> store) {
     return CalendarViewModel(

@@ -44,5 +44,4 @@ class CalendarState {
       endRange: endRange ?? this.endRange,
     );
   }
-
 }
