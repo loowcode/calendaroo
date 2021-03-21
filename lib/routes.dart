@@ -1,9 +1,9 @@
-import 'package:calendaroo/blocs/settings_bloc.dart';
+import 'package:calendaroo/blocs/settings/settings_bloc.dart';
 import 'package:calendaroo/pages/container.page.dart';
 import 'package:calendaroo/pages/details/datails.page.dart';
 import 'package:calendaroo/pages/settings/settings.page.dart';
 import 'package:calendaroo/pages/today/today.page.dart';
-import 'package:calendaroo/repositories/settings-shared-preferences.repository.dart';
+import 'package:calendaroo/repositories/settings/settings-shared-preferences.repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,6 +1,6 @@
-import 'package:calendaroo/blocs/settings_bloc.dart';
+import 'package:calendaroo/blocs/settings/settings_bloc.dart';
 import 'package:calendaroo/colors.dart';
-import 'package:calendaroo/models/settings.dart';
+import 'package:calendaroo/models/settings/settings.model.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

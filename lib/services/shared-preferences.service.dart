@@ -3,18 +3,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceService {
+  static const ENABLE_NOTIFICATIONS = 'enableNotifications';
   SharedPreferenceService._();
+
 
   static final SharedPreferenceService _instance = SharedPreferenceService._();
 
   SharedPreferences _prefs;
 
-  Future<bool> getSharedPreferencesInstance() async {
+  Future<void> getSharedPreferencesInstance() async {
     _prefs = await SharedPreferences.getInstance().catchError((e) {
       debugPrint('shared prefrences error : $e');
-      return false;
     });
-    return true;
   }
 
   Future setString(String name, String value) async {
@@ -51,8 +51,13 @@ class SharedPreferenceService {
     _prefs.setString('calendarSize', value);
   }
 
+
   bool get enableNotifications {
-    return _prefs.getBool('enableNotifications') ?? true;
+    return _prefs.getBool(ENABLE_NOTIFICATIONS) ?? true;
+  }
+
+  void setEnableNotifications(bool value) async {
+    await _prefs.setBool(ENABLE_NOTIFICATIONS, value);
   }
 
   factory SharedPreferenceService() {

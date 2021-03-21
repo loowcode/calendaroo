@@ -1,4 +1,4 @@
-import 'package:calendaroo/blocs/settings_bloc.dart';
+import 'package:calendaroo/blocs/settings/settings_bloc.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/widgets/common/page-title.dart';
 import 'package:calendaroo/widgets/settings/setting_feedback_button.widget.dart';

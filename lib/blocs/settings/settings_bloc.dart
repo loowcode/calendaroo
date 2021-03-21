@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:calendaroo/models/settings.dart';
-import 'package:calendaroo/repositories/settings.repository.dart';
+import 'package:calendaroo/models/settings/settings.model.dart';
+import 'package:calendaroo/repositories/settings/settings.repository.dart';
 import 'package:calendaroo/services/notification.service.dart';
 import 'package:calendaroo/utils/notification.utils.dart';
 import 'package:equatable/equatable.dart';
