@@ -1,7 +1,5 @@
-import 'package:calendaroo/models/settings/settings.model.dart';
+import 'package:calendaroo/models/calendar_item.model.dart';
 
 abstract class CalendarRepository {
-  Future<Settings> read();
-
-  Future<void> write(Settings settings);
+  Future<List<CalendarItem>> findAll();
 }

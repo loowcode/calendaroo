@@ -1,3 +1,4 @@
+import 'package:calendaroo/blocs/calendar/calendar_bloc.dart';
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
@@ -6,6 +7,7 @@ import 'package:calendaroo/utils/string.utils.dart';
 import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -33,6 +35,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
 
     _animationController.forward();
 
+    // TODO
     _calendarSize = SharedPreferenceService().calendarSize;
   }
 
@@ -46,8 +49,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
   void updateController(DateTime newSelectedDay) {
     if (_calendarController != null) {
       if (newSelectedDay != null
-          // && CalendarUtils.removeTime(_calendarController.selectedDay) != CalendarUtils.removeTime(newSelectedDay)
-          ) {
+      // && CalendarUtils.removeTime(_calendarController.selectedDay) != CalendarUtils.removeTime(newSelectedDay)
+      ) {
         setState(() {
           _calendarController.setSelectedDay(newSelectedDay);
         });
@@ -95,41 +98,52 @@ class _CalendarWidgetState extends State<CalendarWidget>
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, CalendarViewModel>(
-        converter: (store) => CalendarViewModel.fromStore(store),
-        onWillChange: (oldViewModel, newViewModel) {
-          updateController(newViewModel.selectedDay);
-        },
-        builder: (context, store) {
-          return Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20)),
-                gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: cyanGradient)),
-            child: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  _buildHeaderTable(store),
-                  _calendarSize != CalendarSize.HIDE
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: _buildTableCalendarWithBuilders(store),
-                        )
-                      : SizedBox(),
-                ],
-              ),
+    // return StoreConnector<AppState, CalendarViewModel>(
+    //     converter: (store) => CalendarViewModel.fromStore(store),
+    //     onWillChange: (oldViewModel, newViewModel) {
+    //       updateController(newViewModel.selectedDay);
+    //     },
+    //     builder: (context, store) {
+    return BlocConsumer<CalendarBloc, CalendarState>(
+      listener: (context, state) {
+        if (state is CalendarLoaded) {
+          updateController(state.selectedDay); //TODO: serve?
+        }
+      },
+      builder: (context, state) {
+        var bloc = BlocProvider.of<CalendarBloc>(context);
+
+        return Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20)),
+              gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: cyanGradient)),
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                _buildHeaderTable(bloc),
+                _calendarSize != CalendarSize.HIDE
+                    ? Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: _buildTableCalendarWithBuilders(bloc, state),
+                )
+                    : SizedBox(),
+              ],
             ),
-          );
-        });
+          ),
+        )
+      },
+    );
+    // });
   }
 
-  Widget _buildHeaderTable(CalendarViewModel store) {
+  Widget _buildHeaderTable(CalendarBloc bloc) {
     var yearFormatter =
-        DateFormat.yMMMM(Localizations.localeOf(context).toString());
+    DateFormat.yMMMM(Localizations.localeOf(context).toString());
     return Material(
       child: SizedBox(
         height: 50,
@@ -140,32 +154,33 @@ class _CalendarWidgetState extends State<CalendarWidget>
               children: <Widget>[
                 _calendarSize != CalendarSize.HIDE
                     ? IconButton(
-                        onPressed: () => _selectPrevious(),
-                        icon: Icon(
-                          Icons.chevron_left,
-                          color: white,
-                        ))
+                    onPressed: () => _selectPrevious(),
+                    icon: Icon(
+                      Icons.chevron_left,
+                      color: white,
+                    ))
                     : SizedBox(
-                        width: 48,
-                      ),
+                  width: 48,
+                ),
                 Text(
                   _calendarController == null ||
-                          _calendarController.focusedDay == null
+                      _calendarController.focusedDay == null
                       ? ''
                       : StringUtils.capitalize(
-                          yearFormatter.format(_calendarController.focusedDay)),
-                  style: Theme.of(context)
+                      yearFormatter.format(_calendarController.focusedDay)),
+                  style: Theme
+                      .of(context)
                       .textTheme
                       .headline5
                       .copyWith(color: white),
                 ),
                 _calendarSize != CalendarSize.HIDE
                     ? IconButton(
-                        onPressed: () => _selectNext(),
-                        icon: Icon(
-                          Icons.chevron_right,
-                          color: white,
-                        ))
+                    onPressed: () => _selectNext(),
+                    icon: Icon(
+                      Icons.chevron_right,
+                      color: white,
+                    ))
                     : SizedBox(),
               ],
             ),
@@ -206,7 +221,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
                     )),
                 IconButton(
                     onPressed: () {
-                      store.selectDay(Date.today());
+                      bloc.add(CalendarDaySelectedEvent(Date.today()));
                     },
                     icon: Icon(
                       Icons.today,
@@ -221,11 +236,11 @@ class _CalendarWidgetState extends State<CalendarWidget>
   }
 
   // More advanced TableCalendar configuration (using Builders & Styles)
-  Widget _buildTableCalendarWithBuilders(CalendarViewModel store) {
+  Widget _buildTableCalendarWithBuilders(CalendarBloc bloc, CalendarLoaded state) {
     var locale = Localizations.localeOf(context);
     return TableCalendar(
       calendarController: _calendarController,
-      events: store.eventMapped,
+      events: state.mappedCalendarItems,
       headerVisible: false,
       initialCalendarFormat: _convertSizeToFormat(),
       formatAnimation: FormatAnimation.slide,
@@ -246,13 +261,13 @@ class _CalendarWidgetState extends State<CalendarWidget>
         outsideStyle: TextStyle()
             .copyWith(fontWeight: FontWeight.w600, color: transparentWhite),
         weekendStyle:
-            TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+        TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
         holidayStyle:
-            TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+        TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
         weekdayStyle:
-            TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+        TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
         eventDayStyle:
-            TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+        TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
       ),
       daysOfWeekStyle: DaysOfWeekStyle(
           weekendStyle: TextStyle().copyWith(color: white),
@@ -313,7 +328,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
       },
       onCalendarCreated:
           (DateTime first, DateTime last, CalendarFormat format) =>
-              _onCalendarCreated(store, first, last, format),
+          _onCalendarCreated(store, first, last, format),
     );
   }
 
@@ -324,7 +339,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
         child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: events
-                .map((e) => Padding(
+                .map((e) =>
+                Padding(
                     padding: EdgeInsets.only(left: 1, right: 1),
                     child: Container(
                       height: 8,

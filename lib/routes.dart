@@ -3,10 +3,12 @@ import 'package:calendaroo/pages/container.page.dart';
 import 'package:calendaroo/pages/details/datails.page.dart';
 import 'package:calendaroo/pages/settings/settings.page.dart';
 import 'package:calendaroo/pages/today/today.page.dart';
-import 'package:calendaroo/repositories/settings/settings-shared-preferences.repository.dart';
+import 'package:calendaroo/repositories/calendar/calendar_local.repository.dart';
+import 'package:calendaroo/repositories/settings/settings_shared_preferences.repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'blocs/calendar/calendar_bloc.dart';
 import 'model/event.model.dart';
 
 const HOMEPAGE = '/home';
@@ -19,7 +21,12 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
   switch (settings.name) {
     case HOMEPAGE:
       return MaterialPageRoute(
-        builder: (context) => ContainerPage(),
+        builder: (context) {
+          return BlocProvider(
+              create: (BuildContext context) =>
+                  CalendarBloc(CalendarLocalRepository()),
+              child: ContainerPage());
+        },
         settings: settings,
       );
 
@@ -49,7 +56,12 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
 
     default:
       return MaterialPageRoute(
-        builder: (context) => ContainerPage(),
+        builder: (context) {
+          return BlocProvider(
+              create: (BuildContext context) =>
+                  CalendarBloc(CalendarLocalRepository()),
+              child: ContainerPage());
+        },
         settings: settings,
       );
   }
