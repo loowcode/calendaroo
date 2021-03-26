@@ -3,15 +3,14 @@ import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:calendaroo/model/date.model.dart';
-import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/models/calendar_item.model.dart';
+import 'package:calendaroo/models/calendar_item_instance.model.dart';
 import 'package:calendaroo/repositories/calendar/calendar.repository.dart';
 import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
 part 'calendar_event.dart';
-
 part 'calendar_state.dart';
 
 class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
@@ -38,25 +37,26 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     print(transition);
   }
 
-  SplayTreeMap<Date, List<EventInstance>> _generateInstances(List<CalendarItem> items) {
-    var map = SplayTreeMap<Date, List<EventInstance>>();
-    items.forEach((CalendarItem item) {
-      createInstance(item).forEach((elem) {
-        var first = Date.convertToDate(elem.start);
-        var index = Date.convertToDate(elem.start);
-        var last = Date.convertToDate(elem.end);
-        for (var i = 0; i <= first.difference(last).inDays; i++) {
-          _insertIntoMap(map, index, elem);
-          index = Date.convertToDate(index.add(Duration(days: 1)));
-        }
-      });
-    });
+  SplayTreeMap<Date, List<CalendarItemInstance>> _generateInstances(
+      List<CalendarItem> items) {
+    var map = SplayTreeMap<Date, List<CalendarItemInstance>>();
+    // items.forEach((CalendarItem item) {
+    //   createInstance(item).forEach((elem) {
+    //     var first = Date.convertToDate(elem.start);
+    //     var index = Date.convertToDate(elem.start);
+    //     var last = Date.convertToDate(elem.end);
+    //     for (var i = 0; i <= first.difference(last).inDays; i++) {
+    //       _insertIntoMap(map, index, elem);
+    //       index = Date.convertToDate(index.add(Duration(days: 1)));
+    //     }
+    //   });
+    // });
 
     return map;
   }
 
-  static void _insertIntoMap(SplayTreeMap<Date, List<EventInstance>> map,
-      Date date, EventInstance event) {
+  static void _insertIntoMap(SplayTreeMap<Date, List<CalendarItemInstance>> map,
+      Date date, CalendarItemInstance event) {
     if (map.containsKey(date)) {
       var list = map[date];
       list.add(event);
@@ -67,8 +67,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     }
   }
 
-  static List<EventInstance> createInstance(CalendarItem item) {
-    var instances = <EventInstance>[];
+  static List<CalendarItemInstance> createInstance(CalendarItem item) {
+    var instances = <CalendarItemInstance>[];
     var _uuid = Uuid();
     var first = CalendarUtils.removeTime(item.start);
     var index = CalendarUtils.removeTime(item.start);
@@ -76,7 +76,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
     var daySpan = last.difference(first).inDays;
     for (var i = 0; i <= daySpan; i++) {
-      var instance = EventInstance(
+      var instance = CalendarItemInstance(
         id: null,
         uuid: _uuid.v4(),
         eventId: item.id,

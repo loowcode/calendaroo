@@ -47,7 +47,7 @@ class LocalStorageService {
   }
 
   Future createTable(Database db) async {
-    await db.execute('''create TABLE events(
+    await db.execute('''create TABLE calendar_item(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           title TEXT,
           uuid TEXT,
@@ -59,13 +59,18 @@ class LocalStorageService {
           until TEXT,
           alarms TEXT
       );''');
-    await db.execute('''create TABLE eventInstances(
+
+    await db.execute('''create TABLE calendar_item_repeat(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        uuid TEXT,
-        eventId INTEGER NOT NULL,
-        start TEXT,
-        end TEXT,
-        FOREIGN KEY (eventId) REFERENCES events (id)
+        calendar_item_id INTEGER NOT NULL,
+        from TEXT NOT NULL,
+        until TEXT,
+        repeat_day TEXT NOT NULL,
+        repeat_week_day TEXT NOT NULL,
+        repeat_week TEXT NOT NULL,
+        repeat_month TEXT NOT NULL,
+        repeat_year TEXT NOT NULL,
+        FOREIGN KEY (calendar_item_id) REFERENCES calendar_item (id)
           ON DELETE NO ACTION ON UPDATE NO ACTION
     );''');
   }
@@ -91,8 +96,8 @@ class LocalStorageService {
   }
 
   FutureOr<void> dropTable(Database db) async {
-    await db.execute('drop table if exists events;');
-    await db.execute('drop table if exists eventInstances;');
+    await db.execute('drop table if exists calendar_item;');
+    await db.execute('drop table if exists calendar_item_repeat;');
     await createTable(db);
   }
 }

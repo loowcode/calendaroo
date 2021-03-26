@@ -8,7 +8,6 @@ import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -35,7 +34,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
 
     _animationController.forward();
 
-    // TODO
+    // TODO spostare in bloc
     _calendarSize = SharedPreferenceService().calendarSize;
   }
 
@@ -46,66 +45,11 @@ class _CalendarWidgetState extends State<CalendarWidget>
     super.dispose();
   }
 
-  void updateController(DateTime newSelectedDay) {
-    if (_calendarController != null) {
-      if (newSelectedDay != null
-      // && CalendarUtils.removeTime(_calendarController.selectedDay) != CalendarUtils.removeTime(newSelectedDay)
-      ) {
-        setState(() {
-          _calendarController.setSelectedDay(newSelectedDay);
-        });
-      }
-    }
-  }
-
-  void _onDaySelected(CalendarViewModel store, DateTime day, List events) {
-    store.selectDay(Date.convertToDate(day));
-  }
-
-  void _onVisibleDaysChanged(CalendarViewModel state, DateTime first,
-      DateTime last, CalendarFormat format) {
-    if (format == CalendarFormat.month) {
-      SharedPreferenceService().setCalendarSize('month');
-      _calendarSize = CalendarSize.MONTH;
-    }
-    if (format == CalendarFormat.twoWeeks) {
-      SharedPreferenceService().setCalendarSize('twoWeeks');
-      _calendarSize = CalendarSize.TWO_WEEKS;
-    }
-    if (format == CalendarFormat.week) {
-      SharedPreferenceService().setCalendarSize('week');
-      _calendarSize = CalendarSize.WEEK;
-    }
-
-    if (first.isBefore(calendarooState.state.calendarState.startRange)) {
-      state.expandRange(
-          Date.convertToDate(calendarooState.state.calendarState.startRange
-              .subtract(Duration(days: 60))),
-          calendarooState.state.calendarState.endRange);
-    }
-    if (last.isAfter(calendarooState.state.calendarState.endRange)) {
-      state.expandRange(
-          calendarooState.state.calendarState.startRange,
-          Date.convertToDate(calendarooState.state.calendarState.endRange
-              .add(Duration(days: 60))));
-    }
-  }
-
-  void _onCalendarCreated(CalendarViewModel store, DateTime first,
-      DateTime last, CalendarFormat format) {
-    store.selectDay(Date.today());
-  }
-
   @override
   Widget build(BuildContext context) {
-    // return StoreConnector<AppState, CalendarViewModel>(
-    //     converter: (store) => CalendarViewModel.fromStore(store),
-    //     onWillChange: (oldViewModel, newViewModel) {
-    //       updateController(newViewModel.selectedDay);
-    //     },
-    //     builder: (context, store) {
     return BlocConsumer<CalendarBloc, CalendarState>(
       listener: (context, state) {
+        // before in onWillChange og StoreConnector
         if (state is CalendarLoaded) {
           updateController(state.selectedDay); //TODO: serve?
         }
@@ -128,22 +72,23 @@ class _CalendarWidgetState extends State<CalendarWidget>
                 _buildHeaderTable(bloc),
                 _calendarSize != CalendarSize.HIDE
                     ? Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: _buildTableCalendarWithBuilders(bloc, state),
-                )
+                        padding: const EdgeInsets.only(top: 8.0),
+                        // TODO solo se state è CalendarLoaded
+                        child: _buildTableCalendarWithBuilders(bloc, state),
+                      )
                     : SizedBox(),
               ],
             ),
           ),
-        )
+        );
       },
     );
-    // });
   }
 
   Widget _buildHeaderTable(CalendarBloc bloc) {
     var yearFormatter =
-    DateFormat.yMMMM(Localizations.localeOf(context).toString());
+        DateFormat.yMMMM(Localizations.localeOf(context).toString());
+
     return Material(
       child: SizedBox(
         height: 50,
@@ -154,33 +99,32 @@ class _CalendarWidgetState extends State<CalendarWidget>
               children: <Widget>[
                 _calendarSize != CalendarSize.HIDE
                     ? IconButton(
-                    onPressed: () => _selectPrevious(),
-                    icon: Icon(
-                      Icons.chevron_left,
-                      color: white,
-                    ))
+                        onPressed: () => _selectPrevious(),
+                        icon: Icon(
+                          Icons.chevron_left,
+                          color: white,
+                        ))
                     : SizedBox(
-                  width: 48,
-                ),
+                        width: 48,
+                      ),
                 Text(
                   _calendarController == null ||
-                      _calendarController.focusedDay == null
+                          _calendarController.focusedDay == null
                       ? ''
                       : StringUtils.capitalize(
-                      yearFormatter.format(_calendarController.focusedDay)),
-                  style: Theme
-                      .of(context)
+                          yearFormatter.format(_calendarController.focusedDay)),
+                  style: Theme.of(context)
                       .textTheme
                       .headline5
                       .copyWith(color: white),
                 ),
                 _calendarSize != CalendarSize.HIDE
                     ? IconButton(
-                    onPressed: () => _selectNext(),
-                    icon: Icon(
-                      Icons.chevron_right,
-                      color: white,
-                    ))
+                        onPressed: () => _selectNext(),
+                        icon: Icon(
+                          Icons.chevron_right,
+                          color: white,
+                        ))
                     : SizedBox(),
               ],
             ),
@@ -221,7 +165,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
                     )),
                 IconButton(
                     onPressed: () {
-                      bloc.add(CalendarDaySelectedEvent(Date.today()));
+                      bloc.add(CalendarDaySelectedEvent(
+                          Date.today())); //TODO: handle this event
                     },
                     icon: Icon(
                       Icons.today,
@@ -236,11 +181,12 @@ class _CalendarWidgetState extends State<CalendarWidget>
   }
 
   // More advanced TableCalendar configuration (using Builders & Styles)
-  Widget _buildTableCalendarWithBuilders(CalendarBloc bloc, CalendarLoaded state) {
+  Widget _buildTableCalendarWithBuilders(
+      CalendarBloc bloc, CalendarState state) {
     var locale = Localizations.localeOf(context);
     return TableCalendar(
       calendarController: _calendarController,
-      events: state.mappedCalendarItems,
+      events: state is CalendarLoaded ? state.mappedCalendarItems : null,
       headerVisible: false,
       initialCalendarFormat: _convertSizeToFormat(),
       formatAnimation: FormatAnimation.slide,
@@ -261,17 +207,18 @@ class _CalendarWidgetState extends State<CalendarWidget>
         outsideStyle: TextStyle()
             .copyWith(fontWeight: FontWeight.w600, color: transparentWhite),
         weekendStyle:
-        TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+            TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
         holidayStyle:
-        TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+            TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
         weekdayStyle:
-        TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+            TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
         eventDayStyle:
-        TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
+            TextStyle().copyWith(fontWeight: FontWeight.w600, color: white),
       ),
       daysOfWeekStyle: DaysOfWeekStyle(
-          weekendStyle: TextStyle().copyWith(color: white),
-          weekdayStyle: TextStyle().copyWith(color: white)),
+        weekendStyle: TextStyle().copyWith(color: white),
+        weekdayStyle: TextStyle().copyWith(color: white),
+      ),
       builders: CalendarBuilders(
         selectedDayBuilder: (context, date, _) {
           return FadeTransition(
@@ -317,95 +264,102 @@ class _CalendarWidgetState extends State<CalendarWidget>
           return children;
         },
       ),
-      onDaySelected: (date, events, holidays) {
-        _onDaySelected(store, date, events);
-        _animationController.forward(from: 0.0);
-      },
-      onVisibleDaysChanged: (first, last, format) {
-        // This setState updates the month label because this callback is called also when swiping the calendar
-        setState(() {});
-        _onVisibleDaysChanged(store, first, last, format);
-      },
-      onCalendarCreated:
-          (DateTime first, DateTime last, CalendarFormat format) =>
-          _onCalendarCreated(store, first, last, format),
+      // onDaySelected: (date, events, holidays) {
+      //   _onDaySelected(store, date, events);
+      //   _animationController.forward(from: 0.0);
+      // },
+      // onVisibleDaysChanged: (first, last, format) {
+      //   // This setState updates the month label because this callback is called also when swiping the calendar
+      //   setState(() {});
+      //   _onVisibleDaysChanged(store, first, last, format);
+      // },
+      // onCalendarCreated:
+      //     (DateTime first, DateTime last, CalendarFormat format) =>
+      //     _onCalendarCreated(store, first, last, format),
     );
   }
 
   Widget _buildEventsMarker(DateTime date, List events) {
     events = events.sublist(0, events.length > 3 ? 3 : events.length);
     return Positioned(
-        bottom: 10,
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: events
-                .map((e) =>
-                Padding(
-                    padding: EdgeInsets.only(left: 1, right: 1),
-                    child: Container(
-                      height: 8,
-                      width: 8,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: pink,
-                      ),
-                    )))
-                .toList()));
+      bottom: 10,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: events
+            .map(
+              (e) => Padding(
+                padding: EdgeInsets.only(left: 1, right: 1),
+                child: Container(
+                  height: 8,
+                  width: 8,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: pink,
+                  ),
+                ),
+              ),
+            )
+            .toList(),
+      ),
+    );
   }
 
+  // TODO: migrate to new repeat logic
   void _selectPrevious() {
-    var calendarFormat = _calendarController.calendarFormat;
-    var focusesDay = _calendarController.focusedDay;
-    var newFocus = focusesDay;
-    if (_calendarController.calendarFormat == CalendarFormat.month) {
-      if (focusesDay.month == 1) {
-        newFocus = DateTime(focusesDay.year - 1, 12);
-      } else {
-        newFocus = DateTime(focusesDay.year, focusesDay.month - 1);
-      }
-    } else if (calendarFormat == CalendarFormat.twoWeeks) {
-      if (_calendarController.visibleDays.take(7).contains(focusesDay)) {
-        // in top row
-        newFocus = focusesDay.subtract(const Duration(days: 7));
-      } else {
-        // in bottom row OR not visible
-        newFocus = focusesDay.subtract(Duration(days: 14));
-      }
-    } else {
-      newFocus = focusesDay.subtract(const Duration(days: 7));
-    }
-    setState(() {
-      _calendarController.setFocusedDay(newFocus);
-    });
+    // var calendarFormat = _calendarController.calendarFormat;
+    // var focusesDay = _calendarController.focusedDay;
+    // var newFocus = focusesDay;
+    // if (_calendarController.calendarFormat == CalendarFormat.month) {
+    //   if (focusesDay.month == 1) {
+    //     newFocus = DateTime(focusesDay.year - 1, 12);
+    //   } else {
+    //     newFocus = DateTime(focusesDay.year, focusesDay.month - 1);
+    //   }
+    // } else if (calendarFormat == CalendarFormat.twoWeeks) {
+    //   if (_calendarController.visibleDays.take(7).contains(focusesDay)) {
+    //     // in top row
+    //     newFocus = focusesDay.subtract(const Duration(days: 7));
+    //   } else {
+    //     // in bottom row OR not visible
+    //     newFocus = focusesDay.subtract(Duration(days: 14));
+    //   }
+    // } else {
+    //   newFocus = focusesDay.subtract(const Duration(days: 7));
+    // }
+    // setState(() {
+    //   _calendarController.setFocusedDay(newFocus);
+    // });
   }
 
+  // TODO: migrate to new repeat logic
   void _selectNext() {
-    var calendarFormat = _calendarController.calendarFormat;
-    var focusesDay = _calendarController.focusedDay;
-    var newFocus = focusesDay;
-    if (_calendarController.calendarFormat == CalendarFormat.month) {
-      if (focusesDay.month == 12) {
-        newFocus = DateTime(focusesDay.year + 1, 12);
-      } else {
-        newFocus = DateTime(focusesDay.year, focusesDay.month + 1);
-      }
-    } else if (calendarFormat == CalendarFormat.twoWeeks) {
-      if (!_calendarController.visibleDays.skip(7).contains(focusesDay)) {
-        // in top row
-        newFocus = focusesDay.add(const Duration(days: 7));
-      } else {
-        // in bottom row OR not visible
-        newFocus = focusesDay.add(Duration(days: 14));
-      }
-    } else {
-      newFocus = focusesDay.add(const Duration(days: 7));
-    }
-    setState(() {
-      _calendarController.setFocusedDay(newFocus);
-    });
+    // var calendarFormat = _calendarController.calendarFormat;
+    // var focusesDay = _calendarController.focusedDay;
+    // var newFocus = focusesDay;
+    // if (_calendarController.calendarFormat == CalendarFormat.month) {
+    //   if (focusesDay.month == 12) {
+    //     newFocus = DateTime(focusesDay.year + 1, 12);
+    //   } else {
+    //     newFocus = DateTime(focusesDay.year, focusesDay.month + 1);
+    //   }
+    // } else if (calendarFormat == CalendarFormat.twoWeeks) {
+    //   if (!_calendarController.visibleDays.skip(7).contains(focusesDay)) {
+    //     // in top row
+    //     newFocus = focusesDay.add(const Duration(days: 7));
+    //   } else {
+    //     // in bottom row OR not visible
+    //     newFocus = focusesDay.add(Duration(days: 14));
+    //   }
+    // } else {
+    //   newFocus = focusesDay.add(const Duration(days: 7));
+    // }
+    // setState(() {
+    //   _calendarController.setFocusedDay(newFocus);
+    // });
   }
 
   CalendarFormat _convertSizeToFormat() {
+    // TODO: migrate to bloc
     var calendarSize = SharedPreferenceService().calendarSize;
     switch (calendarSize) {
       case CalendarSize.HIDE:
@@ -420,6 +374,57 @@ class _CalendarWidgetState extends State<CalendarWidget>
         return CalendarFormat.month;
     }
   }
+
+  void updateController(DateTime newSelectedDay) {
+    if (_calendarController != null) {
+      if (newSelectedDay != null
+          // && CalendarUtils.removeTime(_calendarController.selectedDay) != CalendarUtils.removeTime(newSelectedDay)
+          ) {
+        setState(() {
+          _calendarController.setSelectedDay(newSelectedDay);
+        });
+      }
+    }
+  }
+
+  void _onDaySelected(CalendarViewModel store, DateTime day, List events) {
+    store.selectDay(Date.convertToDate(day));
+  }
+
+  void _onVisibleDaysChanged(CalendarViewModel state, DateTime first,
+      DateTime last, CalendarFormat format) {
+    if (format == CalendarFormat.month) {
+      SharedPreferenceService().setCalendarSize('month');
+      _calendarSize = CalendarSize.MONTH;
+    }
+    if (format == CalendarFormat.twoWeeks) {
+      SharedPreferenceService().setCalendarSize('twoWeeks');
+      _calendarSize = CalendarSize.TWO_WEEKS;
+    }
+    if (format == CalendarFormat.week) {
+      SharedPreferenceService().setCalendarSize('week');
+      _calendarSize = CalendarSize.WEEK;
+    }
+
+    if (first.isBefore(calendarooState.state.calendarState.startRange)) {
+      state.expandRange(
+          Date.convertToDate(calendarooState.state.calendarState.startRange
+              .subtract(Duration(days: 60))),
+          calendarooState.state.calendarState.endRange);
+    }
+    if (last.isAfter(calendarooState.state.calendarState.endRange)) {
+      state.expandRange(
+          calendarooState.state.calendarState.startRange,
+          Date.convertToDate(calendarooState.state.calendarState.endRange
+              .add(Duration(days: 60))));
+    }
+  }
+
+  void _onCalendarCreated(CalendarViewModel store, DateTime first,
+      DateTime last, CalendarFormat format) {
+    store.selectDay(Date.today());
+  }
 }
 
+// TODO: migrate to bloc
 enum CalendarSize { HIDE, WEEK, TWO_WEEKS, MONTH }

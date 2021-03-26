@@ -18,7 +18,7 @@ class CalendarLoaded extends CalendarState {
   final Date selectedDay;
   final Date startRange;
   final Date endRange;
-  final SplayTreeMap<Date, List<EventInstance>> mappedCalendarItems;
+  final SplayTreeMap<Date, List<CalendarItemInstance>> mappedCalendarItems;
 
   CalendarLoaded({
     this.selectedDay,

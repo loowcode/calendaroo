@@ -48,6 +48,7 @@ class _MyAppState extends State<MyApp> {
         );
   }
 
+  // TODO: migrate to bloc
   void _configureDidReceiveLocalNotificationSubject() {
     didReceiveLocalNotificationSubject.stream
         .listen((ReceivedNotification receivedNotification) async {
@@ -77,6 +78,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  // TODO: migrate to bloc
   void _configureSelectNotificationSubject() {
     selectNotificationSubject.stream.listen((String payload) async {
       var event = await EventsRepository().event(int.parse(payload));

@@ -1,4 +1,6 @@
+import 'package:calendaroo/blocs/details/details_bloc.dart';
 import 'package:calendaroo/blocs/settings/settings_bloc.dart';
+import 'package:calendaroo/models/calendar_item.model.dart';
 import 'package:calendaroo/pages/container.page.dart';
 import 'package:calendaroo/pages/details/datails.page.dart';
 import 'package:calendaroo/pages/settings/settings.page.dart';
@@ -9,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'blocs/calendar/calendar_bloc.dart';
-import 'model/event.model.dart';
 
 const HOMEPAGE = '/home';
 const SETTINGS = '/settings';
@@ -50,7 +51,11 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
 
     case DETAILS:
       return MaterialPageRoute(
-        builder: (context) => DetailsPage(settings.arguments as Event),
+        builder: (context) {
+          return BlocProvider(
+              create: (BuildContext context) => DetailsBloc(),
+              child: DetailsPage(settings.arguments as CalendarItem));
+        },
         settings: settings,
       );
 
