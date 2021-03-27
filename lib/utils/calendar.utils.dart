@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/model/repeat.model.dart';
+import 'package:calendaroo/models/calendar_item/calendar_item_instance.model.dart';
 import 'package:calendaroo/models/date.model.dart';
 import 'package:uuid/uuid.dart';
 
@@ -175,7 +176,7 @@ class CalendarUtils {
     }
   }
 
-  static int getIndex(Map<Date, List<EventInstance>> map, Date day) {
+  static int getIndex(Map<Date, List<CalendarItemInstance>> map, Date day) {
     var list = map.keys.toList();
     var index = list.indexOf(day);
     if (index < 0) {

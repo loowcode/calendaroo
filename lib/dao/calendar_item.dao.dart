@@ -9,7 +9,7 @@ class CalendarItemDao {
     var client = await LocalStorageService().db;
 
     return await client.insert(
-      'events',
+      'calendar_item',
       calendarItem.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -18,7 +18,7 @@ class CalendarItemDao {
   Future<int> updateCalendarItem(CalendarItem newCalendarItem) async {
     var client = await LocalStorageService().db;
 
-    return client.update('events', newCalendarItem.toMap(),
+    return client.update('calendar_item', newCalendarItem.toMap(),
         where: 'id = ?',
         whereArgs: [newCalendarItem.id],
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -27,12 +27,12 @@ class CalendarItemDao {
   Future<void> deleteCalendarItem(int id) async {
     var client = await LocalStorageService().db;
 
-    return client.delete('events', where: 'id = ?', whereArgs: [id]);
+    return client.delete('calendar_item', where: 'id = ?', whereArgs: [id]);
   }
 
   Future<CalendarItem> calendarItem(int id) async {
     var client = await LocalStorageService().db;
-    final maps = await client.query('events', where: 'id = ?', whereArgs: [id]);
+    final maps = await client.query('calendar_item', where: 'id = ?', whereArgs: [id]);
 
     return CalendarItem.fromMap(maps[0]);
   }
@@ -40,7 +40,7 @@ class CalendarItemDao {
   Future<List<CalendarItem>> calendarItems() async {
     final client = await LocalStorageService().db;
 
-    final maps = await client.query('events');
+    final maps = await client.query('calendar_item');
     return List.generate(maps.length, (i) {
       return CalendarItem.fromMap(maps[i]);
     });
@@ -51,7 +51,7 @@ class CalendarItemDao {
     // final maps = await client.query('events',
     //     where: 'start > ? and end < ?',
     //     whereArgs: [rangeStart.toIso8601String(), rangeEnd.toIso8601String()]);
-    final maps = await client.query('events');
+    final maps = await client.query('calendar_item');
     return List.generate(maps.length, (i) {
       return CalendarItem.fromMap(maps[i]);
     });

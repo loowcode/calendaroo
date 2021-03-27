@@ -23,6 +23,8 @@ class _ContainerPageState extends State<ContainerPage>
   void initState() {
     super.initState();
     // _fragments = [TodayPage(), CalendarPage()];
+    // _index = 1;
+    _fragments = [CalendarPage(), CalendarPage()];
     _index = 1;
   }
 
@@ -31,7 +33,7 @@ class _ContainerPageState extends State<ContainerPage>
     return Theme(
       data: AppTheme.primaryTheme,
       child: Scaffold(
-        // body: _fragments[_index],
+        body: _fragments[_index],
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FabButton(),
         bottomNavigationBar: BottomAppBar(
