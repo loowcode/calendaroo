@@ -1,6 +1,7 @@
 import 'package:calendaroo/blocs/details/details_bloc.dart';
 import 'package:calendaroo/blocs/settings/settings_bloc.dart';
 import 'package:calendaroo/models/calendar_item.model.dart';
+import 'package:calendaroo/blocs/today/today_bloc.dart';
 import 'package:calendaroo/pages/container.page.dart';
 import 'package:calendaroo/pages/details/datails.page.dart';
 import 'package:calendaroo/pages/settings/settings.page.dart';
@@ -45,7 +46,12 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
 
     case TODAY:
       return MaterialPageRoute(
-        builder: (context) => TodayPage(),
+        builder: (context) {
+          return BlocProvider(
+              create: (BuildContext context) =>
+                  TodayBloc(),
+              child: TodayPage());
+        },
         settings: settings,
       );
 

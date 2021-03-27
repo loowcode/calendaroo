@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 part 'today_event.dart';
 part 'today_state.dart';
 
-class TodayBloc extends Bloc<TodayEvent, TodayState> {
+class TodayBloc extends Bloc<TodayEvent, TodayState>{
 
   TodayBloc() : super(TodayInitial());
 
