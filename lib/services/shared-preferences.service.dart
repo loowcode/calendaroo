@@ -12,7 +12,7 @@ class SharedPreferenceService {
   SharedPreferences _prefs;
 
   Future<void> getSharedPreferencesInstance() async {
-    _prefs = await SharedPreferences.getInstance().catchError((e) {
+    _prefs = await SharedPreferences.getInstance().catchError((String e) {
       debugPrint('shared prefrences error : $e');
     });
   }

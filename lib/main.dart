@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
   void _configureDidReceiveLocalNotificationSubject() {
     didReceiveLocalNotificationSubject.stream
         .listen((ReceivedNotification receivedNotification) async {
-      await showDialog(
+      await showDialog<Widget>(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
           title: receivedNotification.title != null

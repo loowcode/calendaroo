@@ -1,13 +1,13 @@
 import 'dart:math';
 
 import 'package:calendaroo/colors.dart';
-import 'package:calendaroo/model/event-instance.model.dart';
+import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item_instance.model.dart';
 import 'package:calendaroo/widgets/common/circle-indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TodayCompletionCircle extends StatefulWidget {
-  final List<EventInstance> events;
+  final List<CalendarItemInstance> events;
 
   TodayCompletionCircle({this.events});
 

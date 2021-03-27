@@ -1,7 +1,6 @@
 import 'package:calendaroo/blocs/details/details_bloc.dart';
 import 'package:calendaroo/blocs/settings/settings_bloc.dart';
-import 'package:calendaroo/models/calendar_item.model.dart';
-import 'package:calendaroo/blocs/today/today_bloc.dart';
+import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item.model.dart';
 import 'package:calendaroo/pages/container.page.dart';
 import 'package:calendaroo/pages/details/datails.page.dart';
 import 'package:calendaroo/pages/settings/settings.page.dart';
@@ -22,7 +21,7 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
     (RouteSettings settings) {
   switch (settings.name) {
     case HOMEPAGE:
-      return MaterialPageRoute(
+      return MaterialPageRoute<ContainerPage>(
         builder: (context) {
           return BlocProvider(
               create: (BuildContext context) =>
@@ -33,7 +32,7 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
       );
 
     case SETTINGS:
-      return MaterialPageRoute(
+      return MaterialPageRoute<SettingsPage>(
         builder: (context) {
           return BlocProvider(
             create: (context) =>
@@ -45,18 +44,18 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
       );
 
     case TODAY:
-      return MaterialPageRoute(
+      return MaterialPageRoute<TodayPage>(
         builder: (context) {
           return BlocProvider(
               create: (BuildContext context) =>
-                  TodayBloc(),
+                  CalendarBloc(CalendarLocalRepository()),
               child: TodayPage());
         },
         settings: settings,
       );
 
     case DETAILS:
-      return MaterialPageRoute(
+      return MaterialPageRoute<DetailsPage>(
         builder: (context) {
           return BlocProvider(
               create: (BuildContext context) => DetailsBloc(),
@@ -66,7 +65,7 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
       );
 
     default:
-      return MaterialPageRoute(
+      return MaterialPageRoute<ContainerPage>(
         builder: (context) {
           return BlocProvider(
               create: (BuildContext context) =>

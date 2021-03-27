@@ -31,7 +31,7 @@ class _ContainerPageState extends State<ContainerPage>
     return Theme(
       data: AppTheme.primaryTheme,
       child: Scaffold(
-        body: _fragments[_index],
+        // body: _fragments[_index],
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: FabButton(),
         bottomNavigationBar: BottomAppBar(

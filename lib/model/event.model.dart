@@ -37,17 +37,17 @@ class Event {
       description: map['description'] as String,
       start: DateTime.parse(map['start'] as String),
       end: DateTime.parse(map['end'] as String),
-      allDay: (map['allDay'] as int) == 1 ? true : false,
+      allDay: (map['allDay'] as int) == 1,
       repeat: Repeat.fromJson(map['repeat'] as String),
       until: DateTime.parse(map['until'] as String ?? map['start'] as String),
-      alarms: ((jsonDecode(map['alarms'] as String) as List) ?? [])
-          .map((e) => Alarm.fromJson(e))
+      alarms: ((jsonDecode(map['alarms'] as String) as List<Alarm>) ?? <Alarm>[])
+          .map((dynamic e) => Alarm.fromJson(e))
           .toList(),
     );
   }
 
   Map<String, dynamic> toMap() {
-    var map = <String, dynamic>{};
+    final map = <String, dynamic>{};
     map['id'] = id;
     map['uuid'] = uuid;
     map['title'] = title;

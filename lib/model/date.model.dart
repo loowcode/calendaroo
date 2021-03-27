@@ -7,6 +7,6 @@ class Date extends DateTime {
 
   static Date today() {
     final now = DateTime.now();
-    return Date(now.year, now.month, now.day);
+    return convertToDate(now);
   }
 }

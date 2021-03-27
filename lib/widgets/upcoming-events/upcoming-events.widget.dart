@@ -5,7 +5,6 @@ import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:calendaroo/utils/string.utils.dart';
-import 'package:calendaroo/widgets/card/card.widget.dart';
 import 'package:calendaroo/widgets/upcoming-events/upcoming-events.viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -99,11 +98,11 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
             ),
           ),
         )
-        ..addAll(list
-            .map(
-              (elem) => Container(child: CardWidget(elem)),
-            )
-            .toList())
+        // ..addAll(list
+        //     .map(
+        //       (elem) => Container(child: CardWidget(elem)),
+        //     )
+        //     .toList())
         ..add(
           SizedBox(
             height: 16,

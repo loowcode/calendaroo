@@ -1,4 +1,4 @@
-import 'package:calendaroo/model/event-instance.model.dart';
+import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item_instance.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/widgets/card/card.viewmodel.dart';
@@ -12,7 +12,7 @@ import '../../colors.dart';
 import '../options.widget.dart';
 
 class CardWidget extends StatefulWidget {
-  final EventInstance event;
+  final CalendarItemInstance event;
 
   CardWidget(this.event);
 

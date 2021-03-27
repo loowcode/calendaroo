@@ -1,3 +1,4 @@
+import 'package:calendaroo/blocs/calendar/calendar_bloc.dart';
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
@@ -7,6 +8,7 @@ import 'package:calendaroo/widgets/todaylist/todaylist.widget.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class TodayPage extends StatefulWidget {
@@ -20,6 +22,7 @@ class _TodayPageState extends State<TodayPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<CalendarBloc>(context).add(CalendarLoadEvent());
   }
 
   @override

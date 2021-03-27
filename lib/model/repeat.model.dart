@@ -7,7 +7,7 @@ class Repeat {
   Repeat({this.type, this.payload});
 
   factory Repeat.fromJson(String string) {
-    var json = jsonDecode(string);
+    final dynamic json = jsonDecode(string);
     return Repeat(
         type: stringToRepeatType(json['time'] as String),
         payload: json['payload'] as String);

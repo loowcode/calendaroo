@@ -1,13 +1,11 @@
 import 'package:calendaroo/blocs/calendar/calendar_bloc.dart';
-import 'package:calendaroo/blocs/today/today_bloc.dart';
-import 'package:calendaroo/model/event-instance.model.dart';
+import 'package:calendaroo/model/date.model.dart';
+import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item_instance.model.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/widgets/card/card.widget.dart';
 import 'package:calendaroo/widgets/today-completion-circle/today-completion-circle.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-
 
 class TodayListWidget extends StatefulWidget {
   @override
@@ -28,10 +26,12 @@ class _TodayListWidgetState extends State<TodayListWidget>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodayBloc, CalendarState>(builder: (context, store) {
-      var bloc = BlocProvider.of<TodayBloc>(context);
+    return BlocBuilder<CalendarBloc, CalendarState>(builder: (context, state) {
+      var bloc = BlocProvider.of<CalendarBloc>(context);
 
-      List<EventInstance> todayList = [];
+      final todayList = state is CalendarLoaded
+          ? state?.mappedCalendarItems[Date.today()]
+          : <CalendarItemInstance>[];
       return Container(
         margin: EdgeInsets.symmetric(horizontal: 16),
         child: Column(children: <Widget>[
@@ -47,7 +47,7 @@ class _TodayListWidgetState extends State<TodayListWidget>
                   child: Text('${todayList.length}')),
             ],
           ),
-          ...todayList.map((event) => CardWidget(event)),
+          ...todayList.map((CalendarItemInstance event) => CardWidget(event)),
         ]),
       );
     });

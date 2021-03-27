@@ -1,7 +1,7 @@
 import 'package:calendaroo/blocs/details/details_bloc.dart';
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/repeat.model.dart';
-import 'package:calendaroo/models/calendar_item.model.dart';
+import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item.model.dart';
 import 'package:calendaroo/redux/states/app.state.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
@@ -143,7 +143,7 @@ class _DetailsPageState extends State<DetailsPage> {
                       _rowTile(
                         leading: Icon(FeatherIcons.calendar, color: grey),
                         title: GestureDetector(
-                          onTap: () => showModalBottomSheet(
+                          onTap: () => showModalBottomSheet<Widget>(
                             context: context,
                             builder: (context) {
                               return _buildDatePicker(bloc, state, true);
@@ -156,11 +156,11 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                       ),
                       _rowTile(
-                        leading: SizedBox(
+                        leading: const SizedBox(
                           width: 24,
                         ),
                         title: GestureDetector(
-                          onTap: () => showModalBottomSheet(
+                          onTap: () => showModalBottomSheet<Widget>(
                             context: context,
                             builder: (context) {
                               return _buildDatePicker(bloc, state, false);
@@ -185,20 +185,19 @@ class _DetailsPageState extends State<DetailsPage> {
                           },
                         ),
                       ),
-                      !state.allDay
-                          ? SizedBox(
+                      if (!state.allDay) SizedBox(
                               height: 42,
                               child: Row(
                                 children: <Widget>[
                                   Row(
                                     children: <Widget>[
-                                      Padding(
+                                      const Padding(
                                         padding:
-                                            const EdgeInsets.only(right: 16.0),
+                                            EdgeInsets.only(right: 16.0),
                                         child: Icon(Icons.alarm, color: grey),
                                       ),
                                       GestureDetector(
-                                        onTap: () => showModalBottomSheet(
+                                        onTap: () => showModalBottomSheet<Widget>(
                                           context: context,
                                           builder: (context) {
                                             return _buildTimePicker(
@@ -219,14 +218,14 @@ class _DetailsPageState extends State<DetailsPage> {
                                     padding: const EdgeInsets.only(left: 52.0),
                                     child: Row(
                                       children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.only(
+                                        const Padding(
+                                          padding: EdgeInsets.only(
                                               right: 16.0),
                                           child: Icon(Icons.alarm_off,
                                               color: grey),
                                         ),
                                         GestureDetector(
-                                          onTap: () => showModalBottomSheet(
+                                          onTap: () => showModalBottomSheet<Widget>(
                                             context: context,
                                             builder: (context) {
                                               return _buildTimePicker(
@@ -246,8 +245,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ),
                                 ],
                               ),
-                            )
-                          : SizedBox(),
+                            ) else const SizedBox(),
                     ],
                   ),
                 )
@@ -280,7 +278,7 @@ class _DetailsPageState extends State<DetailsPage> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         IconButton(
-          icon: Icon(
+          icon: const Icon(
             FeatherIcons.trash,
             color: grey,
           ),

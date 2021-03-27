@@ -21,14 +21,14 @@ class InitializerAppService {
     return _instance;
   }
 
-  Future<List<Event>> setUp(environment, version) async {
+  Future<List<Event>> setUp(String environment, String version) async {
     WidgetsFlutterBinding.ensureInitialized();
     // sharedPref init
     await SharedPreferenceService().getSharedPreferencesInstance();
 
     // Environment init
-    Environment().environment = environment as String;
-    Environment().version = version as String;
+    Environment().environment = environment;
+    Environment().version = version;
 
     // loadData init
     var eventsList = await preLoadingDataFromDB();

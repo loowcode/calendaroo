@@ -287,7 +287,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
         mainAxisAlignment: MainAxisAlignment.center,
         children: events
             .map(
-              (e) => Padding(
+              (dynamic e) => Padding(
                 padding: EdgeInsets.only(left: 1, right: 1),
                 child: Container(
                   height: 8,

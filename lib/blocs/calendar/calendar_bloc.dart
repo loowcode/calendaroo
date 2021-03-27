@@ -3,8 +3,8 @@ import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:calendaroo/model/date.model.dart';
-import 'package:calendaroo/models/calendar_item.model.dart';
-import 'package:calendaroo/models/calendar_item_instance.model.dart';
+import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item.model.dart';
+import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item_instance.model.dart';
 import 'package:calendaroo/repositories/calendar/calendar.repository.dart';
 import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:equatable/equatable.dart';
@@ -14,16 +14,17 @@ part 'calendar_event.dart';
 part 'calendar_state.dart';
 
 class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
+  CalendarBloc(this._repository) : super(CalendarInitial());
+
   final CalendarRepository _repository;
 
-  CalendarBloc(this._repository) : super(CalendarInitial());
 
   @override
   Stream<CalendarState> mapEventToState(CalendarEvent event) async* {
     if (event is CalendarLoadEvent) {
       yield CalendarLoading();
-      var items = await _repository.findAll();
-      var mappedItems = _generateInstances(items);
+      final items = await _repository.findAll();
+      final mappedItems = _generateInstances(items);
       yield CalendarLoaded(
         mappedCalendarItems: mappedItems,
         selectedDay: Date.today(),
