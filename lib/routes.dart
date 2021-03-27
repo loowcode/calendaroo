@@ -43,26 +43,26 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
         settings: settings,
       );
 
-    case TODAY:
-      return MaterialPageRoute<TodayPage>(
-        builder: (context) {
-          return BlocProvider(
-              create: (BuildContext context) =>
-                  CalendarBloc(CalendarLocalRepository()),
-              child: TodayPage());
-        },
-        settings: settings,
-      );
-
-    case DETAILS:
-      return MaterialPageRoute<DetailsPage>(
-        builder: (context) {
-          return BlocProvider(
-              create: (BuildContext context) => DetailsBloc(),
-              child: DetailsPage(settings.arguments as CalendarItem));
-        },
-        settings: settings,
-      );
+    // case TODAY:
+    //   return MaterialPageRoute<TodayPage>(
+    //     builder: (context) {
+    //       return BlocProvider(
+    //           create: (BuildContext context) =>
+    //               CalendarBloc(CalendarLocalRepository()),
+    //           child: TodayPage());
+    //     },
+    //     settings: settings,
+    //   );
+    //
+    // case DETAILS:
+    //   return MaterialPageRoute<DetailsPage>(
+    //     builder: (context) {
+    //       return BlocProvider(
+    //           create: (BuildContext context) => DetailsBloc(),
+    //           child: DetailsPage(settings.arguments as CalendarItem));
+    //     },
+    //     settings: settings,
+    //   );
 
     default:
       return MaterialPageRoute<ContainerPage>(

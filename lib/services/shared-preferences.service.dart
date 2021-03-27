@@ -1,4 +1,3 @@
-import 'package:calendaroo/widgets/calendar/calendar.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,19 +32,19 @@ class SharedPreferenceService {
     await _prefs.clear();
   }
 
-  CalendarSize get calendarSize {
-    var format = _prefs.getString('calendarSize');
-    if (format == 'twoWeeks') {
-      return CalendarSize.TWO_WEEKS;
-    }
-    if (format == 'week') {
-      return CalendarSize.WEEK;
-    }
-    if (format == 'hide') {
-      return CalendarSize.HIDE;
-    }
-    return CalendarSize.MONTH;
-  }
+  // CalendarSize get calendarSize {
+  //   var format = _prefs.getString('calendarSize');
+  //   if (format == 'twoWeeks') {
+  //     return CalendarSize.TWO_WEEKS;
+  //   }
+  //   if (format == 'week') {
+  //     return CalendarSize.WEEK;
+  //   }
+  //   if (format == 'hide') {
+  //     return CalendarSize.HIDE;
+  //   }
+  //   return CalendarSize.MONTH;
+  // }
 
   void setCalendarSize(String value) {
     _prefs.setString('calendarSize', value);

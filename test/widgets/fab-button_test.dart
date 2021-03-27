@@ -1,4 +1,4 @@
-import 'package:calendaroo/widgets/fab-button.widget.dart';
+import 'package:calendaroo/widgets/fab_button.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

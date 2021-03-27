@@ -7,8 +7,6 @@ import 'package:package_info/package_info.dart';
 import 'package:pedantic/pedantic.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  var packageInfo = await PackageInfo.fromPlatform();
-  unawaited(InitializerAppService().setUp(INTEGRATION, packageInfo.version));
+
   runApp(MyApp());
 }

@@ -1,5 +1,5 @@
 import 'package:calendaroo/dao/calendar_item.dao.dart';
-import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item.model.dart';
+import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
 import 'package:calendaroo/repositories/calendar/calendar.repository.dart';
 
 class CalendarLocalRepository extends CalendarRepository {

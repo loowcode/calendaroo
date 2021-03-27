@@ -1,7 +1,7 @@
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/pages/today/today.page.dart';
 import 'package:calendaroo/theme.dart';
-import 'package:calendaroo/widgets/fab-button.widget.dart';
+import 'package:calendaroo/widgets/fab_button.widget.dart';
 import 'package:feather_icons_flutter/feather_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,7 @@ class _ContainerPageState extends State<ContainerPage>
   @override
   void initState() {
     super.initState();
-    _fragments = [TodayPage(), CalendarPage()];
+    // _fragments = [TodayPage(), CalendarPage()];
     _index = 1;
   }
 

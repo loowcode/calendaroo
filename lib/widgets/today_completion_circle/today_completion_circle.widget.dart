@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:calendaroo/colors.dart';
-import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item_instance.model.dart';
-import 'package:calendaroo/widgets/common/circle-indicator.dart';
+import 'package:calendaroo/models/calendar_item/calendar_item_instance.model.dart';
+import 'package:calendaroo/widgets/common/circle_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

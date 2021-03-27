@@ -1,5 +1,5 @@
+import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
 import 'package:equatable/equatable.dart';
-import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item.model.dart';
 
 class TodayCalendarItems extends Equatable {
   final List<CalendarItem> calendarItems;

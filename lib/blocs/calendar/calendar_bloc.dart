@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
-import 'package:calendaroo/model/date.model.dart';
-import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item.model.dart';
-import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item_instance.model.dart';
+import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
+import 'package:calendaroo/models/calendar_item/calendar_item_instance.model.dart';
+import 'package:calendaroo/models/date.model.dart';
 import 'package:calendaroo/repositories/calendar/calendar.repository.dart';
 import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:equatable/equatable.dart';
