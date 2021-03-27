@@ -1,16 +1,15 @@
 // import 'package:calendaroo/constants.dart';
 // import 'package:calendaroo/dao/database.service.dart';
 // import 'package:calendaroo/environments/environment.dart';
-// import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/date.model.dart';
 // import 'package:calendaroo/model/event.model.dart';
 // import 'package:calendaroo/redux/actions/calendar.actions.dart';
 // import 'package:calendaroo/redux/states/app.state.dart';
-// import 'package:calendaroo/services/shared-preferences.service.dart';
+// import 'package:calendaroo/services/shared_preferences.service.dart';
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/services.dart';
 //
 // import '../utils/notification.utils.dart';
-// import 'local-storage.service.dart';
+// import 'local_storage.service.dart';
 //
 // class InitializerAppService {
 //   static final InitializerAppService _instance = InitializerAppService._();

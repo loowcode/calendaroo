@@ -1,10 +1,6 @@
-import 'package:calendaroo/blocs/details/details_bloc.dart';
 import 'package:calendaroo/blocs/settings/settings_bloc.dart';
-import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item.model.dart';
 import 'package:calendaroo/pages/container.page.dart';
-import 'package:calendaroo/pages/details/datails.page.dart';
 import 'package:calendaroo/pages/settings/settings.page.dart';
-import 'package:calendaroo/pages/today/today.page.dart';
 import 'package:calendaroo/repositories/calendar/calendar_local.repository.dart';
 import 'package:calendaroo/repositories/settings/settings_shared_preferences.repository.dart';
 import 'package:flutter/material.dart';

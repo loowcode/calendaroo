@@ -1,9 +1,9 @@
 import 'dart:collection';
 
-import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/date.model.dart';
 import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/model/repeat.model.dart';
+import 'package:calendaroo/models/date.model.dart';
 import 'package:uuid/uuid.dart';
 
 class CalendarUtils {

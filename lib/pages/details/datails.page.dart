@@ -1,7 +1,6 @@
 // import 'package:calendaroo/blocs/details/details_bloc.dart';
 // import 'package:calendaroo/colors.dart';
 // import 'package:calendaroo/model/repeat.model.dart';
-// import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item.model.dart';
 // import 'package:calendaroo/redux/states/app.state.dart';
 // import 'package:calendaroo/services/app-localizations.service.dart';
 // import 'package:calendaroo/services/navigation.service.dart';

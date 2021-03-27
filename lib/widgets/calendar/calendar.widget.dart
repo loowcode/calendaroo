@@ -1,8 +1,7 @@
 // import 'package:calendaroo/blocs/calendar/calendar_bloc.dart';
 // import 'package:calendaroo/colors.dart';
-// import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/date.model.dart';
 // import 'package:calendaroo/redux/states/app.state.dart';
-// import 'package:calendaroo/services/shared-preferences.service.dart';
+// import 'package:calendaroo/services/shared_preferences.service.dart';
 // import 'package:calendaroo/utils/string.utils.dart';
 // import 'package:calendaroo/widgets/calendar/calendar.viewmodel.dart';
 // import 'package:flutter/cupertino.dart';

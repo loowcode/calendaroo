@@ -1,6 +1,6 @@
 import 'package:calendaroo/models/settings/settings.model.dart';
 import 'package:calendaroo/repositories/settings/settings.repository.dart';
-import 'package:calendaroo/services/shared-preferences.service.dart';
+import 'package:calendaroo/services/shared_preferences.service.dart';
 
 class SharedPreferencesSettingsRepository implements SettingsRepository {
   @override

@@ -2,7 +2,7 @@ import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
 import 'package:calendaroo/models/date.model.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../services/local-storage.service.dart';
+import '../services/local_storage.service.dart';
 
 class CalendarItemDao {
   Future<int> insertCalendarItem(CalendarItem calendarItem) async {

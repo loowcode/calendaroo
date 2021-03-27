@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:calendaroo/model/repeat.model.dart';
-import 'file:///C:/Users/jack1/OneDrive/Desktop/git/calendaroo/lib/models/calendar_item/calendar_item.model.dart';
+import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
 import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:equatable/equatable.dart';
 
