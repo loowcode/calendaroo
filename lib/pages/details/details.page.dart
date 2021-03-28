@@ -23,25 +23,9 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  // String _title;
-  // String _description;
-  // DateTime _startDate;
-  // DateTime _endDate;
-  // DateTime _startTime;
-  // DateTime _endTime;
-  // bool _allDay;
-  // CalendarItem _showEvent;
-  // Repeat _repeat;
-  // DateTime _until;
-  // List<Alarm> _alarms;
-
-  // bool _edited;
-
   @override
   void initState() {
     super.initState();
-    final now = DateTime.now();
-    var defaultTime = now;
 
     // TODO: migrate to bloc
     // if (calendarooState.state.calendarState.selectedDay.isAfter(now)) {
@@ -109,36 +93,38 @@ class _DetailsPageState extends State<DetailsPage> {
                         ),
                       ),
                       Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Padding(
-                                padding: EdgeInsets.only(top: 0, right: 16),
-                                child: Icon(Icons.subject, color: grey)),
-                            Expanded(
-                              child: TextFormField(
-                                maxLines: 4,
-                                minLines: 1,
-                                scrollPadding: EdgeInsets.all(0),
-                                initialValue: state.description,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                    disabledBorder: InputBorder.none,
-                                    errorBorder: InputBorder.none,
-                                    contentPadding: EdgeInsets.all(0),
-                                    focusedErrorBorder: InputBorder.none,
-                                    hintText: AppLocalizations.of(context)
-                                        .addDescription),
-                                style: Theme.of(context).textTheme.bodyText1,
-                                onChanged: (value) {
-                                  bloc.add(DetailsValuesChangedEvent(
-                                    description: value,
-                                  ));
-                                },
-                              ),
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 0, right: 16),
+                            child: Icon(Icons.subject, color: grey),
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              maxLines: 4,
+                              minLines: 1,
+                              scrollPadding: EdgeInsets.all(0),
+                              initialValue: state.description,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  contentPadding: EdgeInsets.all(0),
+                                  focusedErrorBorder: InputBorder.none,
+                                  hintText: AppLocalizations.of(context)
+                                      .addDescription),
+                              style: Theme.of(context).textTheme.bodyText1,
+                              onChanged: (value) {
+                                bloc.add(DetailsValuesChangedEvent(
+                                  description: value,
+                                ));
+                              },
                             ),
-                          ]),
+                          ),
+                        ],
+                      ),
                       _rowTile(
                         leading: Icon(FeatherIcons.calendar, color: grey),
                         title: GestureDetector(
@@ -253,19 +239,17 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
-  Row _buildAppBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        IconButton(
-          icon: Icon(
-            FeatherIcons.arrowLeft,
-          ),
-          onPressed: () {
-            NavigationService().pop();
-          },
+  Widget _buildAppBar() {
+    return AppBar(
+      leading: IconButton(
+        icon: Icon(
+          FeatherIcons.arrowLeft,
         ),
-      ],
+        onPressed: () {
+          NavigationService().pop();
+        },
+      ),
+      elevation: 0,
     );
   }
 
@@ -289,12 +273,7 @@ class _DetailsPageState extends State<DetailsPage> {
             color: state.edited || !_isEdit(state) ? blue : grey,
           ),
           onPressed: () {
-            if (_isEdit(state)) {
-              bloc.add(
-                  DetailsEditEvent(/* TODO _createNewEvent(_showEvent.id) */));
-            } else {
-              bloc.add(DetailsCreateEvent(/* TODO _createNewEvent(null) */));
-            }
+            bloc.add(DetailsSaveEvent());
             NavigationService().pop();
           },
         ),

@@ -41,12 +41,7 @@ class DetailsValuesChangedEvent extends DetailsEvent {
       ];
 }
 
-class DetailsCreateEvent extends DetailsEvent {
-  @override
-  List<Object> get props => [];
-}
-
-class DetailsEditEvent extends DetailsEvent {
+class DetailsSaveEvent extends DetailsEvent {
   @override
   List<Object> get props => [];
 }

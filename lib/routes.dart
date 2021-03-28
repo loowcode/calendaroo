@@ -1,3 +1,4 @@
+import 'package:calendaroo/blocs/calendar/calendar_bloc.dart';
 import 'package:calendaroo/blocs/details/details_bloc.dart';
 import 'package:calendaroo/blocs/settings/settings_bloc.dart';
 import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
@@ -50,8 +51,10 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
     case DETAILS:
       return MaterialPageRoute<DetailsPage>(
         builder: (context) {
+          var calendarBloc = BlocProvider.of<CalendarBloc>(context);
+
           return BlocProvider(
-              create: (BuildContext context) => DetailsBloc(),
+              create: (BuildContext context) => DetailsBloc(calendarBloc),
               child: DetailsPage(settings.arguments as CalendarItem));
         },
         settings: settings,

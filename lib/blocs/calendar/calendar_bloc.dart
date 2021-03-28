@@ -18,18 +18,53 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
   final CalendarRepository _repository;
 
-
   @override
   Stream<CalendarState> mapEventToState(CalendarEvent event) async* {
     if (event is CalendarLoadEvent) {
-      yield CalendarLoading();
-      final items = await _repository.findAll();
-      final mappedItems = _generateInstances(items);
+      yield CalendarLoading(); // TODO
+      var mappedItems = await getCalendarItemInstances();
       yield CalendarLoaded(
         mappedCalendarItems: mappedItems,
         selectedDay: Date.today(),
       );
     }
+
+    if (event is CalendarCreateEvent) {
+      yield CalendarLoading(); // TODO
+      print(await _repository.add(event.calendarItem));
+      var mappedItems = await getCalendarItemInstances();
+      yield CalendarLoaded(
+        mappedCalendarItems: mappedItems,
+        selectedDay: Date.today(),
+      );
+    }
+
+    if (event is CalendarUpdateEvent) {
+      yield CalendarLoading();
+      await _repository.update(event.calendarItem);
+      var mappedItems = await getCalendarItemInstances();
+      yield CalendarLoaded(
+        mappedCalendarItems: mappedItems,
+        selectedDay: Date.today(),
+      );
+    }
+
+    if (event is CalendarDeleteEvent) {
+      yield CalendarLoading(); // TODO
+      await _repository.delete(event.id);
+      var mappedItems = await getCalendarItemInstances();
+      yield CalendarLoaded(
+        mappedCalendarItems: mappedItems,
+        selectedDay: Date.today(),
+      );
+    }
+  }
+
+  Future<SplayTreeMap<Date, List<CalendarItemInstance>>>
+      getCalendarItemInstances() async {
+    final items = await _repository.findAll();
+    final mappedItems = _generateInstances(items);
+    return mappedItems;
   }
 
   @override
@@ -101,5 +136,11 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       index = index.add(Duration(days: 1));
     }
     return instances;
+  }
+
+  @override
+  void onEvent(CalendarEvent event) {
+    super.onEvent(event);
+    print(event);
   }
 }

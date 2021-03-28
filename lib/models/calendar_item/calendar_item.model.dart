@@ -12,8 +12,9 @@ class CalendarItem {
   // Repeat repeat;
   // DateTime until;
 
+  // TODO separare model da entity?
   CalendarItem({
-    @required this.id,
+    this.id, // era required
     // @required this.uuid,
     this.title,
     this.description,

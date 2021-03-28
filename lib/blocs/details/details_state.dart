@@ -9,6 +9,7 @@ class DetailsState extends Equatable {
   final DateTime endTime;
   final bool allDay;
   final Repeat repeat;
+  final List<Alarm> alarms;
   final CalendarItem calendarItem;
   final bool edited;
 
@@ -21,6 +22,7 @@ class DetailsState extends Equatable {
     this.endTime,
     this.allDay,
     this.repeat,
+    this.alarms,
     this.calendarItem,
     this.edited = false,
   });
@@ -34,6 +36,7 @@ class DetailsState extends Equatable {
     DateTime endTime,
     bool allDay,
     Repeat repeat,
+    List<Alarm> alarms,
     CalendarItem calendarItem,
     bool edited,
   }) {
@@ -46,6 +49,7 @@ class DetailsState extends Equatable {
       endTime: endTime ?? this.endTime,
       allDay: allDay ?? this.allDay,
       repeat: repeat ?? this.repeat,
+      alarms: alarms ?? this.alarms,
       calendarItem: calendarItem ?? this.calendarItem,
       edited: edited ?? this.edited,
     );
@@ -61,6 +65,7 @@ class DetailsState extends Equatable {
         endTime,
         allDay,
         repeat,
+        alarms,
         calendarItem,
         edited,
       ];

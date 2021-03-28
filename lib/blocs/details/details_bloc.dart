@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:calendaroo/blocs/calendar/calendar_bloc.dart';
+import 'package:calendaroo/model/alarm.model.dart';
 import 'package:calendaroo/model/repeat.model.dart';
 import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
 import 'package:calendaroo/utils/calendar.utils.dart';
@@ -11,21 +13,19 @@ part 'details_event.dart';
 part 'details_state.dart';
 
 class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
+  final CalendarBloc _calendarBloc;
+
   // _showEvent = widget.calendarItem; TODO
-  // _title = _showEvent?.title ?? '';
-  // _description = _showEvent?.description ?? '';
+  // _title = _showEvent?.title ?? ''; TODO
+  // _description = _showEvent?.description ?? ''; TODO
   // _startDate = _showEvent?.start ?? calendarooState.state.calendarState.selectedDay; TODO
-  // _startTime = _showEvent?.start ?? defaultTime;
-  // _endDate = _showEvent?.end ?? _startDate;
+  // _startTime = _showEvent?.start ?? defaultTime; TODO
+  // _endDate = _showEvent?.end ?? _startDate; TODO
   // _endTime = setEndTime(defaultTime); TODO
+  // _allDay = _showEvent?.allDay ?? false; TODO
+  // _repeat = _showEvent?.repeat ?? Repeat(type: RepeatType.never); TODO
 
-  // _allDay = _showEvent?.allDay ?? false;
-  // _repeat = _showEvent?.repeat ?? Repeat(type: RepeatType.never);
-  // _alarms = [Alarm(1, _startDate.subtract(Duration(minutes: 15)), false)];
-
-  // _edited = false;
-
-  DetailsBloc()
+  DetailsBloc(this._calendarBloc)
       : super(DetailsState(
           title: '',
           description: '',
@@ -35,6 +35,9 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           endTime: DateTime.now(),
           allDay: false,
           repeat: Repeat(type: RepeatType.never),
+          alarms: [
+            Alarm(1, DateTime.now().subtract(Duration(minutes: 15)), false)
+          ],
           edited: false,
         ));
 
@@ -56,8 +59,30 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         edited: true,
       );
     }
+
+    if (event is DetailsSaveEvent) {
+      if (state.calendarItem == null) {
+        var calendarItem = CalendarItem(
+          title: state.title,
+          description: state.description,
+          start: state.startDate, // TODO
+          end: state.endDate, // TODO
+        );
+
+        _calendarBloc.add(CalendarCreateEvent(calendarItem));
+      } else {
+        _calendarBloc.add(CalendarUpdateEvent(state.calendarItem));
+      }
+    }
+
+    if (event is DetailsDeleteEvent) {
+      if (state.calendarItem != null) {
+        _calendarBloc.add(CalendarDeleteEvent(state.calendarItem.id));
+      }
+    }
   }
 
+  // TODO
   DateTime setEndTime(DetailsState state, DateTime defaultTime) {
     var toRet = state.calendarItem?.end ?? defaultTime.add(Duration(hours: 1));
     if (toRet.isBefore(state.startTime)) {
