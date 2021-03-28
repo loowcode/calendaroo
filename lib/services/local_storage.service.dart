@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:calendaroo/constants.dart';
-import 'package:calendaroo/environments/environment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -65,8 +63,8 @@ class LocalStorageService {
     await db.execute('''create TABLE calendar_item_repeat(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         calendar_item_id INTEGER NOT NULL,
-        from TEXT NOT NULL,
-        until TEXT,
+        repeat_from TEXT NOT NULL,
+        repeat_until TEXT,
         repeat_day TEXT NOT NULL,
         repeat_week_day TEXT NOT NULL,
         repeat_week TEXT NOT NULL,
