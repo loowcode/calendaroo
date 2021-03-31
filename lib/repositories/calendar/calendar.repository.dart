@@ -1,7 +1,7 @@
 import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
 
 abstract class CalendarRepository {
-  Future<List<CalendarItem>> findAll();
+  Future<List<CalendarItem>> findByDate(DateTime date);
 
   Future<int> add(CalendarItem calendarItem);
 

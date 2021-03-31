@@ -62,7 +62,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
   Future<SplayTreeMap<Date, List<CalendarItemInstance>>>
       getCalendarItemInstances() async {
-    final items = await _repository.findAll();
+    //TODO TEMP
+    final items = await _repository.findByDate(DateTime.now());
     final mappedItems = _generateInstances(items);
     return mappedItems;
   }

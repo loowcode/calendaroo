@@ -67,6 +67,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           description: state.description,
           start: state.startDate, // TODO
           end: state.endDate, // TODO
+          repeat: state.repeat,
         );
 
         _calendarBloc.add(CalendarCreateEvent(calendarItem));

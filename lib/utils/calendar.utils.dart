@@ -5,6 +5,7 @@ import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/model/repeat.model.dart';
 import 'package:calendaroo/models/calendar_item/calendar_item_instance.model.dart';
 import 'package:calendaroo/models/date.model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 
 class CalendarUtils {
@@ -196,5 +197,23 @@ class CalendarUtils {
 
   static DateTime removeDate(DateTime input) {
     return DateTime(1000, 1, 1, input.hour, input.minute, input.second);
+  }
+
+  static DateTime getFirstMondayInMonth({
+    @required int month,
+    @required int year,
+  }) {
+    var firstDayOfMonth = DateTime(year, month, 1);
+    return firstDayOfMonth.add(
+        Duration(days: (DateTime.daysPerWeek + 1 - firstDayOfMonth.weekday) % DateTime.daysPerWeek));
+  }
+
+  static int getWeekInMonth(DateTime input) {
+    var firstMondayOfMonth = getFirstMondayInMonth(
+      year: input.year,
+      month: input.month,
+    );
+
+    return (input.day - firstMondayOfMonth.day) ~/ DateTime.daysPerWeek + 1;
   }
 }

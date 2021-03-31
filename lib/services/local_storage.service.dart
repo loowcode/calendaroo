@@ -66,7 +66,7 @@ class LocalStorageService {
         repeat_from TEXT NOT NULL,
         repeat_until TEXT,
         repeat_day TEXT NOT NULL,
-        repeat_week_day TEXT NOT NULL,
+        repeat_weekday TEXT NOT NULL,
         repeat_week TEXT NOT NULL,
         repeat_month TEXT NOT NULL,
         repeat_year TEXT NOT NULL,
