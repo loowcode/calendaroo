@@ -1,5 +1,6 @@
 import 'package:calendaroo/blocs/calendar/calendar_bloc.dart';
 import 'package:calendaroo/repositories/calendar/calendar_local.repository.dart';
+import 'package:calendaroo/repositories/calendar/calendar_repeat_local.repository.dart';
 import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
@@ -96,7 +97,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CalendarBloc(CalendarLocalRepository()),
+      create: (context) => CalendarBloc(
+        CalendarLocalRepository(),
+        CalendarItemRepeatLocalRepository(),
+      ),
       child: MaterialApp(
         title: 'Calendaroo',
         supportedLocales: [

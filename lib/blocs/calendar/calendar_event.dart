@@ -19,7 +19,7 @@ class CalendarDaySelectedEvent extends CalendarEvent {
 }
 
 class CalendarCreateEvent extends CalendarEvent {
-  final CalendarItem calendarItem;
+  final CalendarItemModel calendarItem;
 
   CalendarCreateEvent(this.calendarItem);
 
@@ -28,7 +28,7 @@ class CalendarCreateEvent extends CalendarEvent {
 }
 
 class CalendarUpdateEvent extends CalendarEvent {
-  final CalendarItem calendarItem;
+  final CalendarItemModel calendarItem;
 
   CalendarUpdateEvent(this.calendarItem);
 

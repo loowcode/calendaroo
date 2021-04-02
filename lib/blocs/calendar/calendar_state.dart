@@ -1,32 +1,82 @@
 part of 'calendar_bloc.dart';
 
 abstract class CalendarState extends Equatable {
-  const CalendarState();
-}
-
-class CalendarInitial extends CalendarState {
-  @override
-  List<Object> get props => [];
-}
-
-class CalendarLoading extends CalendarState {
-  @override
-  List<Object> get props => [];
-}
-
-class CalendarLoaded extends CalendarState {
   final Date selectedDay;
   final Date startRange;
   final Date endRange;
-  final SplayTreeMap<Date, List<CalendarItemInstance>> mappedCalendarItems;
 
-  CalendarLoaded({
+  const CalendarState({
     this.selectedDay,
     this.startRange,
     this.endRange,
-    this.mappedCalendarItems,
   });
+}
+
+class CalendarInitial extends CalendarState {
+  CalendarInitial({
+    Date selectedDay,
+    Date startRange,
+    Date endRange,
+  }) : super(
+          selectedDay: selectedDay,
+          startRange: startRange,
+          endRange: endRange,
+        );
 
   @override
-  List<Object> get props => [mappedCalendarItems];
+  List<Object> get props => [
+        selectedDay,
+        startRange,
+        endRange,
+      ];
+}
+
+class CalendarLoading extends CalendarState {
+  CalendarLoading({
+    Date selectedDay,
+    Date startRange,
+    Date endRange,
+  }) : super(
+          selectedDay: selectedDay,
+          startRange: startRange,
+          endRange: endRange,
+        );
+
+  factory CalendarLoading.fromState(CalendarState state) {
+    return CalendarLoading(
+      selectedDay: state.selectedDay,
+      startRange: state.startRange,
+      endRange: state.endRange,
+    );
+  }
+
+  @override
+  List<Object> get props => [
+        selectedDay,
+        startRange,
+        endRange,
+      ];
+}
+
+class CalendarLoaded extends CalendarState {
+  final SplayTreeMap<Date, List<CalendarItem>> mappedCalendarItems;
+
+  CalendarLoaded({
+    Date selectedDay,
+    Date startRange,
+    Date endRange,
+    this.mappedCalendarItems,
+  }) : super(
+          selectedDay: selectedDay,
+          startRange: startRange,
+          endRange: endRange,
+        );
+
+  @override
+  List<Object> get props => [
+        selectedDay,
+        startRange,
+        endRange,
+        mappedCalendarItems,
+      ];
 }

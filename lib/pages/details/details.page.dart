@@ -14,7 +14,7 @@ import 'package:intl/intl.dart';
 import '../../theme.dart';
 
 class DetailsPage extends StatefulWidget {
-  final CalendarItem calendarItem;
+  final CalendarItemModel calendarItem;
 
   DetailsPage(this.calendarItem);
 

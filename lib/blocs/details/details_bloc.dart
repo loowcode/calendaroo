@@ -62,11 +62,11 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
     if (event is DetailsSaveEvent) {
       if (state.calendarItem == null) {
-        var calendarItem = CalendarItem(
+        var calendarItem = CalendarItemModel(
           title: state.title,
           description: state.description,
-          start: state.startDate, // TODO
-          end: state.endDate, // TODO
+          start: state.startDate,
+          end: state.endDate,
           repeat: state.repeat,
         );
 

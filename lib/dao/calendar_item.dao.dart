@@ -1,4 +1,4 @@
-import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
+import 'package:calendaroo/entities/calendar_item.entity.dart';
 import 'package:calendaroo/models/date.model.dart';
 import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:sqflite/sqflite.dart';
@@ -39,10 +39,8 @@ class CalendarItemDao {
     return CalendarItem.fromMap(maps[0]);
   }
 
-  Future<List<CalendarItem>> calendarItems(DateTime date) async {
+  Future<List<CalendarItem>> calendarItems(Date date) async {
     final client = await LocalStorageService().db;
-
-    print('calendarItems(' + date.toIso8601String() + ')');
 
     final repeatYear = date.year;
     final repeatMonth = date.month;
@@ -52,14 +50,8 @@ class CalendarItemDao {
     final repeatFrom = date.toIso8601String();
     final repeatUntil = date.toIso8601String();
 
-    print('Year: ' + repeatYear.toString());
-    print('Month: ' + repeatMonth.toString());
-    print('Week: ' + repeatWeek.toString());
-    print('WeekDay: ' + repeatWeekDay.toString());
-    print('Day: ' + repeatDay.toString());
-
-    await client.rawQuery('''
-    SELECT * 
+    List<Map<String, dynamic>> result = await client.rawQuery('''
+    SELECT C.*
     FROM calendar_item_repeat CR
     LEFT JOIN calendar_item C ON CR.calendar_item_id = C.id
     WHERE (repeat_year = ? OR repeat_year = '*')
@@ -68,7 +60,7 @@ class CalendarItemDao {
     AND (repeat_weekday = ? OR repeat_weekday = '*')
     AND (repeat_day = ? OR repeat_day = '*')
     AND repeat_from <= ?
-    AND repeat_until >= ?; 
+    AND (repeat_until IS NULL OR repeat_until >= ?); 
     ''', [
       repeatYear,
       repeatMonth,
@@ -78,9 +70,9 @@ class CalendarItemDao {
       repeatFrom,
       repeatUntil,
     ]);
-    final maps = await client.query('calendar_item');
-    return List.generate(maps.length, (i) {
-      return CalendarItem.fromMap(maps[i]);
+
+    return List.generate(result.length, (i) {
+      return CalendarItem.fromMap(result[i]);
     });
   }
 

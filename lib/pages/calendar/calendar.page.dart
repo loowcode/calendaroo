@@ -13,7 +13,8 @@ class CalendarPage extends StatefulWidget {
 class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
-    return Column(children: [CalendarWidget(), UpcomingEventsWidget()]);
+    // TODO adattare e ripristinare UpcomingEventsWidget
+    return Column(children: [CalendarWidget(), /*UpcomingEventsWidget()*/]);
   }
 
   @override

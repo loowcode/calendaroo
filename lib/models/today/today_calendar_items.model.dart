@@ -2,7 +2,7 @@ import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
 import 'package:equatable/equatable.dart';
 
 class TodayCalendarItems extends Equatable {
-  final List<CalendarItem> calendarItems;
+  final List<CalendarItemModel> calendarItems;
 
   TodayCalendarItems(this.calendarItems);
 

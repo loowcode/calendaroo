@@ -2,69 +2,162 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
+import 'package:calendaroo/entities/calendar_item.entity.dart';
+import 'package:calendaroo/entities/calendar_item_repeat.entity.dart';
+import 'package:calendaroo/model/repeat.model.dart';
 import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
 import 'package:calendaroo/models/calendar_item/calendar_item_instance.model.dart';
 import 'package:calendaroo/models/date.model.dart';
 import 'package:calendaroo/repositories/calendar/calendar.repository.dart';
+import 'package:calendaroo/repositories/calendar/calendar_repeat.repository.dart';
 import 'package:calendaroo/utils/calendar.utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
 part 'calendar_event.dart';
+
 part 'calendar_state.dart';
 
 class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
-  CalendarBloc(this._repository) : super(CalendarInitial());
+  CalendarBloc(
+    this._calendarItemRepository,
+    this._calendarItemRepeatRepository,
+  ) : super(CalendarInitial(
+          selectedDay: Date.convertToDate(DateTime.now()),
+          startRange:
+              Date.convertToDate(DateTime.now().subtract(Duration(days: 60))),
+          endRange: Date.convertToDate(DateTime.now().add(Duration(days: 60))),
+        ));
 
-  final CalendarRepository _repository;
+  final CalendarRepository _calendarItemRepository;
+  final CalendarItemRepeatRepository _calendarItemRepeatRepository;
 
   @override
   Stream<CalendarState> mapEventToState(CalendarEvent event) async* {
     if (event is CalendarLoadEvent) {
-      yield CalendarLoading(); // TODO
+      yield CalendarLoading.fromState(state);
       var mappedItems = await getCalendarItemInstances();
       yield CalendarLoaded(
+        selectedDay: state.selectedDay,
+        startRange: state.startRange,
+        endRange: state.endRange,
         mappedCalendarItems: mappedItems,
-        selectedDay: Date.today(),
       );
     }
 
     if (event is CalendarCreateEvent) {
-      yield CalendarLoading(); // TODO
-      print(await _repository.add(event.calendarItem));
+      yield CalendarLoading.fromState(state);
+
+      var calendarItem = CalendarItem(
+        title: event.calendarItem.title,
+        description: event.calendarItem.description,
+        start: event.calendarItem.start,
+        end: event.calendarItem.end,
+      );
+
+      var id = await _calendarItemRepository.add(calendarItem);
+
+      var calendarItemRepeat = buildCalendarItem(id, event.calendarItem);
+      await _calendarItemRepeatRepository.add(calendarItemRepeat);
+
       var mappedItems = await getCalendarItemInstances();
       yield CalendarLoaded(
+        selectedDay: state.selectedDay,
+        startRange: state.startRange,
+        endRange: state.endRange,
         mappedCalendarItems: mappedItems,
-        selectedDay: Date.today(),
       );
     }
 
-    if (event is CalendarUpdateEvent) {
-      yield CalendarLoading();
-      await _repository.update(event.calendarItem);
-      var mappedItems = await getCalendarItemInstances();
-      yield CalendarLoaded(
-        mappedCalendarItems: mappedItems,
-        selectedDay: Date.today(),
-      );
-    }
+    // TODO aggiungere modifica
+    // if (event is CalendarUpdateEvent) {
+    //   yield CalendarLoading();
+    //   await _calendarItemRepository.update(event.calendarItem);
+    //   var mappedItems = await getCalendarItemInstances();
+    //   yield CalendarLoaded(
+    //     mappedCalendarItems: mappedItems,
+    //     selectedDay: Date.today(),
+    //   );
+    // }
 
     if (event is CalendarDeleteEvent) {
-      yield CalendarLoading(); // TODO
-      await _repository.delete(event.id);
+      yield CalendarLoading.fromState(state);
+
+      await _calendarItemRepository.delete(event.id);
       var mappedItems = await getCalendarItemInstances();
+
       yield CalendarLoaded(
+        selectedDay: state.selectedDay,
+        startRange: state.startRange,
+        endRange: state.endRange,
         mappedCalendarItems: mappedItems,
-        selectedDay: Date.today(),
       );
     }
   }
 
-  Future<SplayTreeMap<Date, List<CalendarItemInstance>>>
+  CalendarItemRepeat buildCalendarItem(int id, CalendarItemModel calendarItem) {
+    var repeatType = calendarItem.repeat.type;
+
+    String day, weekDay, week, month, year;
+
+    switch (repeatType) {
+      case RepeatType.never:
+        day = calendarItem.start.day.toString();
+        month = calendarItem.start.month.toString();
+        year = calendarItem.start.year.toString();
+        weekDay = week = '*';
+        break;
+
+      case RepeatType.daily:
+        day = weekDay = week = month = year = '*';
+        break;
+
+      case RepeatType.weekly:
+        weekDay = calendarItem.start.weekday.toString();
+        day = week = month = year = '*';
+        break;
+
+      case RepeatType.monthly:
+        day = calendarItem.start.day.toString();
+        weekDay = week = month = year = '*';
+        break;
+
+      case RepeatType.yearly:
+        day = calendarItem.start.day.toString();
+        month = calendarItem.start.month.toString();
+        weekDay = week = year = '*';
+        break;
+    }
+
+    return CalendarItemRepeat(
+      calendarItemId: id,
+      from: Date.convertToDate(calendarItem.start),
+      day: day,
+      weekDay: weekDay,
+      week: week,
+      month: month,
+      year: year,
+    );
+  }
+
+  Future<SplayTreeMap<Date, List<CalendarItem>>>
       getCalendarItemInstances() async {
-    //TODO TEMP
-    final items = await _repository.findByDate(DateTime.now());
-    final mappedItems = _generateInstances(items);
+    var mappedItems = SplayTreeMap<Date, List<CalendarItem>>();
+    var currentDate = state.startRange;
+
+    // TODO: invece che inserire l'intero evento nella mappa si potrebbero
+    // generare delle istanze che contengono solo i dati necessari
+    // (id dell'evento, ecc)
+    while (currentDate.isBefore(state.endRange)) {
+      final items = await _calendarItemRepository.findByDate(currentDate);
+
+      if (items.isNotEmpty) {
+        mappedItems.putIfAbsent(currentDate, () => items);
+      }
+
+      currentDate = Date.convertToDate(currentDate.add(Duration(days: 1)));
+    }
+
     return mappedItems;
   }
 

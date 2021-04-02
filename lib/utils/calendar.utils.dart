@@ -208,7 +208,7 @@ class CalendarUtils {
         Duration(days: (DateTime.daysPerWeek + 1 - firstDayOfMonth.weekday) % DateTime.daysPerWeek));
   }
 
-  static int getWeekInMonth(DateTime input) {
+  static int getWeekInMonth(Date input) {
     var firstMondayOfMonth = getFirstMondayInMonth(
       year: input.year,
       month: input.month,

@@ -1,6 +1,6 @@
 import 'package:calendaroo/model/repeat.model.dart';
 
-class CalendarItem {
+class CalendarItemModel {
   int id;
   String title;
   String description;
@@ -10,7 +10,7 @@ class CalendarItem {
   Repeat repeat;
   // DateTime until;
 
-  CalendarItem({
+  CalendarItemModel({
     this.id, // era required
     this.title,
     this.description,
@@ -21,8 +21,8 @@ class CalendarItem {
     // this.until,
   });
 
-  factory CalendarItem.fromMap(Map<String, dynamic> map) {
-    return CalendarItem(
+  factory CalendarItemModel.fromMap(Map<String, dynamic> map) {
+    return CalendarItemModel(
       id: map['id'] as int,
       title: map['title'] as String,
       description: map['description'] as String,
@@ -47,7 +47,7 @@ class CalendarItem {
     return map;
   }
 
-  CalendarItem setId(int id) {
+  CalendarItemModel setId(int id) {
     this.id = id;
     return this;
   }

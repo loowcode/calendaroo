@@ -51,4 +51,9 @@ class CalendarItem {
     this.id = id;
     return this;
   }
+
+  @override
+  String toString() {
+    return 'CalendarItem{id: $id, title: $title, description: $description, start: $start, end: $end}';
+  }
 }

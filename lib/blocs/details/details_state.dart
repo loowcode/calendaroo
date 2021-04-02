@@ -10,7 +10,7 @@ class DetailsState extends Equatable {
   final bool allDay;
   final Repeat repeat;
   final List<Alarm> alarms;
-  final CalendarItem calendarItem;
+  final CalendarItemModel calendarItem;
   final bool edited;
 
   const DetailsState({
@@ -37,7 +37,7 @@ class DetailsState extends Equatable {
     bool allDay,
     Repeat repeat,
     List<Alarm> alarms,
-    CalendarItem calendarItem,
+    CalendarItemModel calendarItem,
     bool edited,
   }) {
     return DetailsState(

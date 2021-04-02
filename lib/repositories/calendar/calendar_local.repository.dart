@@ -1,12 +1,13 @@
 import 'package:calendaroo/dao/calendar_item.dao.dart';
-import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
+import 'package:calendaroo/entities/calendar_item.entity.dart';
+import 'package:calendaroo/models/date.model.dart';
 import 'package:calendaroo/repositories/calendar/calendar.repository.dart';
 
 class CalendarLocalRepository extends CalendarRepository {
   final dao = CalendarItemDao();
 
   @override
-  Future<List<CalendarItem>> findByDate(DateTime date) async {
+  Future<List<CalendarItem>> findByDate(Date date) async {
     return dao.calendarItems(date);
   }
 

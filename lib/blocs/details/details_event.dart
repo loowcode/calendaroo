@@ -13,7 +13,7 @@ class DetailsValuesChangedEvent extends DetailsEvent {
   final DateTime endTime;
   final bool allDay;
   final Repeat repeat;
-  final CalendarItem calendarItem;
+  final CalendarItemModel calendarItem;
 
   DetailsValuesChangedEvent({
     this.title,
