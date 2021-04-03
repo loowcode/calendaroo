@@ -35,6 +35,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
           endTime: DateTime.now(),
           allDay: false,
           repeat: Repeat(type: RepeatType.never),
+          until: null,
           alarms: [
             Alarm(1, DateTime.now().subtract(Duration(minutes: 15)), false)
           ],
@@ -55,6 +56,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         endTime: event.endTime,
         allDay: event.allDay,
         repeat: event.repeat,
+        until: event.until,
         calendarItem: event.calendarItem,
         edited: true,
       );
@@ -65,9 +67,11 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         var calendarItem = CalendarItemModel(
           title: state.title,
           description: state.description,
-          start: state.startDate,
-          end: state.endDate,
+          start: state.startDate, //TODO manca il time
+          end: state.endDate, // TODO manca il time
+          // TODO aggiungere allday
           repeat: state.repeat,
+          until: state.until,
         );
 
         _calendarBloc.add(CalendarCreateEvent(calendarItem));
@@ -95,7 +99,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
   @override
   void onTransition(Transition<DetailsEvent, DetailsState> transition) {
-    super.onTransition(transition);
     print(transition);
+    super.onTransition(transition);
   }
 }

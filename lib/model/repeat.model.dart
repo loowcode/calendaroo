@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-class Repeat {
-  RepeatType type;
-  String payload;
+import 'package:equatable/equatable.dart';
+
+class Repeat extends Equatable {
+  final RepeatType type;
+  final String payload;
 
   Repeat({this.type, this.payload});
 
@@ -49,6 +51,21 @@ class Repeat {
         return 'never';
     }
   }
+
+  Repeat copyWith({RepeatType type, String payload}) {
+    return Repeat(
+      type: type ?? this.type,
+      payload: payload ?? this.payload,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Repeat{type: $type, payload: $payload}';
+  }
+
+  @override
+  List<Object> get props => [type, payload];
 }
 
 enum RepeatType { daily, weekly, monthly, yearly, never }

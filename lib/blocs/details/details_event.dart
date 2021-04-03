@@ -1,5 +1,6 @@
 part of 'details_bloc.dart';
 
+// TODO: aggiungere alarms
 abstract class DetailsEvent extends Equatable {
   const DetailsEvent();
 }
@@ -13,6 +14,7 @@ class DetailsValuesChangedEvent extends DetailsEvent {
   final DateTime endTime;
   final bool allDay;
   final Repeat repeat;
+  final DateTime until;
   final CalendarItemModel calendarItem;
 
   DetailsValuesChangedEvent({
@@ -24,6 +26,7 @@ class DetailsValuesChangedEvent extends DetailsEvent {
     this.endTime,
     this.allDay,
     this.repeat,
+    this.until,
     this.calendarItem,
   });
 
@@ -37,6 +40,7 @@ class DetailsValuesChangedEvent extends DetailsEvent {
         endTime,
         allDay,
         repeat,
+        until,
         calendarItem,
       ];
 }

@@ -6,9 +6,10 @@ class CalendarItemModel {
   String description;
   DateTime start;
   DateTime end;
+
   // bool allDay;
   Repeat repeat;
-  // DateTime until;
+  DateTime until;
 
   CalendarItemModel({
     this.id, // era required
@@ -18,7 +19,7 @@ class CalendarItemModel {
     this.end,
     // this.allDay,
     this.repeat,
-    // this.until,
+    this.until,
   });
 
   factory CalendarItemModel.fromMap(Map<String, dynamic> map) {
@@ -30,7 +31,7 @@ class CalendarItemModel {
       end: DateTime.parse(map['end'] as String),
       // allDay: (map['allDay'] as int) == 1 ? true : false,
       repeat: Repeat.fromJson(map['repeat'] as String),
-      // until: DateTime.parse(map['until'] as String ?? map['start'] as String),
+      until: DateTime.parse(map['until'] as String ?? map['start'] as String),
     );
   }
 
@@ -43,7 +44,7 @@ class CalendarItemModel {
     map['end'] = end.toIso8601String();
     // map['allDay'] = allDay ? 1 : 0;
     map['repeat'] = repeat.toJson();
-    // map['until'] = until?.toIso8601String();
+    map['until'] = until?.toIso8601String();
     return map;
   }
 

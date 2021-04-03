@@ -228,6 +228,74 @@ class _DetailsPageState extends State<DetailsPage> {
                         )
                       else
                         const SizedBox(),
+                      _rowTile(
+                        leading: Icon(FeatherIcons.repeat, color: grey),
+                        title: GestureDetector(
+                          onTap: () => showModalBottomSheet<Widget>(
+                            context: context,
+                            builder: (context) {
+                              return _buildRepeatModal(context, bloc, state);
+                            },
+                          ),
+                          child: Text(
+                            AppLocalizations.of(context).translate(
+                                Repeat.repeatToString(state.repeat.type)),
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                      ),
+                      state.repeat.type != RepeatType.never
+                          ? _rowTile(
+                              leading: Icon(Icons.vertical_align_bottom,
+                                  color: grey),
+                              title: GestureDetector(
+                                  onTap: () async {
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+                                    var stop = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: state.startDate,
+                                        lastDate: DateTime(3000));
+                                    if (stop != null) {
+                                      bloc.add(DetailsValuesChangedEvent(
+                                        until: stop,
+                                      ));
+                                    }
+                                  },
+                                  child: Text(
+                                    state.until != null
+                                        ? '${AppLocalizations.of(context).until} ${_formatterDate.format(state.until)}'
+                                        : AppLocalizations.of(context)
+                                            .setStopDate,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                    maxLines: 2,
+                                  )),
+                              trailing: state.until != null
+                                  ? IconButton(
+                                      onPressed: () {
+                                        bloc.add(DetailsValuesChangedEvent(
+                                          until: null, // TODO: probabilmente col null non lancia l'evento
+                                        ));
+                                      },
+                                      icon: Icon(Icons.close, color: grey),
+                                    )
+                                  : SizedBox())
+                          : SizedBox(),
+                      _rowTile(
+                        leading: Icon(
+                          FeatherIcons.bell,
+                          color: grey,
+                        ),
+                        title: GestureDetector(
+                          onTap: () async {},
+                          child: Text(
+                            state.alarms.isEmpty ? 'set alarm' : 'alarm',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 )
@@ -521,22 +589,6 @@ class _DetailsPageState extends State<DetailsPage> {
     return state.calendarItem != null;
   }
 
-  // TODO: migrate to bloc
-  // Event _createNewEvent(int id) {
-  //   return EventUtils.createNewEvent(
-  //     id: id,
-  //     title: _title,
-  //     description: _description,
-  //     start: DateTime(_startDate.year, _startDate.month, _startDate.day,
-  //         _startTime.hour, _startTime.minute),
-  //     end: DateTime(_endDate.year, _endDate.month, _endDate.day, _endTime.hour,
-  //         _endTime.minute),
-  //     allDay: _allDay,
-  //     repeat: _repeat,
-  //     until: _until,
-  //   );
-  // }
-
   Widget _buildRepeatModal(
       BuildContext context, DetailsBloc bloc, DetailsState state) {
     var selected = state.repeat.type;
@@ -617,8 +669,10 @@ class _DetailsPageState extends State<DetailsPage> {
                                   textColor: AppTheme
                                       .primaryTheme.textTheme.button.color,
                                   onPressed: () {
-                                    var newRepeat = state.repeat;
-                                    newRepeat.type = selected;
+                                    var newRepeat = state.repeat.copyWith(
+                                      type: selected,
+                                    );
+                                    print(newRepeat);
 
                                     bloc.add(DetailsValuesChangedEvent(
                                         repeat: newRepeat));

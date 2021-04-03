@@ -57,7 +57,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
       var id = await _calendarItemRepository.add(calendarItem);
 
-      var calendarItemRepeat = buildCalendarItem(id, event.calendarItem);
+      var calendarItemRepeat = buildCalendarItemRepeat(id, event.calendarItem);
       await _calendarItemRepeatRepository.add(calendarItemRepeat);
 
       var mappedItems = await getCalendarItemInstances();
@@ -95,7 +95,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     }
   }
 
-  CalendarItemRepeat buildCalendarItem(int id, CalendarItemModel calendarItem) {
+  CalendarItemRepeat buildCalendarItemRepeat(int id, CalendarItemModel calendarItem) {
     var repeatType = calendarItem.repeat.type;
 
     String day, weekDay, week, month, year;
@@ -132,6 +132,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     return CalendarItemRepeat(
       calendarItemId: id,
       from: Date.convertToDate(calendarItem.start),
+      until: Date.convertToDate(calendarItem.until),
       day: day,
       weekDay: weekDay,
       week: week,

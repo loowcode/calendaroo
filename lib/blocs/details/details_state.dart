@@ -9,6 +9,9 @@ class DetailsState extends Equatable {
   final DateTime endTime;
   final bool allDay;
   final Repeat repeat;
+
+  // TODO spostare until in repeat?
+  final DateTime until;
   final List<Alarm> alarms;
   final CalendarItemModel calendarItem;
   final bool edited;
@@ -22,6 +25,7 @@ class DetailsState extends Equatable {
     this.endTime,
     this.allDay,
     this.repeat,
+    this.until,
     this.alarms,
     this.calendarItem,
     this.edited = false,
@@ -36,6 +40,7 @@ class DetailsState extends Equatable {
     DateTime endTime,
     bool allDay,
     Repeat repeat,
+    DateTime until,
     List<Alarm> alarms,
     CalendarItemModel calendarItem,
     bool edited,
@@ -49,6 +54,7 @@ class DetailsState extends Equatable {
       endTime: endTime ?? this.endTime,
       allDay: allDay ?? this.allDay,
       repeat: repeat ?? this.repeat,
+      until: until ?? this.until,
       alarms: alarms ?? this.alarms,
       calendarItem: calendarItem ?? this.calendarItem,
       edited: edited ?? this.edited,
@@ -65,6 +71,7 @@ class DetailsState extends Equatable {
         endTime,
         allDay,
         repeat,
+        until,
         alarms,
         calendarItem,
         edited,
