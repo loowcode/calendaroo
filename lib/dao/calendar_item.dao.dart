@@ -54,7 +54,8 @@ class CalendarItemDao {
     SELECT C.*
     FROM calendar_item_repeat CR
     LEFT JOIN calendar_item C ON CR.calendar_item_id = C.id
-    WHERE (repeat_year = ? OR repeat_year = '*')
+    WHERE C.id IS NOT NULL
+    AND (repeat_year = ? OR repeat_year = '*')
     AND (repeat_month = ? OR repeat_month = '*')
     AND (repeat_week = ? OR repeat_week = '*')
     AND (repeat_weekday = ? OR repeat_weekday = '*')

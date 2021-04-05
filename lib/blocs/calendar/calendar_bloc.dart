@@ -132,7 +132,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     return CalendarItemRepeat(
       calendarItemId: id,
       from: Date.convertToDate(calendarItem.start),
-      until: Date.convertToDate(calendarItem.until),
+      until: calendarItem.until != null ? Date.convertToDate(calendarItem.until) : null,
       day: day,
       weekDay: weekDay,
       week: week,
