@@ -59,13 +59,13 @@ class CalendarLoading extends CalendarState {
 }
 
 class CalendarLoaded extends CalendarState {
-  final SplayTreeMap<Date, List<CalendarItem>> mappedCalendarItems;
+  final CalendarItemMap calendarItemMap;
 
   CalendarLoaded({
     Date selectedDay,
     Date startRange,
     Date endRange,
-    this.mappedCalendarItems,
+    this.calendarItemMap,
   }) : super(
           selectedDay: selectedDay,
           startRange: startRange,
@@ -77,6 +77,6 @@ class CalendarLoaded extends CalendarState {
         selectedDay,
         startRange,
         endRange,
-        mappedCalendarItems,
+        calendarItemMap,
       ];
 }

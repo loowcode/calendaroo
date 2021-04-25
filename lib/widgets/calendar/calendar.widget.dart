@@ -184,7 +184,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
     var locale = Localizations.localeOf(context);
     return TableCalendar(
       calendarController: _calendarController,
-      events: state is CalendarLoaded ? state.mappedCalendarItems : null,
+      events: state is CalendarLoaded ? state.calendarItemMap.instances : null,
       headerVisible: false,
       initialCalendarFormat: _convertSizeToFormat(),
       formatAnimation: FormatAnimation.slide,

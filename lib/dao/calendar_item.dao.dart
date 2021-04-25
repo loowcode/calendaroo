@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import '../services/local_storage.service.dart';
 
 class CalendarItemDao {
-  Future<int> insertCalendarItem(CalendarItem calendarItem) async {
+  Future<int> insert(CalendarItem calendarItem) async {
     var client = await LocalStorageService().db;
 
     return await client.insert(
@@ -16,7 +16,7 @@ class CalendarItemDao {
     );
   }
 
-  Future<int> updateCalendarItem(CalendarItem newCalendarItem) async {
+  Future<int> update(CalendarItem newCalendarItem) async {
     var client = await LocalStorageService().db;
 
     return client.update('calendar_item', newCalendarItem.toMap(),
@@ -25,13 +25,13 @@ class CalendarItemDao {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> deleteCalendarItem(int id) async {
+  Future<void> delete(int id) async {
     var client = await LocalStorageService().db;
 
     return client.delete('calendar_item', where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<CalendarItem> calendarItem(int id) async {
+  Future<CalendarItem> findById(int id) async {
     var client = await LocalStorageService().db;
     final maps =
         await client.query('calendar_item', where: 'id = ?', whereArgs: [id]);
@@ -39,7 +39,7 @@ class CalendarItemDao {
     return CalendarItem.fromMap(maps[0]);
   }
 
-  Future<List<CalendarItem>> calendarItems(Date date) async {
+  Future<List<CalendarItem>> findByDate(Date date) async {
     final client = await LocalStorageService().db;
 
     final repeatYear = date.year;

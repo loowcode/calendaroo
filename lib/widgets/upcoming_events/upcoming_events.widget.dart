@@ -73,54 +73,63 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
   }
 
   List<Widget> _buildAgenda(CalendarState state) {
-    var mapEvent = state is CalendarLoaded ? state.mappedCalendarItems : null;
-    var widgets = <Widget>[];
-    if (mapEvent == null || mapEvent.isEmpty) {
-      return [_buildEmptyAgenda()];
-    }
+    if (state is CalendarLoaded) {
+      var mapEvent = state is CalendarLoaded
+          ? state.calendarItemMap.instances
+          : null;
+      var widgets = <Widget>[];
+      if (mapEvent == null || mapEvent.isEmpty) {
+        return [_buildEmptyAgenda()];
+      }
 
-    var formatter =
-        DateFormat('dd MMMM, EEEE', Localizations.localeOf(context).toString());
-    for (var date in mapEvent.keys) {
-      var row = <Widget>[];
-      var list = mapEvent[date];
-      row
-        ..add(
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Text(
-                StringUtils.titleCase(formatter.format(date)),
-                style: Theme.of(context).textTheme.headline5,
+      var formatter =
+      DateFormat('dd MMMM, EEEE', Localizations.localeOf(context).toString());
+      for (var date in mapEvent.keys) {
+        var row = <Widget>[];
+        var list = mapEvent[date];
+        row
+          ..add(
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  StringUtils.titleCase(formatter.format(date)),
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline5,
+                ),
               ),
             ),
-          ),
-        )
-        ..addAll(list
-            .map(
-              (elem) => Container(child: CardWidget(elem)),
-            )
-            .toList())
-        ..add(
-          SizedBox(
-            height: 16,
+          )
+          ..addAll(list
+              .map(
+                (id) => Container(child: CardWidget(state.calendarItemMap.items[id])),
+          )
+              .toList())
+          ..add(
+            SizedBox(
+              height: 16,
+            ),
+          );
+        var dayGroup = AutoScrollTag(
+          key: ValueKey(CalendarUtils.getIndex(mapEvent, date)),
+          index: CalendarUtils.getIndex(mapEvent, date),
+          controller: _listController,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: row,
           ),
         );
-      var dayGroup = AutoScrollTag(
-        key: ValueKey(CalendarUtils.getIndex(mapEvent, date)),
-        index: CalendarUtils.getIndex(mapEvent, date),
-        controller: _listController,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: row,
-        ),
-      );
-      widgets.add(dayGroup);
+        widgets.add(dayGroup);
+      }
+      widgets.add(SizedBox(
+        height: 800,
+      ));
+      return widgets;
+    } else {
+      return [_buildEmptyAgenda()];
     }
-    widgets.add(SizedBox(
-      height: 800,
-    ));
-    return widgets;
   }
 
   Container _buildEmptyAgenda() {

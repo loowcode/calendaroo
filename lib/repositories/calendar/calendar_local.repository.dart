@@ -7,22 +7,27 @@ class CalendarLocalRepository extends CalendarRepository {
   final dao = CalendarItemDao();
 
   @override
+  Future<CalendarItem> findById(int id) {
+    return dao.findById(id);
+  }
+
+  @override
   Future<List<CalendarItem>> findByDate(Date date) async {
-    return dao.calendarItems(date);
+    return dao.findByDate(date);
   }
 
   @override
   Future<int> add(CalendarItem calendarItem) {
-    return dao.insertCalendarItem(calendarItem);
+    return dao.insert(calendarItem);
   }
 
   @override
   Future<int> update(CalendarItem calendarItem) {
-    return dao.updateCalendarItem(calendarItem);
+    return dao.update(calendarItem);
   }
 
   @override
   Future<void> delete(int id) async {
-    return dao.deleteCalendarItem(id);
+    return dao.delete(id);
   }
 }

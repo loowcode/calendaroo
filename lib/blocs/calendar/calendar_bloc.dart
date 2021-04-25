@@ -7,6 +7,7 @@ import 'package:calendaroo/entities/calendar_item_repeat.entity.dart';
 import 'package:calendaroo/model/repeat.model.dart';
 import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
 import 'package:calendaroo/models/calendar_item/calendar_item_instance.model.dart';
+import 'package:calendaroo/models/calendar_item/calendar_item_map.dart';
 import 'package:calendaroo/models/date.model.dart';
 import 'package:calendaroo/repositories/calendar/calendar.repository.dart';
 import 'package:calendaroo/repositories/calendar/calendar_repeat.repository.dart';
@@ -36,12 +37,12 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   Stream<CalendarState> mapEventToState(CalendarEvent event) async* {
     if (event is CalendarLoadEvent) {
       yield CalendarLoading.fromState(state);
-      var mappedItems = await getCalendarItemInstances();
+      var calendarItemMap = await getCalendarItemInstances();
       yield CalendarLoaded(
         selectedDay: state.selectedDay,
         startRange: state.startRange,
         endRange: state.endRange,
-        mappedCalendarItems: mappedItems,
+        calendarItemMap: calendarItemMap,
       );
     }
 
@@ -60,12 +61,12 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       var calendarItemRepeat = buildCalendarItemRepeat(id, event.calendarItem);
       await _calendarItemRepeatRepository.add(calendarItemRepeat);
 
-      var mappedItems = await getCalendarItemInstances();
+      var calendarItemMap = await getCalendarItemInstances();
       yield CalendarLoaded(
         selectedDay: state.selectedDay,
         startRange: state.startRange,
         endRange: state.endRange,
-        mappedCalendarItems: mappedItems,
+        calendarItemMap: calendarItemMap,
       );
     }
 
@@ -84,18 +85,19 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       yield CalendarLoading.fromState(state);
 
       await _calendarItemRepository.delete(event.id);
-      var mappedItems = await getCalendarItemInstances();
+      var calendarItemMap = await getCalendarItemInstances();
 
       yield CalendarLoaded(
         selectedDay: state.selectedDay,
         startRange: state.startRange,
         endRange: state.endRange,
-        mappedCalendarItems: mappedItems,
+        calendarItemMap: calendarItemMap,
       );
     }
   }
 
-  CalendarItemRepeat buildCalendarItemRepeat(int id, CalendarItemModel calendarItem) {
+  CalendarItemRepeat buildCalendarItemRepeat(
+      int id, CalendarItemModel calendarItem) {
     var repeatType = calendarItem.repeat.type;
 
     String day, weekDay, week, month, year;
@@ -132,7 +134,9 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     return CalendarItemRepeat(
       calendarItemId: id,
       from: Date.convertToDate(calendarItem.start),
-      until: calendarItem.until != null ? Date.convertToDate(calendarItem.until) : null,
+      until: calendarItem.until != null
+          ? Date.convertToDate(calendarItem.until)
+          : null,
       day: day,
       weekDay: weekDay,
       week: week,
@@ -141,25 +145,47 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     );
   }
 
-  Future<SplayTreeMap<Date, List<CalendarItem>>>
-      getCalendarItemInstances() async {
-    var mappedItems = SplayTreeMap<Date, List<CalendarItem>>();
+  Future<CalendarItemMap> getCalendarItemInstances() async {
+    var mappedInstances = SplayTreeMap<Date, List<int>>();
+    var mappedItems = SplayTreeMap<int, CalendarItemModel>();
     var currentDate = state.startRange;
 
-    // TODO: invece che inserire l'intero evento nella mappa si potrebbero
-    // generare delle istanze che contengono solo i dati necessari
-    // (id dell'evento, ecc)
     while (currentDate.isBefore(state.endRange)) {
       final items = await _calendarItemRepository.findByDate(currentDate);
 
       if (items.isNotEmpty) {
-        mappedItems.putIfAbsent(currentDate, () => items);
+        // Add items' id to mapped instances
+        mappedInstances.putIfAbsent(
+            currentDate, () => List.generate(items.length, (i) => items[i].id));
+
+        // Update mapped calendar items with id
+        items.forEach((item) async {
+          if (!mappedItems.containsKey(item.id)) {
+            mappedItems.putIfAbsent(
+              item.id,
+              () => CalendarItemModel(
+                id: item.id,
+                title: item.title,
+                description: item.description,
+                start: item.start,
+                end: item.end,
+                repeat: null, // TODO: build repeat object
+                until: null, // TODO: get until
+              ),
+            );
+          }
+        });
       }
 
       currentDate = Date.convertToDate(currentDate.add(Duration(days: 1)));
     }
 
-    return mappedItems;
+    var calendarItemMap = CalendarItemMap(
+      instances: mappedInstances,
+      items: mappedItems,
+    );
+
+    return calendarItemMap;
   }
 
   @override
@@ -184,18 +210,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     // });
 
     return map;
-  }
-
-  static void _insertIntoMap(SplayTreeMap<Date, List<CalendarItemInstance>> map,
-      Date date, CalendarItemInstance event) {
-    if (map.containsKey(date)) {
-      var list = map[date];
-      list.add(event);
-      list.sort((a, b) => a.start.isBefore(b.start) ? 1 : 0);
-      map[date] = list;
-    } else {
-      map.putIfAbsent(date, () => [event]);
-    }
   }
 
   static List<CalendarItemInstance> createInstance(CalendarItem item) {
