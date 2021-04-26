@@ -54,8 +54,12 @@ MaterialPageRoute<dynamic> Function(RouteSettings) routes =
           var calendarBloc = BlocProvider.of<CalendarBloc>(context);
 
           return BlocProvider(
-              create: (BuildContext context) => DetailsBloc(calendarBloc),
-              child: DetailsPage(settings.arguments as CalendarItemModel));
+            create: (BuildContext context) => DetailsBloc(
+              calendarBloc,
+              calendarItemModel: settings.arguments as CalendarItemModel,
+            ),
+            child: DetailsPage(),
+          );
         },
         settings: settings,
       );

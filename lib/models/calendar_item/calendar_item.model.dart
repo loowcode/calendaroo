@@ -1,3 +1,4 @@
+import 'package:calendaroo/entities/calendar_item.entity.dart';
 import 'package:calendaroo/model/repeat.model.dart';
 
 class CalendarItemModel {
@@ -6,7 +7,6 @@ class CalendarItemModel {
   String description;
   DateTime start;
   DateTime end;
-
   // bool allDay;
   Repeat repeat;
   DateTime until;
@@ -22,34 +22,24 @@ class CalendarItemModel {
     this.until,
   });
 
-  factory CalendarItemModel.fromMap(Map<String, dynamic> map) {
+  factory CalendarItemModel.fromEntity(CalendarItem entity) {
     return CalendarItemModel(
-      id: map['id'] as int,
-      title: map['title'] as String,
-      description: map['description'] as String,
-      start: DateTime.parse(map['start'] as String),
-      end: DateTime.parse(map['end'] as String),
+      id: entity.id,
+      title: entity.title,
+      description: entity.description,
+      start: entity.start,
+      end: entity.end,
       // allDay: (map['allDay'] as int) == 1 ? true : false,
-      repeat: Repeat.fromJson(map['repeat'] as String),
-      until: DateTime.parse(map['until'] as String ?? map['start'] as String),
+      repeat: Repeat(type: RepeatType.never),
+      // TODO: get repeat
+      until: null, // TODO: get until
     );
   }
 
-  Map<String, dynamic> toMap() {
-    var map = <String, dynamic>{};
-    map['id'] = id;
-    map['title'] = title;
-    map['description'] = description;
-    map['start'] = start.toIso8601String();
-    map['end'] = end.toIso8601String();
-    // map['allDay'] = allDay ? 1 : 0;
-    map['repeat'] = repeat.toJson();
-    map['until'] = until?.toIso8601String();
-    return map;
-  }
+  CalendarItem toEntity() {
+    var entity = CalendarItem(
+        id: id, title: title, description: description, start: start, end: end);
 
-  CalendarItemModel setId(int id) {
-    this.id = id;
-    return this;
+    return entity;
   }
 }

@@ -60,13 +60,14 @@ class _CardWidgetState extends State<CardWidget> with TickerProviderStateMixin {
                     width: 45,
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10.0),
-                              bottomLeft: Radius.circular(10.0)),
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: blueGradient)),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10.0),
+                            bottomLeft: Radius.circular(10.0)),
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: blueGradient),
+                      ),
                     ),
                   ),
                   Container(
@@ -113,16 +114,16 @@ class _CardWidgetState extends State<CardWidget> with TickerProviderStateMixin {
                         return PopupMenuItem<Option>(
                           value: option.setEvent(widget.calendarItem.id),
                           child: Theme(
-                              data:
-                                  Theme.of(context).copyWith(cardColor: white),
-                              child: Text(
-                                AppLocalizations.of(context)
-                                    .translate(option.title),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .copyWith(color: black),
-                              )),
+                            data: Theme.of(context).copyWith(cardColor: white),
+                            child: Text(
+                              AppLocalizations.of(context)
+                                  .translate(option.title),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  .copyWith(color: black),
+                            ),
+                          ),
                         );
                       }).toList();
                     },

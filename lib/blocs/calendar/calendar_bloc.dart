@@ -37,6 +37,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   Stream<CalendarState> mapEventToState(CalendarEvent event) async* {
     if (event is CalendarLoadEvent) {
       yield CalendarLoading.fromState(state);
+
       var calendarItemMap = await getCalendarItemInstances();
       yield CalendarLoaded(
         selectedDay: state.selectedDay,
@@ -57,10 +58,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       );
 
       var id = await _calendarItemRepository.add(calendarItem);
-
       var calendarItemRepeat = buildCalendarItemRepeat(id, event.calendarItem);
       await _calendarItemRepeatRepository.add(calendarItemRepeat);
-
       var calendarItemMap = await getCalendarItemInstances();
       yield CalendarLoaded(
         selectedDay: state.selectedDay,
@@ -70,23 +69,24 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       );
     }
 
-    // TODO aggiungere modifica
-    // if (event is CalendarUpdateEvent) {
-    //   yield CalendarLoading();
-    //   await _calendarItemRepository.update(event.calendarItem);
-    //   var mappedItems = await getCalendarItemInstances();
-    //   yield CalendarLoaded(
-    //     mappedCalendarItems: mappedItems,
-    //     selectedDay: Date.today(),
-    //   );
-    // }
+    if (event is CalendarUpdateEvent) {
+      yield CalendarLoading.fromState(state);
+
+      await _calendarItemRepository.update(event.calendarItem.toEntity());
+      var calendarItemMap = await getCalendarItemInstances();
+      yield CalendarLoaded(
+        selectedDay: state.selectedDay,
+        startRange: state.startRange,
+        endRange: state.endRange,
+        calendarItemMap: calendarItemMap,
+      );
+    }
 
     if (event is CalendarDeleteEvent) {
       yield CalendarLoading.fromState(state);
 
       await _calendarItemRepository.delete(event.id);
       var calendarItemMap = await getCalendarItemInstances();
-
       yield CalendarLoaded(
         selectedDay: state.selectedDay,
         startRange: state.startRange,

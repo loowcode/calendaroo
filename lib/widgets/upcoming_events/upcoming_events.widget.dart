@@ -61,9 +61,10 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
             child: Stack(
               children: <Widget>[
                 ListView(
-                    controller: _listController,
-                    padding: EdgeInsets.all(16),
-                    children: _buildAgenda(state)),
+                  controller: _listController,
+                  padding: EdgeInsets.all(16),
+                  children: _buildAgenda(state),
+                ),
               ],
             ),
           ),
@@ -74,16 +75,16 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
 
   List<Widget> _buildAgenda(CalendarState state) {
     if (state is CalendarLoaded) {
-      var mapEvent = state is CalendarLoaded
-          ? state.calendarItemMap.instances
-          : null;
+      var mapEvent =
+          state is CalendarLoaded ? state.calendarItemMap.instances : null;
       var widgets = <Widget>[];
       if (mapEvent == null || mapEvent.isEmpty) {
         return [_buildEmptyAgenda()];
       }
 
-      var formatter =
-      DateFormat('dd MMMM, EEEE', Localizations.localeOf(context).toString());
+      var formatter = DateFormat(
+          'dd MMMM, EEEE', Localizations.localeOf(context).toString());
+
       for (var date in mapEvent.keys) {
         var row = <Widget>[];
         var list = mapEvent[date];
@@ -94,24 +95,23 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Text(
                   StringUtils.titleCase(formatter.format(date)),
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline5,
+                  style: Theme.of(context).textTheme.headline5,
                 ),
               ),
             ),
           )
           ..addAll(list
               .map(
-                (id) => Container(child: CardWidget(state.calendarItemMap.items[id])),
-          )
+                (id) => Container(
+                    child: CardWidget(state.calendarItemMap.items[id])),
+              )
               .toList())
           ..add(
             SizedBox(
               height: 16,
             ),
           );
+
         var dayGroup = AutoScrollTag(
           key: ValueKey(CalendarUtils.getIndex(mapEvent, date)),
           index: CalendarUtils.getIndex(mapEvent, date),
@@ -143,12 +143,13 @@ class _UpcomingEventsWidgetState extends State<UpcomingEventsWidget>
               style: Theme.of(context).textTheme.subtitle2,
             ),
             Container(
-                margin: EdgeInsets.only(top: 32),
-                child: Icon(
-                  Icons.event_available,
-                  size: 64,
-                  color: lightGrey,
-                ))
+              margin: EdgeInsets.only(top: 32),
+              child: Icon(
+                Icons.event_available,
+                size: 64,
+                color: lightGrey,
+              ),
+            ),
           ],
         ),
       ),

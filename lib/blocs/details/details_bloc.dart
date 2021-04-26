@@ -25,22 +25,27 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
   // _allDay = _showEvent?.allDay ?? false; TODO
   // _repeat = _showEvent?.repeat ?? Repeat(type: RepeatType.never); TODO
 
-  DetailsBloc(this._calendarBloc)
+  DetailsBloc(this._calendarBloc, {CalendarItemModel calendarItemModel})
       : super(DetailsState(
-          title: '',
-          description: '',
-          startDate: DateTime.now(),
-          startTime: DateTime.now(),
-          endDate: DateTime.now(),
-          endTime: DateTime.now(),
-          allDay: false,
-          repeat: Repeat(type: RepeatType.never),
-          until: null,
-          alarms: [
-            Alarm(1, DateTime.now().subtract(Duration(minutes: 15)), false)
-          ],
-          edited: false,
-        ));
+            title: calendarItemModel?.title ?? '',
+            description: calendarItemModel?.description ?? '',
+            startDate: calendarItemModel?.start ?? DateTime.now(),
+            // TODO: remove time
+            startTime: calendarItemModel?.start ?? DateTime.now(),
+            // TODO: remove date
+            endDate: calendarItemModel?.end ?? DateTime.now(),
+            // TODO: remove time
+            endTime: calendarItemModel?.end ?? DateTime.now(),
+            // TODO: remove date
+            allDay: false,
+            // TODO: handle allDay
+            repeat: calendarItemModel?.repeat ?? Repeat(type: RepeatType.never),
+            until: calendarItemModel?.until,
+            alarms: [
+              Alarm(1, DateTime.now().subtract(Duration(minutes: 15)), false)
+            ],
+            edited: false,
+            calendarItem: calendarItemModel));
 
   @override
   Stream<DetailsState> mapEventToState(
@@ -67,8 +72,10 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
         var calendarItem = CalendarItemModel(
           title: state.title,
           description: state.description,
-          start: state.startDate, //TODO manca il time
-          end: state.endDate, // TODO manca il time
+          start: state.startDate,
+          //TODO manca il time
+          end: state.endDate,
+          // TODO manca il time
           // TODO aggiungere allday
           repeat: state.repeat,
           until: state.until,
@@ -76,6 +83,14 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
 
         _calendarBloc.add(CalendarCreateEvent(calendarItem));
       } else {
+        // TODO: improve this update. Can we store only calendar item id and
+        // create a new instance here only when it's needed?
+        state.calendarItem.title = state.title;
+        state.calendarItem.description = state.description;
+        state.calendarItem.start = state.startDate; // TODO: add time
+        state.calendarItem.end = state.endDate; // TODO: add time
+        state.calendarItem.repeat = state.repeat;
+        state.calendarItem.until = state.until;
         _calendarBloc.add(CalendarUpdateEvent(state.calendarItem));
       }
     }

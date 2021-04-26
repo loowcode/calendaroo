@@ -14,9 +14,7 @@ import 'package:intl/intl.dart';
 import '../../theme.dart';
 
 class DetailsPage extends StatefulWidget {
-  final CalendarItemModel calendarItem;
-
-  DetailsPage(this.calendarItem);
+  DetailsPage();
 
   @override
   _DetailsPageState createState() => _DetailsPageState();
@@ -331,7 +329,7 @@ class _DetailsPageState extends State<DetailsPage> {
             color: grey,
           ),
           onPressed: () {
-            bloc.add(DetailsDeleteEvent()); // TODO
+            bloc.add(DetailsDeleteEvent()); // TODO: delete event
             NavigationService().pop();
           },
         ),
