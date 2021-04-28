@@ -26,7 +26,7 @@ class CalendarItemRepeat {
       id: map['id'] as int,
       calendarItemId: map['calendar_item_id'] as int,
       from: DateTime.parse(map['repeat_from'] as String),
-      until: DateTime.parse(map['repeat_until'] as String),
+      until: map['repeat_until'] != null ? DateTime.parse(map['repeat_until'] as String) : null,
       day: map['repeat_day'] as String,
       weekDay: map['repeat_weekday'] as String,
       week: map['repeat_week'] as String,

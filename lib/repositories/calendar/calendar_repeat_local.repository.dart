@@ -6,7 +6,17 @@ class CalendarItemRepeatLocalRepository extends CalendarItemRepeatRepository {
   final dao = CalendarItemRepeatDao();
 
   @override
+  Future<CalendarItemRepeat> findByCalendarItemId(int calendarItemId) {
+    return dao.findByCalendarItemId(calendarItemId);
+  }
+
+  @override
   Future<int> add(CalendarItemRepeat calendarItemRepeat) {
     return dao.insert(calendarItemRepeat);
+  }
+
+  @override
+  Future<void> delete(int id) {
+    return dao.delete(id);
   }
 }

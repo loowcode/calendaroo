@@ -60,6 +60,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       var id = await _calendarItemRepository.add(calendarItem);
       var calendarItemRepeat = buildCalendarItemRepeat(id, event.calendarItem);
       await _calendarItemRepeatRepository.add(calendarItemRepeat);
+
       var calendarItemMap = await getCalendarItemInstances();
       yield CalendarLoaded(
         selectedDay: state.selectedDay,
@@ -72,7 +73,18 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     if (event is CalendarUpdateEvent) {
       yield CalendarLoading.fromState(state);
 
+      // Update calendar item
       await _calendarItemRepository.update(event.calendarItem.toEntity());
+
+      // TODO: handle repeat update
+      // Delete old repeat
+      var calendarItemRepeat = await _calendarItemRepeatRepository.findByCalendarItemId(event.calendarItem.id);
+      await _calendarItemRepeatRepository.delete(calendarItemRepeat.id);
+
+      // Add new repeat
+      var newCalendarItemRepeat = buildCalendarItemRepeat(event.calendarItem.id, event.calendarItem);
+      await _calendarItemRepeatRepository.add(newCalendarItemRepeat);
+
       var calendarItemMap = await getCalendarItemInstances();
       yield CalendarLoaded(
         selectedDay: state.selectedDay,
@@ -161,6 +173,9 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         // Update mapped calendar items with id
         items.forEach((item) async {
           if (!mappedItems.containsKey(item.id)) {
+            var calendarItemRepeat = await _calendarItemRepeatRepository.findByCalendarItemId(item.id);
+            // TODO: build repeat object
+
             mappedItems.putIfAbsent(
               item.id,
               () => CalendarItemModel(

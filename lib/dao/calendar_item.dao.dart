@@ -6,31 +6,6 @@ import 'package:sqflite/sqflite.dart';
 import '../services/local_storage.service.dart';
 
 class CalendarItemDao {
-  Future<int> insert(CalendarItem calendarItem) async {
-    var client = await LocalStorageService().db;
-
-    return await client.insert(
-      'calendar_item',
-      calendarItem.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  Future<int> update(CalendarItem newCalendarItem) async {
-    var client = await LocalStorageService().db;
-
-    return client.update('calendar_item', newCalendarItem.toMap(),
-        where: 'id = ?',
-        whereArgs: [newCalendarItem.id],
-        conflictAlgorithm: ConflictAlgorithm.replace);
-  }
-
-  Future<void> delete(int id) async {
-    var client = await LocalStorageService().db;
-
-    return client.delete('calendar_item', where: 'id = ?', whereArgs: [id]);
-  }
-
   Future<CalendarItem> findById(int id) async {
     var client = await LocalStorageService().db;
     final maps =
@@ -77,15 +52,40 @@ class CalendarItemDao {
     });
   }
 
-  Future<List<CalendarItem>> nearCalendarItems(
-      Date rangeStart, Date rangeEnd) async {
-    final client = await LocalStorageService().db;
-    // final maps = await client.query('events',
-    //     where: 'start > ? and end < ?',
-    //     whereArgs: [rangeStart.toIso8601String(), rangeEnd.toIso8601String()]);
-    final maps = await client.query('calendar_item');
-    return List.generate(maps.length, (i) {
-      return CalendarItem.fromMap(maps[i]);
-    });
+  Future<int> insert(CalendarItem calendarItem) async {
+    var client = await LocalStorageService().db;
+
+    return await client.insert(
+      'calendar_item',
+      calendarItem.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
+
+  Future<int> update(CalendarItem newCalendarItem) async {
+    var client = await LocalStorageService().db;
+
+    return client.update('calendar_item', newCalendarItem.toMap(),
+        where: 'id = ?',
+        whereArgs: [newCalendarItem.id],
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<void> delete(int id) async {
+    var client = await LocalStorageService().db;
+
+    return client.delete('calendar_item', where: 'id = ?', whereArgs: [id]);
+  }
+
+// Future<List<CalendarItem>> nearCalendarItems(
+//     Date rangeStart, Date rangeEnd) async {
+//   final client = await LocalStorageService().db;
+//   // final maps = await client.query('events',
+//   //     where: 'start > ? and end < ?',
+//   //     whereArgs: [rangeStart.toIso8601String(), rangeEnd.toIso8601String()]);
+//   final maps = await client.query('calendar_item');
+//   return List.generate(maps.length, (i) {
+//     return CalendarItem.fromMap(maps[i]);
+//   });
+// }
 }
