@@ -6,6 +6,7 @@ abstract class DetailsEvent extends Equatable {
 }
 
 class DetailsValuesChangedEvent extends DetailsEvent {
+  final int calendarItemId;
   final String title;
   final String description;
   final DateTime startDate;
@@ -15,9 +16,9 @@ class DetailsValuesChangedEvent extends DetailsEvent {
   final bool allDay;
   final Repeat repeat;
   final DateTime until;
-  final CalendarItemModel calendarItem;
 
   DetailsValuesChangedEvent({
+    this.calendarItemId,
     this.title,
     this.description,
     this.startDate,
@@ -27,11 +28,11 @@ class DetailsValuesChangedEvent extends DetailsEvent {
     this.allDay,
     this.repeat,
     this.until,
-    this.calendarItem,
   });
 
   @override
   List<Object> get props => [
+        calendarItemId,
         title,
         description,
         startDate,
@@ -41,7 +42,6 @@ class DetailsValuesChangedEvent extends DetailsEvent {
         allDay,
         repeat,
         until,
-        calendarItem,
       ];
 }
 

@@ -584,7 +584,7 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   bool _isEdit(DetailsState state) {
-    return state.calendarItem != null;
+    return state.calendarItemId != null;
   }
 
   Widget _buildRepeatModal(

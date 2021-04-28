@@ -1,6 +1,7 @@
 part of 'details_bloc.dart';
 
 class DetailsState extends Equatable {
+  final int calendarItemId;
   final String title;
   final String description;
   final DateTime startDate;
@@ -13,10 +14,10 @@ class DetailsState extends Equatable {
   // TODO spostare until in repeat?
   final DateTime until;
   final List<Alarm> alarms;
-  final CalendarItemModel calendarItem;
   final bool edited;
 
   const DetailsState({
+    this.calendarItemId,
     this.title,
     this.description,
     this.startDate,
@@ -27,11 +28,11 @@ class DetailsState extends Equatable {
     this.repeat,
     this.until,
     this.alarms,
-    this.calendarItem,
     this.edited = false,
   });
 
   DetailsState copyWith({
+    int calendarItemId,
     String title,
     String description,
     DateTime startDate,
@@ -42,10 +43,10 @@ class DetailsState extends Equatable {
     Repeat repeat,
     DateTime until,
     List<Alarm> alarms,
-    CalendarItemModel calendarItem,
     bool edited,
   }) {
     return DetailsState(
+      calendarItemId: calendarItemId ?? this.calendarItemId,
       title: title ?? this.title,
       description: description ?? this.description,
       startDate: startDate ?? this.startDate,
@@ -56,13 +57,13 @@ class DetailsState extends Equatable {
       repeat: repeat ?? this.repeat,
       until: until ?? this.until,
       alarms: alarms ?? this.alarms,
-      calendarItem: calendarItem ?? this.calendarItem,
       edited: edited ?? this.edited,
     );
   }
 
   @override
   List<Object> get props => [
+        calendarItemId,
         title,
         description,
         startDate,
@@ -73,7 +74,6 @@ class DetailsState extends Equatable {
         repeat,
         until,
         alarms,
-        calendarItem,
         edited,
       ];
 }
