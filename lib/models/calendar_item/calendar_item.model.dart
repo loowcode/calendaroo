@@ -30,7 +30,7 @@ class CalendarItemModel {
       start: entity.start,
       end: entity.end,
       // allDay: (map['allDay'] as int) == 1 ? true : false,
-      repeat: Repeat(type: RepeatType.never),
+      repeat: Repeat.never,
       // TODO: get repeat
       until: null, // TODO: get until
     );

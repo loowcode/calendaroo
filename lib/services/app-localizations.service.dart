@@ -55,7 +55,7 @@ class AppLocalizations {
 
   String get compact => _localizedStrings['compact'];
 
-  String get daily => _localizedStrings['daily'];
+  String get repeatDaily => _localizedStrings['repeat_daily'];
 
   String get delete => _localizedStrings[DELETE];
 
@@ -83,9 +83,9 @@ class AppLocalizations {
 
   String get madeWithLove => _localizedStrings['made_with_love'];
 
-  String get monthly => _localizedStrings['monthly'];
+  String get repeatMonthly => _localizedStrings['repeat_monthly'];
 
-  String get never => _localizedStrings['never'];
+  String get repeatNever => _localizedStrings['repeat_never'];
 
   String get newEvent => _localizedStrings['new_event'];
 
@@ -127,9 +127,9 @@ class AppLocalizations {
 
   String get warningNoEmailApp => _localizedStrings['warning_no_email_app'];
 
-  String get weekly => _localizedStrings['weekly'];
+  String get repeatWeekly => _localizedStrings['repeat_weekly'];
 
-  String get yearly => _localizedStrings['yearly'];
+  String get repeatYearly => _localizedStrings['repeat_yearly'];
 
   String get yes => _localizedStrings['yes'];
 }

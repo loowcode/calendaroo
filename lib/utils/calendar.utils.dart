@@ -115,27 +115,27 @@ class CalendarUtils {
           instance.end = instance.start.add(Duration(hours: 23, minutes: 59));
         }
         instances.add(instance);
-        if (event.repeat.type != RepeatType.never) {
+        if (event.repeat != Repeat.never) {
           var duplicator = instance.start;
           var span = instance.end.difference(instance.start);
           while (duplicator.isBefore(rangeEnd) &&
               duplicator.isBefore(event.until ?? rangeEnd)) {
-            switch (event.repeat.type) {
-              case RepeatType.daily:
+            switch (event.repeat) {
+              case Repeat.daily:
                 duplicator = duplicator.add(Duration(days: 1));
                 break;
-              case RepeatType.weekly:
+              case Repeat.weekly:
                 duplicator = duplicator.add(Duration(days: 7));
                 break;
-              case RepeatType.monthly:
+              case Repeat.monthly:
                 duplicator = DateTime(
                     duplicator.year, duplicator.month + 1, duplicator.day);
                 break;
-              case RepeatType.yearly:
+              case Repeat.yearly:
                 duplicator = DateTime(
                     duplicator.year + 1, duplicator.month, duplicator.day);
                 break;
-              case RepeatType.never:
+              case Repeat.never:
                 break;
             }
 

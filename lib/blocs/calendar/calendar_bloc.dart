@@ -110,33 +110,33 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
   CalendarItemRepeat buildCalendarItemRepeat(
       int id, CalendarItemModel calendarItem) {
-    var repeatType = calendarItem.repeat.type;
+    var repeatType = calendarItem.repeat;
 
     String day, weekDay, week, month, year;
 
     switch (repeatType) {
-      case RepeatType.never:
+      case Repeat.never:
         day = calendarItem.start.day.toString();
         month = calendarItem.start.month.toString();
         year = calendarItem.start.year.toString();
         weekDay = week = '*';
         break;
 
-      case RepeatType.daily:
+      case Repeat.daily:
         day = weekDay = week = month = year = '*';
         break;
 
-      case RepeatType.weekly:
+      case Repeat.weekly:
         weekDay = calendarItem.start.weekday.toString();
         day = week = month = year = '*';
         break;
 
-      case RepeatType.monthly:
+      case Repeat.monthly:
         day = calendarItem.start.day.toString();
         weekDay = week = month = year = '*';
         break;
 
-      case RepeatType.yearly:
+      case Repeat.yearly:
         day = calendarItem.start.day.toString();
         month = calendarItem.start.month.toString();
         weekDay = week = year = '*';
@@ -174,7 +174,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         items.forEach((item) async {
           if (!mappedItems.containsKey(item.id)) {
             var calendarItemRepeat = await _calendarItemRepeatRepository.findByCalendarItemId(item.id);
-            // TODO: build repeat object
 
             mappedItems.putIfAbsent(
               item.id,
@@ -184,7 +183,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
                 description: item.description,
                 start: item.start,
                 end: item.end,
-                repeat: null, // TODO: build repeat object
+                repeat: calendarItemRepeat.toRepeat(),
                 until: null, // TODO: get until
               ),
             );

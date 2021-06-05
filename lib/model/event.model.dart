@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'alarm.model.dart';
 
+// TODO: deprecate
 class Event {
   int id;
   String uuid;
@@ -38,11 +39,12 @@ class Event {
       start: DateTime.parse(map['start'] as String),
       end: DateTime.parse(map['end'] as String),
       allDay: (map['allDay'] as int) == 1,
-      repeat: Repeat.fromJson(map['repeat'] as String),
+      repeat: map['repeat'] as Repeat,
       until: DateTime.parse(map['until'] as String ?? map['start'] as String),
-      alarms: ((jsonDecode(map['alarms'] as String) as List<Alarm>) ?? <Alarm>[])
-          .map((dynamic e) => Alarm.fromJson(e))
-          .toList(),
+      alarms:
+          ((jsonDecode(map['alarms'] as String) as List<Alarm>) ?? <Alarm>[])
+              .map((dynamic e) => Alarm.fromJson(e))
+              .toList(),
     );
   }
 
@@ -55,7 +57,7 @@ class Event {
     map['start'] = start.toIso8601String();
     map['end'] = end.toIso8601String();
     map['allDay'] = allDay ? 1 : 0;
-    map['repeat'] = repeat.toJson();
+    map['repeat'] = repeat;
     map['until'] = until?.toIso8601String();
     map['alarms'] = jsonEncode(alarms);
     return map;

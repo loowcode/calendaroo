@@ -34,7 +34,7 @@ class DetailsBloc extends Bloc<DetailsEvent, DetailsState> {
             // TODO: remove date
             allDay: false,
             // TODO: handle allDay
-            repeat: calendarItemModel?.repeat ?? Repeat(type: RepeatType.never),
+            repeat: calendarItemModel?.repeat ?? Repeat.never,
             until: calendarItemModel?.until,
             alarms: [
               Alarm(1, DateTime.now().subtract(Duration(minutes: 15)), false)

@@ -1,7 +1,6 @@
 import 'package:calendaroo/blocs/details/details_bloc.dart';
 import 'package:calendaroo/colors.dart';
 import 'package:calendaroo/model/repeat.model.dart';
-import 'package:calendaroo/models/calendar_item/calendar_item.model.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/utils/calendar.utils.dart';
@@ -236,13 +235,12 @@ class _DetailsPageState extends State<DetailsPage> {
                             },
                           ),
                           child: Text(
-                            AppLocalizations.of(context).translate(
-                                Repeat.repeatToString(state.repeat.type)),
+                            _getRepeatText(state.repeat),
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ),
                       ),
-                      state.repeat.type != RepeatType.never
+                      state.repeat != Repeat.never
                           ? _rowTile(
                               leading: Icon(Icons.vertical_align_bottom,
                                   color: grey),
@@ -274,7 +272,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                   ? IconButton(
                                       onPressed: () {
                                         bloc.add(DetailsValuesChangedEvent(
-                                          until: null, // TODO: probabilmente col null non lancia l'evento
+                                          until:
+                                              null, // TODO: probabilmente col null non lancia l'evento
                                         ));
                                       },
                                       icon: Icon(Icons.close, color: grey),
@@ -356,7 +355,7 @@ class _DetailsPageState extends State<DetailsPage> {
           Container(
             margin: EdgeInsets.only(left: 8),
             child: Icon(FeatherIcons.repeat,
-                color: state.repeat.type == RepeatType.never ? grey : blue),
+                color: state.repeat == Repeat.never ? grey : blue),
           )
         ],
       ),
@@ -589,7 +588,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Widget _buildRepeatModal(
       BuildContext context, DetailsBloc bloc, DetailsState state) {
-    var selected = state.repeat.type;
+    var selected = state.repeat;
     FocusScope.of(context).requestFocus(FocusNode());
 
     return StatefulBuilder(
@@ -606,11 +605,11 @@ class _DetailsPageState extends State<DetailsPage> {
           padding: EdgeInsets.all(16),
           child: Column(
             children: [
-              RepeatType.daily,
-              RepeatType.weekly,
-              RepeatType.monthly,
-              RepeatType.yearly,
-              RepeatType.never
+              Repeat.daily,
+              Repeat.weekly,
+              Repeat.monthly,
+              Repeat.yearly,
+              Repeat.never
             ]
                 // TODO da rivedere
                 .map((elem) => Row(
@@ -618,13 +617,12 @@ class _DetailsPageState extends State<DetailsPage> {
                         Radio(
                           value: elem,
                           groupValue: selected,
-                          onChanged: (RepeatType value) {
+                          onChanged: (Repeat value) {
                             setRadioState(() => selected = value);
                           },
                         ),
                         Text(
-                          AppLocalizations.of(context)
-                              .translate(Repeat.repeatToString(elem)),
+                          _getRepeatText(elem),
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ],
@@ -667,13 +665,8 @@ class _DetailsPageState extends State<DetailsPage> {
                                   textColor: AppTheme
                                       .primaryTheme.textTheme.button.color,
                                   onPressed: () {
-                                    var newRepeat = state.repeat.copyWith(
-                                      type: selected,
-                                    );
-                                    print(newRepeat);
-
                                     bloc.add(DetailsValuesChangedEvent(
-                                        repeat: newRepeat));
+                                        repeat: selected));
 
                                     Navigator.pop(context);
                                   },
@@ -694,5 +687,29 @@ class _DetailsPageState extends State<DetailsPage> {
         ),
       );
     });
+  }
+
+  String _getRepeatText(Repeat repeat) {
+    String repeatTextKey;
+
+    switch (repeat) {
+      case Repeat.daily:
+        repeatTextKey = 'repeat_daily';
+        break;
+      case Repeat.weekly:
+        repeatTextKey = 'repeat_weekly';
+        break;
+      case Repeat.monthly:
+        repeatTextKey = 'repeat_monthly';
+        break;
+      case Repeat.yearly:
+        repeatTextKey = 'repeat_yearly';
+        break;
+      case Repeat.never:
+        repeatTextKey = 'repeat_never';
+        break;
+    }
+
+    return AppLocalizations.of(context).translate(repeatTextKey);
   }
 }
