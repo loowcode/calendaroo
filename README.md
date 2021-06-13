@@ -3,7 +3,7 @@ A Fancy Flutter Calendar
 
 ![Banner](https://github.com/jacopo1395/calendaroo/blob/master/android/app/src/main/res/drawable/banner_calendaroo.png?raw=true)
 
-![Screensho](https://raw.githubusercontent.com/loowcode/calendaroo/36c11a3f22fd62b62d5205bcb5e98b2838d3b158/resources/Screenshot_20210613-131725.jpg)
+<img src="https://raw.githubusercontent.com/loowcode/calendaroo/36c11a3f22fd62b62d5205bcb5e98b2838d3b158/resources/Screenshot_20210613-131725.jpg" alt="gitflow" width="200"/>
 
 
 # Install
