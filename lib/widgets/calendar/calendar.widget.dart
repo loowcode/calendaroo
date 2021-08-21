@@ -47,9 +47,8 @@ class _CalendarWidgetState extends State<CalendarWidget>
   Widget build(BuildContext context) {
     return BlocConsumer<CalendarBloc, CalendarState>(
       listener: (context, state) {
-        // before in onWillChange og StoreConnector
         if (state is CalendarLoaded) {
-          updateController(state.selectedDay); //TODO: serve?
+          setSelectedDay(state.selectedDay);
         }
       },
       builder: (context, state) {
@@ -266,11 +265,11 @@ class _CalendarWidgetState extends State<CalendarWidget>
       //   _onDaySelected(store, date, events);
       //   _animationController.forward(from: 0.0);
       // },
-      // onVisibleDaysChanged: (first, last, format) {
-      //   // This setState updates the month label because this callback is called also when swiping the calendar
-      //   setState(() {});
-      //   _onVisibleDaysChanged(store, first, last, format);
-      // },
+      onVisibleDaysChanged: (first, last, format) {
+        // This setState updates the month label because this callback is called also when swiping the calendar
+        setState(() {});
+        _onVisibleDaysChanged(state, first, last, format);
+      },
       // onCalendarCreated:
       //     (DateTime first, DateTime last, CalendarFormat format) =>
       //     _onCalendarCreated(store, first, last, format),
@@ -373,15 +372,13 @@ class _CalendarWidgetState extends State<CalendarWidget>
     }
   }
 
-  void updateController(DateTime newSelectedDay) {
-    if (_calendarController != null) {
-      if (newSelectedDay != null
-          // && CalendarUtils.removeTime(_calendarController.selectedDay) != CalendarUtils.removeTime(newSelectedDay)
-          ) {
-        setState(() {
-          _calendarController.setSelectedDay(newSelectedDay);
-        });
-      }
+  void setSelectedDay(DateTime newSelectedDay) {
+    if (_calendarController != null && newSelectedDay != null) {
+      // TODO: add condition && CalendarUtils.removeTime(_calendarController.selectedDay) != CalendarUtils.removeTime(newSelectedDay)
+
+      setState(() {
+        _calendarController.setSelectedDay(newSelectedDay);
+      });
     }
   }
 
@@ -389,39 +386,40 @@ class _CalendarWidgetState extends State<CalendarWidget>
   //   store.selectDay(Date.convertToDate(day));
   // }
 
-  // void _onVisibleDaysChanged(CalendarViewModel state, DateTime first,
-  //     DateTime last, CalendarFormat format) {
-  //   if (format == CalendarFormat.month) {
-  //     SharedPreferenceService().setCalendarSize('month');
-  //     _calendarSize = CalendarSize.MONTH;
-  //   }
-  //   if (format == CalendarFormat.twoWeeks) {
-  //     SharedPreferenceService().setCalendarSize('twoWeeks');
-  //     _calendarSize = CalendarSize.TWO_WEEKS;
-  //   }
-  //   if (format == CalendarFormat.week) {
-  //     SharedPreferenceService().setCalendarSize('week');
-  //     _calendarSize = CalendarSize.WEEK;
-  //   }
-  //
-  //   if (first.isBefore(calendarooState.state.calendarState.startRange)) {
-  //     state.expandRange(
-  //         Date.convertToDate(calendarooState.state.calendarState.startRange
-  //             .subtract(Duration(days: 60))),
-  //         calendarooState.state.calendarState.endRange);
-  //   }
-  //   if (last.isAfter(calendarooState.state.calendarState.endRange)) {
-  //     state.expandRange(
-  //         calendarooState.state.calendarState.startRange,
-  //         Date.convertToDate(calendarooState.state.calendarState.endRange
-  //             .add(Duration(days: 60))));
-  //   }
-  // }
+  void _onVisibleDaysChanged(CalendarState state, DateTime first, DateTime last,
+      CalendarFormat format) {
+    if (format == CalendarFormat.month) {
+      SharedPreferenceService().setCalendarSize('month');
+      _calendarSize = CalendarSize.MONTH;
+    }
+    if (format == CalendarFormat.twoWeeks) {
+      SharedPreferenceService().setCalendarSize('twoWeeks');
+      _calendarSize = CalendarSize.TWO_WEEKS;
+    }
+    if (format == CalendarFormat.week) {
+      SharedPreferenceService().setCalendarSize('week');
+      _calendarSize = CalendarSize.WEEK;
+    }
 
-  // void _onCalendarCreated(CalendarViewModel store, DateTime first,
-  //     DateTime last, CalendarFormat format) {
-  //   store.selectDay(Date.today());
-  // }
+    // TODO: expand range
+    // if (first.isBefore(state.startRange)) {
+    //   state.expandRange(
+    //       Date.convertToDate(calendarooState.state.calendarState.startRange
+    //           .subtract(Duration(days: 60))),
+    //       calendarooState.state.calendarState.endRange);
+    // }
+    // if (last.isAfter(calendarooState.state.calendarState.endRange)) {
+    //   state.expandRange(
+    //       calendarooState.state.calendarState.startRange,
+    //       Date.convertToDate(calendarooState.state.calendarState.endRange
+    //           .add(Duration(days: 60))));
+    // }
+  }
+
+// void _onCalendarCreated(CalendarViewModel store, DateTime first,
+//     DateTime last, CalendarFormat format) {
+//   store.selectDay(Date.today());
+// }
 }
 
 // TODO: migrate to bloc
