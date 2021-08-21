@@ -302,57 +302,59 @@ class _CalendarWidgetState extends State<CalendarWidget>
   }
 
   // TODO: migrate to new repeat logic
+  // TODO: migrate to bloc?
   void _selectPrevious() {
-    // var calendarFormat = _calendarController.calendarFormat;
-    // var focusesDay = _calendarController.focusedDay;
-    // var newFocus = focusesDay;
-    // if (_calendarController.calendarFormat == CalendarFormat.month) {
-    //   if (focusesDay.month == 1) {
-    //     newFocus = DateTime(focusesDay.year - 1, 12);
-    //   } else {
-    //     newFocus = DateTime(focusesDay.year, focusesDay.month - 1);
-    //   }
-    // } else if (calendarFormat == CalendarFormat.twoWeeks) {
-    //   if (_calendarController.visibleDays.take(7).contains(focusesDay)) {
-    //     // in top row
-    //     newFocus = focusesDay.subtract(const Duration(days: 7));
-    //   } else {
-    //     // in bottom row OR not visible
-    //     newFocus = focusesDay.subtract(Duration(days: 14));
-    //   }
-    // } else {
-    //   newFocus = focusesDay.subtract(const Duration(days: 7));
-    // }
-    // setState(() {
-    //   _calendarController.setFocusedDay(newFocus);
-    // });
+    var calendarFormat = _calendarController.calendarFormat;
+    var focusesDay = _calendarController.focusedDay;
+    var newFocus = focusesDay;
+    if (_calendarController.calendarFormat == CalendarFormat.month) {
+      if (focusesDay.month == 1) {
+        newFocus = DateTime(focusesDay.year - 1, 12);
+      } else {
+        newFocus = DateTime(focusesDay.year, focusesDay.month - 1);
+      }
+    } else if (calendarFormat == CalendarFormat.twoWeeks) {
+      if (_calendarController.visibleDays.take(7).contains(focusesDay)) {
+        // in top row
+        newFocus = focusesDay.subtract(const Duration(days: 7));
+      } else {
+        // in bottom row OR not visible
+        newFocus = focusesDay.subtract(Duration(days: 14));
+      }
+    } else {
+      newFocus = focusesDay.subtract(const Duration(days: 7));
+    }
+    setState(() {
+      _calendarController.setFocusedDay(newFocus);
+    });
   }
 
   // TODO: migrate to new repeat logic
+  // TODO: migrate to bloc?
   void _selectNext() {
-    // var calendarFormat = _calendarController.calendarFormat;
-    // var focusesDay = _calendarController.focusedDay;
-    // var newFocus = focusesDay;
-    // if (_calendarController.calendarFormat == CalendarFormat.month) {
-    //   if (focusesDay.month == 12) {
-    //     newFocus = DateTime(focusesDay.year + 1, 12);
-    //   } else {
-    //     newFocus = DateTime(focusesDay.year, focusesDay.month + 1);
-    //   }
-    // } else if (calendarFormat == CalendarFormat.twoWeeks) {
-    //   if (!_calendarController.visibleDays.skip(7).contains(focusesDay)) {
-    //     // in top row
-    //     newFocus = focusesDay.add(const Duration(days: 7));
-    //   } else {
-    //     // in bottom row OR not visible
-    //     newFocus = focusesDay.add(Duration(days: 14));
-    //   }
-    // } else {
-    //   newFocus = focusesDay.add(const Duration(days: 7));
-    // }
-    // setState(() {
-    //   _calendarController.setFocusedDay(newFocus);
-    // });
+    var calendarFormat = _calendarController.calendarFormat;
+    var focusesDay = _calendarController.focusedDay;
+    var newFocus = focusesDay;
+    if (_calendarController.calendarFormat == CalendarFormat.month) {
+      if (focusesDay.month == 12) {
+        newFocus = DateTime(focusesDay.year + 1, 1);
+      } else {
+        newFocus = DateTime(focusesDay.year, focusesDay.month + 1);
+      }
+    } else if (calendarFormat == CalendarFormat.twoWeeks) {
+      if (!_calendarController.visibleDays.skip(7).contains(focusesDay)) {
+        // in top row
+        newFocus = focusesDay.add(const Duration(days: 7));
+      } else {
+        // in bottom row OR not visible
+        newFocus = focusesDay.add(Duration(days: 14));
+      }
+    } else {
+      newFocus = focusesDay.add(const Duration(days: 7));
+    }
+    setState(() {
+      _calendarController.setFocusedDay(newFocus);
+    });
   }
 
   CalendarFormat _convertSizeToFormat() {
