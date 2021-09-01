@@ -137,6 +137,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
                                 .setCalendarFormat(CalendarFormat.month);
                             break;
                           case CalendarSize.WEEK:
+                            // TODO: add animation to hide calendar
                             _calendarSize = CalendarSize.HIDE;
                             break;
                           case CalendarSize.TWO_WEEKS:
@@ -162,8 +163,7 @@ class _CalendarWidgetState extends State<CalendarWidget>
                     )),
                 IconButton(
                     onPressed: () {
-                      bloc.add(CalendarDaySelectedEvent(
-                          Date.today())); //TODO: handle this event
+                      bloc.add(CalendarDaySelectedEvent(Date.today()));
                     },
                     icon: Icon(
                       Icons.today,
@@ -261,10 +261,10 @@ class _CalendarWidgetState extends State<CalendarWidget>
           return children;
         },
       ),
-      // onDaySelected: (date, events, holidays) {
-      //   _onDaySelected(store, date, events);
-      //   _animationController.forward(from: 0.0);
-      // },
+      onDaySelected: (date, events, holidays) {
+        bloc.add(CalendarDaySelectedEvent(Date.convertToDate(date)));
+        _animationController.forward(from: 0.0);
+      },
       onVisibleDaysChanged: (first, last, format) {
         // This setState updates the month label because this callback is called also when swiping the calendar
         setState(() {});
@@ -383,10 +383,6 @@ class _CalendarWidgetState extends State<CalendarWidget>
       });
     }
   }
-
-  // void _onDaySelected(CalendarViewModel store, DateTime day, List events) {
-  //   store.selectDay(Date.convertToDate(day));
-  // }
 
   void _onVisibleDaysChanged(CalendarState state, DateTime first, DateTime last,
       CalendarFormat format) {

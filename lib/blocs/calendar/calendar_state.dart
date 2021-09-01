@@ -72,6 +72,29 @@ class CalendarLoaded extends CalendarState {
           endRange: endRange,
         );
 
+  factory CalendarLoaded.fromState(CalendarState state) {
+    return CalendarLoaded(
+      selectedDay: state.selectedDay,
+      startRange: state.startRange,
+      endRange: state.endRange,
+      calendarItemMap: state is CalendarLoaded ? state.calendarItemMap : null,
+    );
+  }
+
+  CalendarLoaded copyWith({
+    Date selectedDay,
+    Date startRange,
+    Date endRange,
+    CalendarItemMap calendarItemMap,
+  }) {
+    return CalendarLoaded(
+      selectedDay: selectedDay ?? this.selectedDay,
+      startRange: startRange ?? this.startRange,
+      endRange: endRange ?? this.endRange,
+      calendarItemMap: calendarItemMap ?? this.calendarItemMap,
+    );
+  }
+
   @override
   List<Object> get props => [
         selectedDay,

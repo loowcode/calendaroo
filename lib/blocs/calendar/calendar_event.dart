@@ -15,7 +15,7 @@ class CalendarDaySelectedEvent extends CalendarEvent {
   CalendarDaySelectedEvent(this.selectedDay);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [selectedDay];
 }
 
 class CalendarCreateEvent extends CalendarEvent {

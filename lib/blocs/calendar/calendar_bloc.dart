@@ -16,7 +16,6 @@ import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
 part 'calendar_event.dart';
-
 part 'calendar_state.dart';
 
 class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
@@ -78,11 +77,13 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
       // TODO: handle repeat update
       // Delete old repeat
-      var calendarItemRepeat = await _calendarItemRepeatRepository.findByCalendarItemId(event.calendarItem.id);
+      var calendarItemRepeat = await _calendarItemRepeatRepository
+          .findByCalendarItemId(event.calendarItem.id);
       await _calendarItemRepeatRepository.delete(calendarItemRepeat.id);
 
       // Add new repeat
-      var newCalendarItemRepeat = buildCalendarItemRepeat(event.calendarItem.id, event.calendarItem);
+      var newCalendarItemRepeat =
+          buildCalendarItemRepeat(event.calendarItem.id, event.calendarItem);
       await _calendarItemRepeatRepository.add(newCalendarItemRepeat);
 
       var calendarItemMap = await getCalendarItemInstances();
@@ -105,6 +106,17 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         endRange: state.endRange,
         calendarItemMap: calendarItemMap,
       );
+    }
+
+    if (event is CalendarDaySelectedEvent) {
+      if (state is CalendarLoaded) {
+        yield CalendarLoaded(
+          selectedDay: event.selectedDay,
+          startRange: state.startRange,
+          endRange: state.endRange,
+          calendarItemMap: (state as CalendarLoaded).calendarItemMap,
+        );
+      }
     }
   }
 
@@ -173,7 +185,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
         // Update mapped calendar items with id
         items.forEach((item) async {
           if (!mappedItems.containsKey(item.id)) {
-            var calendarItemRepeat = await _calendarItemRepeatRepository.findByCalendarItemId(item.id);
+            var calendarItemRepeat = await _calendarItemRepeatRepository
+                .findByCalendarItemId(item.id);
 
             mappedItems.putIfAbsent(
               item.id,
@@ -205,7 +218,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
   @override
   void onTransition(Transition<CalendarEvent, CalendarState> transition) {
     super.onTransition(transition);
-    print(transition);
+    print('${transition.currentState.runtimeType} >== ${transition.event.runtimeType} ===> ${transition.nextState.runtimeType}');
   }
 
   SplayTreeMap<Date, List<CalendarItemInstance>> _generateInstances(
