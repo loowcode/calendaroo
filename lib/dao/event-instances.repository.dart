@@ -1,8 +1,8 @@
-import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/model/event-instance.model.dart';
+import 'package:calendaroo/models/date.model.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../services/local-storage.service.dart';
+import '../services/local_storage.service.dart';
 
 class EventInstanceRepository {
   Future<int> insertInstance(EventInstance instance) async {

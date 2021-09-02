@@ -91,7 +91,7 @@ jobs:
     needs: [test, build]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ env.ruby-version }}
       - uses: maierj/fastlane-action@v2.0.1

@@ -3,7 +3,6 @@ const String CALENDAROO = 'calendaroo';
 const String DEVELOP = 'develop';
 const String INTEGRATION = 'integration';
 
-
 // Example holidays
 final Map<DateTime, List<String>> holidays = {
   DateTime(2019, 1, 1): ['New Year\'s Day'],

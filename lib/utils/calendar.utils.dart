@@ -1,9 +1,10 @@
 import 'dart:collection';
 
-import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/model/event.model.dart';
 import 'package:calendaroo/model/repeat.model.dart';
+import 'package:calendaroo/models/date.model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:uuid/uuid.dart';
 
 class CalendarUtils {
@@ -114,27 +115,27 @@ class CalendarUtils {
           instance.end = instance.start.add(Duration(hours: 23, minutes: 59));
         }
         instances.add(instance);
-        if (event.repeat.type != RepeatType.never) {
+        if (event.repeat != Repeat.never) {
           var duplicator = instance.start;
           var span = instance.end.difference(instance.start);
           while (duplicator.isBefore(rangeEnd) &&
               duplicator.isBefore(event.until ?? rangeEnd)) {
-            switch (event.repeat.type) {
-              case RepeatType.daily:
+            switch (event.repeat) {
+              case Repeat.daily:
                 duplicator = duplicator.add(Duration(days: 1));
                 break;
-              case RepeatType.weekly:
+              case Repeat.weekly:
                 duplicator = duplicator.add(Duration(days: 7));
                 break;
-              case RepeatType.monthly:
+              case Repeat.monthly:
                 duplicator = DateTime(
                     duplicator.year, duplicator.month + 1, duplicator.day);
                 break;
-              case RepeatType.yearly:
+              case Repeat.yearly:
                 duplicator = DateTime(
                     duplicator.year + 1, duplicator.month, duplicator.day);
                 break;
-              case RepeatType.never:
+              case Repeat.never:
                 break;
             }
 
@@ -175,7 +176,7 @@ class CalendarUtils {
     }
   }
 
-  static int getIndex(Map<Date, List<EventInstance>> map, Date day) {
+  static int getIndex(Map<Date, List<int>> map, Date day) {
     var list = map.keys.toList();
     var index = list.indexOf(day);
     if (index < 0) {
@@ -195,5 +196,24 @@ class CalendarUtils {
 
   static DateTime removeDate(DateTime input) {
     return DateTime(1000, 1, 1, input.hour, input.minute, input.second);
+  }
+
+  static DateTime getFirstMondayInMonth({
+    @required int month,
+    @required int year,
+  }) {
+    var firstDayOfMonth = DateTime(year, month, 1);
+    return firstDayOfMonth.add(Duration(
+        days: (DateTime.daysPerWeek + 1 - firstDayOfMonth.weekday) %
+            DateTime.daysPerWeek));
+  }
+
+  static int getWeekInMonth(Date input) {
+    var firstMondayOfMonth = getFirstMondayInMonth(
+      year: input.year,
+      month: input.month,
+    );
+
+    return (input.day - firstMondayOfMonth.day) ~/ DateTime.daysPerWeek + 1;
   }
 }

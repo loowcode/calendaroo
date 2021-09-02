@@ -32,8 +32,9 @@ Future<void> scheduleNotification(
       priority: Priority.high,
       ticker: 'ticker');
   var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-  var platformChannelSpecifics = NotificationDetails(android:
-      androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
+  var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics);
 
   await flutterLocalNotificationsPlugin.schedule(
       notificationId,

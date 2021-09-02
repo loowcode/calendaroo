@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'alarm.model.dart';
 
+// TODO: deprecate
 class Event {
   int id;
   String uuid;
@@ -37,17 +38,18 @@ class Event {
       description: map['description'] as String,
       start: DateTime.parse(map['start'] as String),
       end: DateTime.parse(map['end'] as String),
-      allDay: (map['allDay'] as int) == 1 ? true : false,
-      repeat: Repeat.fromJson(map['repeat'] as String),
+      allDay: (map['allDay'] as int) == 1,
+      repeat: map['repeat'] as Repeat,
       until: DateTime.parse(map['until'] as String ?? map['start'] as String),
-      alarms: ((jsonDecode(map['alarms'] as String) as List) ?? [])
-          .map((e) => Alarm.fromJson(e))
-          .toList(),
+      alarms:
+          ((jsonDecode(map['alarms'] as String) as List<Alarm>) ?? <Alarm>[])
+              .map((dynamic e) => Alarm.fromJson(e))
+              .toList(),
     );
   }
 
   Map<String, dynamic> toMap() {
-    var map = <String, dynamic>{};
+    final map = <String, dynamic>{};
     map['id'] = id;
     map['uuid'] = uuid;
     map['title'] = title;
@@ -55,7 +57,7 @@ class Event {
     map['start'] = start.toIso8601String();
     map['end'] = end.toIso8601String();
     map['allDay'] = allDay ? 1 : 0;
-    map['repeat'] = repeat.toJson();
+    map['repeat'] = repeat;
     map['until'] = until?.toIso8601String();
     map['alarms'] = jsonEncode(alarms);
     return map;

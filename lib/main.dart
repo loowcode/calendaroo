@@ -1,26 +1,24 @@
-import 'package:calendaroo/redux/actions/calendar.actions.dart';
-import 'package:calendaroo/redux/states/app.state.dart';
+import 'package:calendaroo/blocs/calendar/calendar_bloc.dart';
+import 'package:calendaroo/repositories/calendar/calendar_local.repository.dart';
+import 'package:calendaroo/repositories/calendar/calendar_repeat_local.repository.dart';
 import 'package:calendaroo/routes.dart';
 import 'package:calendaroo/services/app-localizations.service.dart';
-import 'package:calendaroo/services/initializer-app.service.dart';
 import 'package:calendaroo/services/navigation.service.dart';
 import 'package:calendaroo/theme.dart';
 import 'package:calendaroo/utils/notification.utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+
 import 'dao/events.repository.dart';
-import 'model/received-notification.dart';
 import 'environments/integration.dart' as env;
-
-
+import 'model/received-notification.dart';
 
 void main() {
   env.main();
 }
-
 
 class MyApp extends StatefulWidget {
   MyApp({Key key}) : super(key: key);
@@ -51,10 +49,11 @@ class _MyAppState extends State<MyApp> {
         );
   }
 
+  // TODO: migrate to bloc
   void _configureDidReceiveLocalNotificationSubject() {
     didReceiveLocalNotificationSubject.stream
         .listen((ReceivedNotification receivedNotification) async {
-      await showDialog(
+      await showDialog<Widget>(
         context: context,
         builder: (BuildContext context) => CupertinoAlertDialog(
           title: receivedNotification.title != null
@@ -66,13 +65,13 @@ class _MyAppState extends State<MyApp> {
           actions: [
             CupertinoDialogAction(
               isDefaultAction: true,
-              child: Text('Ok'),
               onPressed: () async {
                 var event = await EventsRepository()
                     .event(int.parse(receivedNotification.payload));
-                calendarooState.dispatch(OpenEvent(event));
+                // calendarooState.dispatch(OpenEvent(event));
                 await NavigationService().navigateTo(DETAILS, arguments: event);
               },
+              child: Text('Ok'),
             )
           ],
         ),
@@ -80,10 +79,11 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  // TODO: migrate to bloc
   void _configureSelectNotificationSubject() {
     selectNotificationSubject.stream.listen((String payload) async {
       var event = await EventsRepository().event(int.parse(payload));
-      calendarooState.dispatch(OpenEvent(event));
+      // calendarooState.dispatch(OpenEvent(event));
     });
   }
 
@@ -96,8 +96,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider<AppState>(
-      store: calendarooState,
+    return BlocProvider(
+      create: (context) => CalendarBloc(
+        CalendarLocalRepository(),
+        CalendarItemRepeatLocalRepository(),
+      ),
       child: MaterialApp(
         title: 'Calendaroo',
         supportedLocales: [

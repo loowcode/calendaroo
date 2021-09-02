@@ -1,7 +1,7 @@
 import 'package:calendaroo/dao/event-instances.repository.dart';
-import 'package:calendaroo/model/date.model.dart';
 import 'package:calendaroo/model/event-instance.model.dart';
 import 'package:calendaroo/model/event.model.dart';
+import 'package:calendaroo/models/date.model.dart';
 import 'package:uuid/uuid.dart';
 
 import '../utils/calendar.utils.dart';
