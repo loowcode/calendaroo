@@ -8,7 +8,7 @@ A Fancy Flutter Calendar
 
 # Install
 1. Install [Flutter](https://flutter.dev/docs/get-started/install)
-2. In a terminal run `git clone https://github.com/jacopo1395/calendaroo.git`
+2. In a terminal run `git clone https://github.com/loowcode/calendaroo.git`
 3. Import in yout IDE
 
 # Run
