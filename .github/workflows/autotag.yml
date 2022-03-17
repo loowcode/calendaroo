@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Create a new tag
         id: tag_version
-        uses: jacopo1395/action-autotag@2.0.3
+        uses: jacopocarlini/action-autotag@2.0.3
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       - name: Create a GitHub release
